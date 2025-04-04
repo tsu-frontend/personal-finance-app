@@ -8,11 +8,7 @@
     <link rel="stylesheet" href="../output.css" />
   </head>
   <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
-    <!-- <style>
-      * {
-        outline: 1px solid rgba(255, 0, 0, 0.5); /* Debug outline */
-      }
-    </style> -->
+   
 
     <nav class="h-[52px] w-[100vw] bg-[#201F24] rounded-tr-[8px] rounded-tl-[8px] pt-[8px] px-[16px] bottom-0 fixed flex flex-col md:h-[74px] md:px-[40px] xl:static xl:h-auto xl:w-[min(20.83%,300px)] xl:gap-[24px] xl:px-0 xl:pr-[24px] xl:rounded-tl-[0] xl:rounded-tr-[16px] xl:rounded-br-[16px] shrink-0">
       <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="122" height="22" viewBox="0 0 122 22" fill="none" class="hidden text-[#FFFFFF] h-[101.76px] ml-[32px] xl:block">
@@ -59,8 +55,131 @@
       </div>
     </nav>
 
-    <main>
-      <!-- ####################### დაიწყე კოდის წერა აქ! ####################### -->
+    <main class="w-full p-9 box-border h-screen">
+<!-- heading -->
+      <section class="w-full flex justify-between">
+        <h2 class="text-[27px] font-semibold">Budgets</h2>
+        <button id="add_btn" class="bg-[#201F24] text-[white] text-[15px] w-40 h-14 rounded-md">+ Add New Budget</button>
+      </section>
+
+       <section class="flex mt-9 gap-6  h-auto">
+        <aside id="scheme" class="flex flex-col p-8 pb-0 w-[428px] gap-8 bg-[white] rounded-sm">
+<!-- cyrcle -->
+          <div id="cyrcle" class="w-[364px] h-[280px] bg-blue-500"></div>
+
+          <div id="spending_summary">
+          <h3 class="text-xl font-semibold tracking-[0.01em]">Spending Summary</h3>
+<!-- each part of summary -->
+          <div id="spending_summary" class="mt-6">
+
+            <article class="flex flex-col w-[364px]">
+            <div data-name="container" class="flex ">
+              <figure data-name="color_at_start" class="bg-[#277C78] w-1 h-[22px] mr-3 rounded-md"></figure>
+              <h4 class="text-[#696868] mr-[124px]">Entertainment</h4>
+              <p data-name="spent" class="mr-2 text-sm">$15.00</p>
+              <p data-name="remaining" class="text-[#696868] flex text-[12px] items-center">of $<span>50.00</span></p>
+            </div>
+            <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-4"></figure>
+            </article>
+
+
+          </div>
+          </div>
+        </aside>
+<!-- budgets -->
+        <aside id="budgets" class="w-[610px] bg-[#9d7c7c] flex flex-col">
+<!--each budget box goes here -->
+           <article data-name="budget" class="w-[608px] h-[510px] p-8 bg-[white] rounded-lg">
+            <div data-name="budget_heading" class="flex items-center">
+              <figure class="w-4 h-4 rounded-4xl bg-[#277C78] mr-4"></figure>
+              <h5 class="font-semibold text-xl mr-[357px]">Entertainment</h5>
+              <figure data-name="three_dots" class="text-2xl tracking-[-0.06em] text-[#B3B3B3] pb-2">...</figure>
+            </div>
+
+            <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of $50.00</div>
+           <div data-name="line" class="w-[544px] h-8 bg-[#F8F4F0] rounded-sm  mb-5" ></div>
+
+          <div data-name="spent_remaining" class="flex gap-[210px]">
+
+            <div class="flex">
+              <figure data-name="color_changing" class="w-[5px] h-[43px] mr-4 bg-[#277C78] rounded-lg"></figure>
+              <div data-name="spent">
+                <span class="text-[#696868]">Spent</span>
+                <p class="font-semibold pt-1.5">$15.00</p>
+              </div>
+            </div>
+
+            <div class="flex">
+              <figure class="w-[5px] h-[43px] bg-[#F8F4F0] rounded-lg mr-4"></figure>
+              <div data-name="remain" class="flex flex-col">
+                <span class="text-[#696868]">Remaining</span>
+                <p class="font-semibold pt-1.5">$35.00</p>
+              </div>
+            </div>
+
+          </div>
+
+<!-- latest spending -->
+           <section class="flex flex-col mt-5 p-4 pb-1 bg-[#F8F4F0] rounded-md gap-4">
+
+          <div class="flex justify-between">
+            <h6 class="font-semibold">Latest Spending</h6>
+            <div class="flex gap-3">
+              <div class="text-[#696868]">See All</div>
+              <img src="../assets/images/icon-caret-right.svg" alt="">
+            </div>
+          </div>
+
+          <article>
+            <div class="flex justify-between">
+              <div class="flex items-center">
+              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
+              <p class="text-sm font-semibold">Spark Electric Solutions</p>
+              </div>
+              <aside>
+                <div class="font-semibold text-sm">-$100.00</div>
+                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
+              </aside>
+            </div>
+            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
+          </article>
+
+          <article>
+            <div class="flex justify-between">
+              <div class="flex items-center">
+              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
+              <p class="text-sm font-semibold">Spark Electric Solutions</p>
+              </div>
+              <aside>
+                <div class="font-semibold text-sm">-$100.00</div>
+                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
+              </aside>
+            </div>
+            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
+          </article>
+
+          <article>
+            <div class="flex justify-between">
+              <div class="flex items-center">
+              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
+              <p class="text-sm font-semibold">Spark Electric Solutions</p>
+              </div>
+              <aside>
+                <div class="font-semibold text-sm">-$100.00</div>
+                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
+              </aside>
+            </div>
+            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
+          </article>
+
+          
+
+          
+
+           </section>
+           </article>
+        </aside>
+       </section>
     </main>
   </body>
 </html>
