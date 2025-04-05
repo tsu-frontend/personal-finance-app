@@ -6,7 +6,9 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-900: oklch(0.396 0.141 25.723);
     --spacing: 0.25rem;
+    --animate-bounce: bounce 1s infinite;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -177,20 +179,8 @@
   .hidden {
     display: none;
   }
-  .h-\[16\.5px\] {
-    height: 16.5px;
-  }
-  .h-\[18\.75px\] {
-    height: 18.75px;
-  }
-  .h-\[19\.5px\] {
-    height: 19.5px;
-  }
-  .h-\[19\.43px\] {
-    height: 19.43px;
-  }
-  .h-\[21px\] {
-    height: 21px;
+  .table {
+    display: table;
   }
   .h-\[52px\] {
     height: 52px;
@@ -204,23 +194,11 @@
   .h-\[101\.76px\] {
     height: 101.76px;
   }
-  .h-\[250px\] {
-    height: 250px;
+  .h-full {
+    height: 100%;
   }
   .min-h-screen {
     min-height: 100vh;
-  }
-  .w-\[16\.5px\] {
-    width: 16.5px;
-  }
-  .w-\[18px\] {
-    width: 18px;
-  }
-  .w-\[19\.5px\] {
-    width: 19.5px;
-  }
-  .w-\[19\.44px\] {
-    width: 19.44px;
   }
   .w-\[68\.6px\] {
     width: 68.6px;
@@ -231,14 +209,39 @@
   .w-\[100vw\] {
     width: 100vw;
   }
-  .w-\[250px\] {
-    width: 250px;
+  .w-full {
+    width: 100%;
   }
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
+  }
+  .border-collapse {
+    border-collapse: collapse;
+  }
+  .translate-y-\[-10px\] {
+    --tw-translate-y: -10px;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .scale-200 {
+    --tw-scale-x: 200%;
+    --tw-scale-y: 200%;
+    --tw-scale-z: 200%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  .rotate-180 {
+    rotate: 180deg;
+  }
+  .transform {
+    transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
+  }
+  .resize {
+    resize: both;
   }
   .flex-col {
     flex-direction: column;
@@ -264,7 +267,7 @@
   .rounded-tr-\[8px\] {
     border-top-right-radius: 8px;
   }
-  .border-1 {
+  .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
@@ -287,8 +290,17 @@
   .bg-\[\#f8f4f0\] {
     background-color: #f8f4f0;
   }
+  .bg-red-900 {
+    background-color: var(--color-red-900);
+  }
+  .fill-\[\#201F24\] {
+    fill: #201F24;
+  }
   .px-\[16px\] {
     padding-inline: 16px;
+  }
+  .pt-\[4px\] {
+    padding-top: 4px;
   }
   .pt-\[8px\] {
     padding-top: 8px;
@@ -319,6 +331,9 @@
   .text-\[\#FFFFFF\] {
     color: #FFFFFF;
   }
+  .underline {
+    text-decoration-line: underline;
+  }
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
@@ -332,12 +347,9 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .hover\:cursor-not-allowed {
-    &:hover {
-      @media (hover: hover) {
-        cursor: not-allowed;
-      }
-    }
+  .select-none {
+    -webkit-user-select: none;
+    user-select: none;
   }
   .hover\:cursor-pointer {
     &:hover {
@@ -391,6 +403,11 @@
       display: flex;
     }
   }
+  .xl\:hidden {
+    @media (width >= 80rem) {
+      display: none;
+    }
+  }
   .xl\:h-\[56px\] {
     @media (width >= 80rem) {
       height: 56px;
@@ -401,6 +418,11 @@
       height: auto;
     }
   }
+  .xl\:w-\[85px\] {
+    @media (width >= 80rem) {
+      width: 85px;
+    }
+  }
   .xl\:w-\[100\%\] {
     @media (width >= 80rem) {
       width: 100%;
@@ -409,6 +431,16 @@
   .xl\:w-\[min\(20\.83\%\,300px\)\] {
     @media (width >= 80rem) {
       width: min(20.83%, 300px);
+    }
+  }
+  .xl\:w-fit {
+    @media (width >= 80rem) {
+      width: fit-content;
+    }
+  }
+  .xl\:animate-bounce {
+    @media (width >= 80rem) {
+      animation: var(--animate-bounce);
     }
   }
   .xl\:flex-col {
@@ -494,6 +526,16 @@
       padding-inline: calc(var(--spacing) * 0);
     }
   }
+  .xl\:pt-0 {
+    @media (width >= 80rem) {
+      padding-top: calc(var(--spacing) * 0);
+    }
+  }
+  .xl\:pr-\[4px\] {
+    @media (width >= 80rem) {
+      padding-right: 4px;
+    }
+  }
   .xl\:pr-\[24px\] {
     @media (width >= 80rem) {
       padding-right: 24px;
@@ -502,6 +544,26 @@
   .xl\:pb-0 {
     @media (width >= 80rem) {
       padding-bottom: calc(var(--spacing) * 0);
+    }
+  }
+  .xl\:pl-\[31\.25px\] {
+    @media (width >= 80rem) {
+      padding-left: 31.25px;
+    }
+  }
+  .xl\:pl-\[31\.32px\] {
+    @media (width >= 80rem) {
+      padding-left: 31.32px;
+    }
+  }
+  .xl\:pl-\[31\.75px\] {
+    @media (width >= 80rem) {
+      padding-left: 31.75px;
+    }
+  }
+  .xl\:pl-\[31px\] {
+    @media (width >= 80rem) {
+      padding-left: 31px;
     }
   }
   .xl\:pl-\[34\.25px\] {
@@ -514,9 +576,14 @@
       padding-left: 34.32px;
     }
   }
-  .xl\:pl-\[35\.75px\] {
+  .xl\:pl-\[34\.75px\] {
     @media (width >= 80rem) {
-      padding-left: 35.75px;
+      padding-left: 34.75px;
+    }
+  }
+  .xl\:pl-\[34px\] {
+    @media (width >= 80rem) {
+      padding-left: 34px;
     }
   }
   .xl\:pl-\[35px\] {
@@ -543,6 +610,61 @@
     }
   }
 }
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateX(0);
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateY(0);
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateZ(0);
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewX(0);
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewY(0);
+}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -564,4 +686,14 @@
 @property --tw-duration {
   syntax: "*";
   inherits: false;
+}
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }
