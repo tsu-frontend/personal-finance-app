@@ -223,6 +223,9 @@
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
+  }
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
@@ -240,6 +243,9 @@
   }
   .h-\[3\] {
     height: 3;
+  }
+  .h-\[8px\] {
+    height: 8px;
   }
   .h-\[16\] {
     height: 16;
@@ -309,6 +315,9 @@
   }
   .w-\[16px\] {
     width: 16px;
+  }
+  .w-\[50\%\] {
+    width: 50%;
   }
   .w-\[68\.6px\] {
     width: 68.6px;
@@ -464,8 +473,32 @@
   .gap-1676 {
     gap: calc(var(--spacing) * 1676);
   }
+  .gap-\[1\] {
+    gap: 1;
+  }
+  .gap-\[3\] {
+    gap: 3;
+  }
+  .gap-\[4\] {
+    gap: 4;
+  }
   .gap-\[4px\] {
     gap: 4px;
+  }
+  .gap-\[13\] {
+    gap: 13;
+  }
+  .gap-\[13p\] {
+    gap: 13p;
+  }
+  .gap-\[13px\] {
+    gap: 13px;
+  }
+  .gap-\[16\] {
+    gap: 16;
+  }
+  .gap-\[16p\] {
+    gap: 16p;
   }
   .gap-\[16px\] {
     gap: 16px;
@@ -479,11 +512,23 @@
   .gap-\[33\.5px\] {
     gap: 33.5px;
   }
+  .self-stretch {
+    align-self: stretch;
+  }
   .rounded {
     border-radius: 0.25rem;
   }
   .rounded-2xl {
     border-radius: var(--radius-2xl);
+  }
+  .rounded-\[4\] {
+    border-radius: 4;
+  }
+  .rounded-\[4p\] {
+    border-radius: 4p;
+  }
+  .rounded-\[4px\] {
+    border-radius: 4px;
   }
   .rounded-\[5\] {
     border-radius: 5;
@@ -566,6 +611,9 @@
   }
   .bg-\[201F24\] {
     background-color: 201F24;
+  }
+  .bg-\[F8F4F0\] {
+    background-color: F8F4F0;
   }
   .bg-\[c\] {
     background-color: c;
@@ -715,6 +763,9 @@
     --tw-font-weight: var(--font-weight-normal);
     font-weight: var(--font-weight-normal);
   }
+  .text-\[\#\$\] {
+    color: #$;
+  }
   .text-\[\#201F24\] {
     color: #201F24;
   }
@@ -739,8 +790,23 @@
   .text-\[\$\] {
     color: $;
   }
+  .text-\[\%\] {
+    color: %;
+  }
   .text-\[1\] {
     color: 1;
+  }
+  .text-\[12\[\]\] {
+    color: 12[];
+  }
+  .text-\[12\[x\]\] {
+    color: 12[x];
+  }
+  .text-\[12\] {
+    color: 12;
+  }
+  .text-\[12p\] {
+    color: 12p;
   }
   .text-\[14\] {
     color: 14;
@@ -756,6 +822,9 @@
   }
   .text-\[32p\] {
     color: 32p;
+  }
+  .text-\[\^\] {
+    color: ^;
   }
   .capitalize {
     text-transform: capitalize;
