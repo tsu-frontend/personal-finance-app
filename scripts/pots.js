@@ -11,7 +11,14 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
           <div id="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
             <div id="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-[50%]" style="background-color: ${pot.theme}"></div>
             <p id="pot-name" class="text-[#201F24] font-[Public Sans] text-[20px] font-bold leading-[120%]">${pot.name}</p>
-            <img src="../assets/images/icon-ellipsis.svg" class="w-[16px] h-[16px] ml-auto" />
+            <div id="pot-options" class="ml-auto hover:cursor-pointer relative">
+              <img src="../assets/images/icon-ellipsis.svg" class="w-[16px] h-[16px]" />
+              <div id="pot-options-modal" class="hover:cursor-default hidden absolute right-0 top-[36px] w-[114px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                <button id="edit-pot" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%]">Edit Pot</button>
+                <div class="w-full h-[1px] bg-[#F2F2F2]"></div>
+                <button id="delete-pot" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%]">Delete Pot</button>
+              </div>
+            </div>
           </div>
           <div id="pot-savings-summary" class="w-full h-[114px] flex flex-col justify-around gap-[16px] flex-1">
             <div id="pot-total-saved" class="w-full flex items-center justify-between">
@@ -36,6 +43,29 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
           </div>
         </div>
         `;
+  });
+
+  document.querySelectorAll("#pot-options").forEach((btn) => {
+    const modal = btn.querySelector("#pot-options-modal");
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      modal.classList.toggle("hidden");
+      modal.classList.toggle("flex");
+    });
+
+    modal.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll("#pot-options-modal").forEach((modal) => {
+      if (!modal.classList.contains("hidden")) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    });
   });
 };
 
