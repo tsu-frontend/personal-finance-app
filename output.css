@@ -223,6 +223,9 @@
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
+  .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
@@ -307,6 +310,9 @@
   .w-1 {
     width: calc(var(--spacing) * 1);
   }
+  .w-5 {
+    width: calc(var(--spacing) * 5);
+  }
   .w-15 {
     width: calc(var(--spacing) * 15);
   }
@@ -315,6 +321,9 @@
   }
   .w-154 {
     width: calc(var(--spacing) * 154);
+  }
+  .w-\[\$\%\] {
+    width: $%;
   }
   .w-\[16px\] {
     width: 16px;
@@ -619,11 +628,17 @@
   .border-l-\[\#277C78\] {
     border-left-color: #277C78;
   }
+  .bg-\[\!\] {
+    background-color: !;
+  }
   .bg-\[\#201F24\] {
     background-color: #201F24;
   }
   .bg-\[\#277C78\] {
     background-color: #277C78;
+  }
+  .bg-\[\#626070\] {
+    background-color: #626070;
   }
   .bg-\[\#D9534F\] {
     background-color: #D9534F;
@@ -640,11 +655,44 @@
   .bg-\[\#f8f4f0\] {
     background-color: #f8f4f0;
   }
+  .bg-\[\$\] {
+    background-color: $;
+  }
+  .bg-\[\$o\] {
+    background-color: $o;
+  }
+  .bg-\[\$oi\] {
+    background-color: $oi;
+  }
+  .bg-\[\$p\] {
+    background-color: $p;
+  }
+  .bg-\[\$po\] {
+    background-color: $po;
+  }
+  .bg-\[\$pot\] {
+    background-color: $pot;
+  }
+  .bg-\[\%\] {
+    background-color: %;
+  }
+  .bg-\[\&\] {
+    background-color: &;
+  }
   .bg-\[201F24\] {
     background-color: 201F24;
   }
+  .bg-\[\@\!\] {
+    background-color: @!;
+  }
+  .bg-\[\@\] {
+    background-color: @;
+  }
   .bg-\[F8F4F0\] {
     background-color: F8F4F0;
+  }
+  .bg-\[\^\] {
+    background-color: ^;
   }
   .bg-\[c\] {
     background-color: c;
@@ -1056,6 +1104,11 @@
   .xl\:flex {
     @media (width >= 80rem) {
       display: flex;
+    }
+  }
+  .xl\:grid {
+    @media (width >= 80rem) {
+      display: grid;
     }
   }
   .xl\:hidden {
