@@ -268,6 +268,9 @@
   .h-\[101\.76px\] {
     height: 101.76px;
   }
+  .h-\[114px\] {
+    height: 114px;
+  }
   .h-\[316\] {
     height: 316;
   }
@@ -442,6 +445,9 @@
   }
   .gap-3 {
     gap: calc(var(--spacing) * 3);
+  }
+  .gap-4 {
+    gap: calc(var(--spacing) * 4);
   }
   .gap-16 {
     gap: calc(var(--spacing) * 16);
@@ -651,6 +657,9 @@
   .text-\[20px\] {
     font-size: 20px;
   }
+  .text-\[24px\] {
+    font-size: 24px;
+  }
   .text-\[32px\] {
     font-size: 32px;
   }
@@ -709,6 +718,9 @@
   .text-\[\#201F24\] {
     color: #201F24;
   }
+  .text-\[\#696868\] {
+    color: #696868;
+  }
   .text-\[\#B3B3B3\] {
     color: #B3B3B3;
   }
@@ -717,6 +729,33 @@
   }
   .text-\[\#FFF\] {
     color: #FFF;
+  }
+  .text-\[\#\] {
+    color: #;
+  }
+  .text-\[\$\#\] {
+    color: $#;
+  }
+  .text-\[\$\] {
+    color: $;
+  }
+  .text-\[1\] {
+    color: 1;
+  }
+  .text-\[14\] {
+    color: 14;
+  }
+  .text-\[14p\] {
+    color: 14p;
+  }
+  .text-\[32\[\]\] {
+    color: 32[];
+  }
+  .text-\[32\] {
+    color: 32;
+  }
+  .text-\[32p\] {
+    color: 32p;
   }
   .capitalize {
     text-transform: capitalize;
