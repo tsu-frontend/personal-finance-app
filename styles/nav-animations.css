@@ -46,7 +46,6 @@
     transform: translateY(-20px);
   }
   50% {
-    opacity: 0.5;
     transform: translateY(10px);
   }
   100% {

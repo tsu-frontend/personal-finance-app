@@ -115,5 +115,24 @@
         </div>
       </div>
     </main>
+
+    <!-- modals -->
+    <div id="delete-modal" class="fixed inset-0 bg-[rgb(0,0,0,0.5)] hidden justify-center items-center">
+      <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+        <div class="w-full flex justify-between">
+          <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-[Public Sans] not-ital font-bold leading-[120%]">Delete ‘Savings’?</h1>
+          <button id="close-modal-button" class="hover:cursor-pointer w-[32px] h-[32px]">
+            <img src="../assets/images/icon-close-modal.svg" />
+          </button>
+        </div>
+        <p class="w-full text-[#696868] text-[14px] font-[Public Sans] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
+        <button id="del-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
+          <p class="text-[#FFF] text-[14px] font-[Public Sans] font-bold leading-[150%]">Yes, Confirm Deletion</p>
+        </button>
+        <button id="close-modal-button" class="hover:cursor-pointer w-full">
+          <p class="text-[#696868] text-[14px] font-[Public Sans] font-normal leading-[150%]">No, I want to go back</p>
+        </button>
+      </div>
+    </div>
   </body>
 </html>
