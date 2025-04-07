@@ -84,6 +84,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
     document.addEventListener("click", () => {
       document.querySelectorAll("#pot-options-modal").forEach((modal) => {
         if (!modal.classList.contains("hidden")) {
+          // animation
           modal.classList.add("animate-close");
           setTimeout(() => {
             modal.classList.add("hidden");
