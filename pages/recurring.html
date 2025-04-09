@@ -6,10 +6,12 @@
 
     <title>Recurring Bills</title>
     <link rel="icon" href="../assets/images/icon-nav-recurring-bills.svg" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/recurring.css">
     <link rel="stylesheet" href="../output.css" />
     <link rel="stylesheet" href="../styles/nav-animations.css" />
     <script type="module" src="../scripts/nav-animations.js" defer></script>
+    <script src="../scripts/recurring.js" defer></script>
   </head>
   <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
     <nav class="select-none h-[52px] w-[100vw] bg-[#201F24] rounded-tr-[8px] rounded-tl-[8px] pt-[8px] px-[16px] bottom-0 fixed flex flex-col md:h-[74px] md:px-[40px] xl:static xl:h-auto xl:w-[min(20.83%,300px)] xl:gap-[24px] xl:px-0 xl:pr-[24px] xl:rounded-tl-[0] xl:rounded-tr-[16px] xl:rounded-br-[16px] shrink-0 transition-all duration-300 ease">
@@ -69,8 +71,36 @@
       </div>
     </nav>
 
-    <main class="flex-1">
-      <!-- ####################### დაიწყე კოდის წერა აქ! ####################### -->
+    <main class="mx-[16px] flex-1 mt-[32px] md:mt-[32px] md:mx-[40px] xl:mt-[32px] xl:mx-[40px]">
+      <h1 class="text-[#201F24] text-[32px] font-sans font-bold mb-[40px]">Recurring Bills</h1>
+      <section class="md:flex md:gap-[24px] xl:flex-col gap-[24px]">
+      <div class="w-full h-[118px] bg-[#201F24] rounded-xl flex gap-[20px] md:h-[204px] md:p-6 md:flex-col md:flex xl:w-[337px] xl:h-[190px]">
+        <img src="../assets/images/icon-recurring-bills.svg" alt="" class="ml-[20px] w-[40px] md:m-0">
+        <div class="mt-[20px] w-full text-white font-sans">
+          <p class="mb-[11px] text-[14px] font-normal ">Total bills</p>
+          <h2 class="text-[32px] font-bold font-[Public Sans]">$384.98</h2>
+        </div>
+      </div>
+
+      <div class="bg-white w-full h-[204px] rounded-[12px] mt-[12px] p-[20px] md:mt-[0] xl:w-[337px]">
+        <h3 class="text-[16px] text-gray-900 font-bold">Summary</h3>
+        <div class="text-[12px] flex justify-between mb-[16px] mt-[20px]">
+          <p class="text-gray-500">Paid Bills</p>
+          <p class="text-gray-900 font-bold">2 ($320.00)</p>
+        </div>
+        <hr class="opacity-15">
+        <div class="text-[12px] flex justify-between my-[16px]">
+          <p class="text-gray-500">Total Upcoming</p>
+          <p class="text-gray-900 font-bold">6 ($1,230.00)</p>
+        </div>
+        <hr class="opacity-15">
+        <div class="text-[12px] flex justify-between mt-[16px]">
+          <p class="text-[#C94736]">Due Soon</p>
+          <p class="text-[#C94736] font-bold">2 ($40.00)</p>
+        </div>
+      </div>
+    </section>
+      
     </main>
   </body>
 </html>
