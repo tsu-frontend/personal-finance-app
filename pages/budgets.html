@@ -6,6 +6,9 @@
     <title>Budgets</title>
     <link rel="icon" href="../assets/images/icon-nav-budgets.svg" />
     <link rel="stylesheet" href="../output.css" />
+    <script src="../scripts/budgets.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
    
@@ -63,10 +66,15 @@
       </section>
 
        <section class="flex mt-9 gap-6  h-auto">
-        <aside id="scheme" class="flex flex-col p-8 pb-0 w-[428px] gap-8 bg-[white] rounded-sm">
+        <aside id="scheme" class="flex flex-col p-8 pb-0 w-[428px] gap-8 bg-[white] rounded-[12px]">
 <!-- cyrcle -->
-          <div id="cyrcle" class="w-[364px] h-[280px] bg-blue-500"></div>
-
+          <div class="relative h-[300px] w-[300px] flex justify-center items-center m-auto">
+             <canvas id="doughnut" class=""></canvas>
+             <div class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col">
+              <span class="font-bold text-[32px]">$338</span>
+              <span class='text-[12px] text-[#696868]'>of $975 limit</span>
+             </div>
+          </div>
           <div id="spending_summary">
           <h3 class="text-xl font-semibold tracking-[0.01em]">Spending Summary</h3>
 <!-- each part of summary -->
@@ -87,9 +95,9 @@
           </div>
         </aside>
 <!-- budgets -->
-        <aside id="budgets" class="w-[610px] bg-[#9d7c7c] flex flex-col">
+        <aside id="budgets" class="w-[610px] flex flex-col">
 <!--each budget box goes here -->
-           <article data-name="budget" class="w-[608px] h-[510px] p-8 bg-[white] rounded-lg">
+           <article data-name="budget" class="w-[608px] h-[510px] p-8 bg-[white] rounded-[12px]">
             <div data-name="budget_heading" class="flex items-center">
               <figure class="w-4 h-4 rounded-4xl bg-[#277C78] mr-4"></figure>
               <h5 class="font-semibold text-xl mr-[357px]">Entertainment</h5>
