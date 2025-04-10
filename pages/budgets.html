@@ -7,7 +7,7 @@
     <title>Budgets</title>
     <link rel="icon" href="../assets/images/icon-nav-budgets.svg" />
 
-    <link rel="stylesheet" href="../output.css" />
+    <link rel="stylesheet" href="../styles/budgets.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
 
     <script type="module" src="../scripts/budgets.js" defer></script>
@@ -72,53 +72,45 @@
       </div>
     </nav>
 
-
     <main class="flex-1 p-9 box-border">
-<!-- heading -->
+      <!-- heading -->
       <section class="w-full flex justify-between">
         <h2 class="text-[27px] font-semibold">Budgets</h2>
         <button id="add_btn" class="bg-[#201F24] text-[white] text-[15px] w-40 h-14 rounded-md">+ Add New Budget</button>
       </section>
 
-       <section class="flex mt-9 gap-6  h-auto items-start">
+      <section class="flex mt-9 gap-6 h-auto items-start">
         <aside id="scheme" class="flex flex-col items-center p-8 h-auto pb-0 w-[428px] gap-8 bg-[white] rounded-[12px]">
-<!-- cyrcle -->
+          <!-- cyrcle -->
           <div class="relative h-[300px] w-[300px] flex justify-center items-center">
-             <canvas id="doughnut" class=""></canvas>
-             <div class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col">
+            <canvas id="doughnut" class=""></canvas>
+            <div class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col">
               <span class="font-bold text-[32px]">$338</span>
-              <span class='text-[12px] text-[#696868]'>of $975 limit</span>
-             </div>
+              <span class="text-[12px] text-[#696868]">of $975 limit</span>
+            </div>
           </div>
           <div id="spending_summary">
-          <h3 class="text-xl font-semibold tracking-[0.01em]">Spending Summary</h3>
-<!-- each part of summary -->
-          <div id="spending_summary" class="mt-6">
-
-            <article class="flex flex-col w-[364px]">
-            <div data-name="container" class="flex ">
-              <figure data-name="color_at_start" class="bg-[#277C78] w-1 h-[22px] mr-3 rounded-md"></figure>
-              <h4 class="text-[#696868] mr-[124px]">Entertainment</h4>
-              <p data-name="spent" class="mr-2 text-sm">$15.00</p>
-              <p data-name="remaining" class="text-[#696868] flex text-[12px] items-center">of $<span>50.00</span></p>
+            <h3 class="text-xl font-semibold tracking-[0.01em]">Spending Summary</h3>
+            <!-- each part of summary -->
+            <div id="spending_summary" class="mt-6">
+              <article class="flex flex-col w-[364px]">
+                <div data-name="container" class="flex">
+                  <figure data-name="color_at_start" class="bg-[#277C78] w-1 h-[22px] mr-3 rounded-md"></figure>
+                  <h4 class="text-[#696868] mr-[124px]">Entertainment</h4>
+                  <p data-name="spent" class="mr-2 text-sm">$15.00</p>
+                  <p data-name="remaining" class="text-[#696868] flex text-[12px] items-center">of $<span>50.00</span></p>
+                </div>
+                <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-4"></figure>
+              </article>
             </div>
-            <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-4"></figure>
-            </article>
-
-
-          </div>
           </div>
         </aside>
-<!-- budgets -->
-
+        <!-- budgets -->
 
         <aside id="budgets_parent" class="w-[610px] flex flex-col">
-
-<!--each budget box goes here -->   
-
+          <!--each budget box goes here -->
         </aside>
-       </section>
-
+      </section>
     </main>
   </body>
 </html>
