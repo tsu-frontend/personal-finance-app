@@ -14,7 +14,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
             <p data-name="pot-name" class="text-[#201F24] font-[Public Sans] text-[20px] font-bold leading-[120%]">${pot.name}</p>
             <div data-name="pot-options" class="ml-auto hover:cursor-pointer relative">
               <img src="../assets/images/icon-ellipsis.svg" class="w-[16px] h-[16px]" />
-              <div data-type="modal" data-name="pot-options-modal" class="animate-open hover:cursor-default hidden absolute right-0 top-[36px] w-[114px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+              <div data-name="pot-options-modal" class="animate-open hover:cursor-default hidden absolute right-0 top-[36px] w-[114px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                 <button data-name="edit-pot" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%]">Edit Pot</button>
                 <div class="w-full h-[1px] bg-[#F2F2F2]"></div>
                 <button data-name="delete-pot" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%]">Delete Pot</button>
@@ -74,24 +74,17 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
     });
 
     // close on outside click but not if on modal
-    allModals.forEach((modal) => {
-      document.addEventListener("click", (e) => {
-        if (!btn.contains(e.target) && !optionsModal.contains(e.target) && modal.contains(e.target)) {
-          if (!optionsModal.classList.contains("hidden")) {
-            optionsModal.classList.add("animate-close");
-            setTimeout(() => {
-              optionsModal.classList.add("hidden");
-              optionsModal.classList.remove("flex", "animate-close");
-            }, 100);
-          }
+    document.addEventListener("click", (e) => {
+      if (!btn.contains(e.target) && !optionsModal.contains(e.target)) {
+        if (!optionsModal.classList.contains("hidden")) {
+          optionsModal.classList.add("animate-close");
+          setTimeout(() => {
+            optionsModal.classList.add("hidden");
+            optionsModal.classList.remove("flex", "animate-close");
+          }, 100);
         }
-      });
+      }
     });
-    // if (!btn.contains(e.target) && !optionsModal.contains(e.target)) {
-    // }
-
-    // if (!btn.contains(e.target) && !optionsModal.contains(e.target) && !Array.from(allModals).some((modal) => modal.contains(e.target))) {
-    // }
 
     // dont close optionsModal if clicked inside
     optionsModal.addEventListener("click", (e) => {
@@ -100,22 +93,57 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
   });
 
   // toggle delete modal
+  const delModal = document.querySelector("#delete-modal");
   document.querySelectorAll('[data-name="delete-pot"]').forEach((btn) => {
-    const deleteModal = document.querySelector("#delete-modal");
-
     btn.addEventListener("click", () => {
-      deleteModal.classList.remove("hidden");
-      deleteModal.classList.toggle("flex");
+      // close all open options modals
+      document.querySelectorAll('[data-name="pot-options-modal"]').forEach((modal) => {
+        if (!modal.classList.contains("hidden")) {
+          modal.classList.add("animate-close");
+          setTimeout(() => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex", "animate-close");
+          }, 100);
+        }
+      });
+      // show delete modal
+      delModal.classList.remove("hidden");
+      delModal.classList.add("flex");
+    });
+  });
+
+  // delete close buttons
+  document.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
+    btn.addEventListener("click", () => {
+      delModal.classList.add("hidden");
+      delModal.classList.remove("flex");
     });
   });
 
   // toggle edit modal
+  const editModal = document.querySelector("#edit-modal");
   document.querySelectorAll('[data-name="edit-pot"]').forEach((btn) => {
-    const editModal = document.querySelector("#edit-modal");
-
     btn.addEventListener("click", () => {
+      // close all open options modals
+      document.querySelectorAll('[data-name="pot-options-modal"]').forEach((modal) => {
+        if (!modal.classList.contains("hidden")) {
+          modal.classList.add("animate-close");
+          setTimeout(() => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex", "animate-close");
+          }, 100);
+        }
+      });
+      // show edit modal
       editModal.classList.remove("hidden");
-      editModal.classList.toggle("flex");
+      editModal.classList.add("flex");
+    });
+  });
+  // edit close buttons
+  document.querySelectorAll('[data-name="edit-close-button"]').forEach((btn) => {
+    btn.addEventListener("click", () => {
+      editModal.classList.add("hidden");
+      editModal.classList.remove("flex");
     });
   });
 };
