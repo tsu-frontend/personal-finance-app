@@ -408,6 +408,9 @@
   .items-center {
     align-items: center;
   }
+  .items-start {
+    align-items: flex-start;
+  }
   .justify-between {
     justify-content: space-between;
   }
@@ -493,6 +496,9 @@
   }
   .bg-\[\#ffffff38\] {
     background-color: #ffffff38;
+  }
+  .bg-\[red\] {
+    background-color: red;
   }
   .bg-\[white\] {
     background-color: white;
