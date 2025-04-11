@@ -164,6 +164,9 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       const getTarget = pot.querySelector('[data-name="pot-target"]').textContent;
       const filerTarget = getTarget.replace(/[^0-9.]/g, "");
       const potTarget = parseFloat(filerTarget).toFixed(2);
+      // declaring pot theme
+      const getTheme = pot.querySelector('[data-name="pot-theme"]');
+      const potTheme = getComputedStyle(getTheme).backgroundColor;
 
       // append edit modal
       pot.insertAdjacentHTML(
@@ -201,7 +204,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
                   <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#277C78]"></span>
+                    <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: ${potTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">Green</p>
                   </div>
                 </div>
