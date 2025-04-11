@@ -118,7 +118,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
                </button>
              </div>
              <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
-             <button id="del-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
+             <button data-name="delete-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
                <p class="text-[#FFF] text-[14px] font-bold leading-[150%]">Yes, Confirm Deletion</p>
              </button>
              <button data-name="delete-close-button" class="hover:cursor-pointer w-full">
@@ -134,6 +134,12 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
         btn.addEventListener("click", () => {
           pot.querySelector("#delete-modal").remove();
         });
+      });
+
+      // delete pot conform button
+      const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
+      delConfirmBtn.addEventListener("click", () => {
+        pot.remove();
       });
     });
 
