@@ -31,7 +31,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
               <div data-name="bar-percentage" class="h-full rounded-[4px]" style="background-color: ${pot.theme}; width: ${(pot.total / pot.target) * 100}%"></div>
             </div>
             <p class="text-[#696868] text-[12px] font-[Public Sans] font-bold leading-[150%]">${((pot.total / pot.target) * 100).toFixed(2)}%</p>
-            <p class="text-[#696868] text-[12px] font-[Public Sans] font-normal leading-[150%]">Target of $${pot.target.toLocaleString()}</p>
+            <p data-name="pot-target" class="text-[#696868] text-[12px] font-[Public Sans] font-normal leading-[150%]">Target of $${pot.target.toLocaleString()}</p>
           </div>
           <div data-name="pot-actions" class="w-full flex gap-[16px]">
             <div data-name="add-money" class="select-none border-1 border-transparent hover:border-[#98908B] hover:bg-[#FFF] hover:cursor-pointer transition-all duration-300 ease bg-[#F8F4F0] rounded-[8px] p-[16px] flex justify-center items-center flex-1">
@@ -90,6 +90,9 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       e.stopPropagation();
     });
 
+    // const numStr = potTarget.replace(/[^0-9.]/g, "");
+    // const result = parseFloat(numStr).toFixed(2);
+
     // toggle delete modal
     const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
     deleteButton.addEventListener("click", () => {
@@ -102,32 +105,44 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
         }, 100);
       }
 
+      // declaring pot name
+      const potName = pot.querySelector('[data-name="pot-name"]').textContent;
+
       // append delete modal
-      document.body.innerHTML += `
-        <div id="delete-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-          <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-            <div class="w-full flex justify-between">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Delete ‘Savings’?</h1>
-              <button data-name="delete-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
-                <img src="../assets/images/icon-close-modal.svg" />
-              </button>
-            </div>
-            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
-            <button id="del-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
-              <p class="text-[#FFF] text-[14px] font-bold leading-[150%]">Yes, Confirm Deletion</p>
-            </button>
-            <button data-name="delete-close-button" class="hover:cursor-pointer w-full">
-              <p class="text-[#696868] text-[14px] font-normal leading-[150%]">No, I want to go back</p>
-            </button>
-          </div>
-        </div>
-      `;
+      pot.insertAdjacentHTML(
+        "beforeend",
+        `
+         <div id="delete-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+           <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+             <div class="w-full flex justify-between">
+               <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Delete ‘${potName}’?</h1>
+               <button data-name="delete-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
+                 <img src="../assets/images/icon-close-modal.svg" />
+               </button>
+             </div>
+             <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
+             <button data-name="delete-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
+               <p class="text-[#FFF] text-[14px] font-bold leading-[150%]">Yes, Confirm Deletion</p>
+             </button>
+             <button data-name="delete-close-button" class="hover:cursor-pointer w-full">
+               <p class="text-[#696868] text-[14px] font-normal leading-[150%]">No, I want to go back</p>
+             </button>
+           </div>
+         </div>
+        `
+      );
+
       // delete close buttons
-      document.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
+      pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
         btn.addEventListener("click", () => {
-          console.log("clicked");
-          document.querySelector("#delete-modal").remove();
+          pot.querySelector("#delete-modal").remove();
         });
+      });
+
+      // delete pot conform button
+      const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
+      delConfirmBtn.addEventListener("click", () => {
+        pot.remove();
       });
     });
 
@@ -143,25 +158,70 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
         }, 100);
       }
 
+      // declaring pot name
+      const potName = pot.querySelector('[data-name="pot-name"]').textContent;
+      // declaring pot target
+      const getTarget = pot.querySelector('[data-name="pot-target"]').textContent;
+      const filerTarget = getTarget.replace(/[^0-9.]/g, "");
+      const potTarget = parseFloat(filerTarget).toFixed(2);
+      // declaring pot theme
+      const getTheme = pot.querySelector('[data-name="pot-theme"]');
+      const potTheme = getComputedStyle(getTheme).backgroundColor;
+
       // append edit modal
-      document.body.innerHTML += `
-        <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-          <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-            <div class="w-full flex justify-between">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
-              <button data-name="edit-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
-                <img src="../assets/images/icon-close-modal.svg" />
-              </button>
+      pot.insertAdjacentHTML(
+        "beforeend",
+        `
+          <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+            <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+              <div class="w-full flex justify-between">
+                <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
+                <button data-name="edit-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
+                  <img src="../assets/images/icon-close-modal.svg" />
+                </button>
+              </div>
+              <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
+              <div class="w-full flex flex-col gap-[16px]">
+                <!-- 1 -->
+                <div class="w-full flex flex-col gap-[4px]">
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+                  <div type="text" class="w-full px-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
+                    <input type="text" class="w-full focus:outline-none" value="${potName}" />
+                  </div>
+                  <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
+                </div>
+
+                <!-- 2 -->
+                <div class="w-full flex flex-col gap-[4px]">
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
+                  <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                    <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
+                    <input type="text" class="w-full focus:outline-none" value="${potTarget}" />
+                  </div>
+                </div>
+
+                <!-- 3 -->
+                <div class="w-full flex flex-col gap-[4px]">
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
+                  <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                    <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: ${potTheme}"></span>
+                    <p class="text-[#201F24] text-[14px] font-normal">Green</p>
+                  </div>
+                </div>
+
+                <!-- btn -->
+                <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+                  <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
+                </button>
+              </div>
             </div>
-            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
           </div>
-        </div>
-      `;
+       `
+      );
       // edit close buttons
-      document.querySelectorAll('[data-name="edit-close-button"]').forEach((btn) => {
+      pot.querySelectorAll('[data-name="edit-close-button"]').forEach((btn) => {
         btn.addEventListener("click", () => {
-          console.log("clicked");
-          document.querySelector("#edit-modal").remove();
+          pot.querySelector("#edit-modal").remove();
         });
       });
     });
