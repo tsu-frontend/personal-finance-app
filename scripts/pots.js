@@ -112,7 +112,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       pot.insertAdjacentHTML(
         "beforeend",
         `
-         <div id="delete-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+         <div id="delete-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
            <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
              <div class="w-full flex justify-between">
                <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Delete ‘${potName}’?</h1>
@@ -135,14 +135,37 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       // delete close buttons
       pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
         btn.addEventListener("click", () => {
-          pot.querySelector("#delete-modal").remove();
+          const deleteModal = pot.querySelector("#delete-modal");
+          // animation
+          deleteModal.classList.add("animate-fade-out");
+          setTimeout(() => {
+            deleteModal.remove();
+          }, 200);
         });
       });
 
-      // delete pot conform button
+      // delete pot confirm button
       const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
       delConfirmBtn.addEventListener("click", () => {
-        pot.remove();
+        const deleteModal = pot.querySelector("#delete-modal");
+        // animation
+        deleteModal.classList.add("animate-fade-out");
+        setTimeout(() => {
+          deleteModal.remove();
+
+          // capture pot position and size, position it absolutely
+          const rect = pot.getBoundingClientRect();
+          pot.style.position = "absolute";
+          pot.style.left = `${rect.left}px`;
+          pot.style.top = `${rect.top}px`;
+          pot.style.width = `${rect.width}px`;
+
+          // pop animation
+          pot.classList.add("animate-pop-out");
+          setTimeout(() => {
+            pot.remove();
+          }, 2000);
+        }, 200);
       });
     });
 
@@ -172,7 +195,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       pot.insertAdjacentHTML(
         "beforeend",
         `
-          <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+          <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
             <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
@@ -218,11 +241,15 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
           </div>
        `
       );
-      // edit close buttons
-      pot.querySelectorAll('[data-name="edit-close-button"]').forEach((btn) => {
-        btn.addEventListener("click", () => {
-          pot.querySelector("#edit-modal").remove();
-        });
+      // edit close button
+      const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
+      editCloseBtn.addEventListener("click", () => {
+        const editModal = pot.querySelector("#edit-modal");
+        // animation
+        editModal.classList.add("animate-fade-out");
+        setTimeout(() => {
+          editModal.remove();
+        }, 200);
       });
     });
   });
