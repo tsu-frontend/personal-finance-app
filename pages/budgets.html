@@ -106,30 +106,36 @@
        </section>
       </main>
 <!-- modals  -->
-    <section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0 flex justify-center items-center">
-      <form class="w-[560px] h-[490px] bg-white rounded-xl">
-        <aside> 
-          <h4>Add New Budget</h4>
+    
+<section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0 flex justify-center items-center">
+<!-- white modal box -->
+      <div class="w-[560px] h-[490px] bg-white rounded-xl p-8 gap-5 flex flex-col">
+        <aside class="flex justify-between"> 
+          <h4 class="text-[32px] font-bold">Add New Budget</h4>
           <img src="../assets/images/icon-close-modal.svg" alt="">
         </aside>
 
-          <article>
+          <article class="text-sm text-[#696868] leading-[150%]">
           Choose a category to set a spending budget. 
           These categories can help you monitor spending.
           </article>
-        <aside>
 
-          <p>Budget Category</p>
-          <div id="category_dropdown">
-            <p>Entertainment</p>
+<!-- form element -->
+      <form class="w-[496px] h-[306px]">
+          <p class="text-xs font-bold text-[#696868]">Budget Category</p>
+
+          <div id="category_dropdown" class="mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+            <p class="text-sm text-[#201F24]">Entertainment</p>
             <img src="../assets/images/icon-caret-down.svg" alt="">
           </div>
-
-          <label for="max">Maximum Spend</label>
-          <input type="text" name="max" placeholder="$ e.g. 2000">
           
-          <p>Theme</p>
-          <div id="category_dropdown">
+        <div class="mb-4">
+          <label for="max" class="text-xs font-bold text-[#696868]">Maximum Spend</label>
+          <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] border-[#98908B] rounded-lg border-[1px] pl-5">
+        </div>
+
+          <p class="text-xs font-bold text-[#696868]">Theme</p> 
+          <div id="theme_dropdown" class="mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
               <div>
                 <figure></figure>
                 <p>Entertainment</p>
@@ -138,9 +144,11 @@
           </div>
 
           <button></button>
-        </aside>
-        
+
       </form>
+      </div>
+
+
     </section>
   </body>
 </html>
