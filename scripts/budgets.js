@@ -29,26 +29,61 @@
     const response = await fetch('../data.json')
     const data = await response.json() 
     const budgets = data.budgets 
+
     console.log(budgets)
+    
+
     let parentEle = document.querySelector('#budgets_parent')
+    let spendingSummary = document.querySelector('#spending_summary') 
+    let totalSum = document.querySelector('#total_sum')
+    let spentSum = document.querySelector('#spent_sum')
 
      budgets.forEach(object => {
       const {category, maximum, theme} = object
+
+      let SUM = 0
+      for(let i = 0; i < budgets.length; i++){
+          SUM += budgets[i].maximum
+      }
+
+      totalSum.textContent = `of $${SUM} limit`
+
+      let summaryBox = `
+      <div id="spending_summary" class="mt-6">
+
+            <article class="flex flex-col w-[364px]">
+            <div data-name="container" class="flex justify-between">
+            <div class='flex'>
+              <figure class="bg-[${theme}] w-1 h-[22px] mr-3 rounded-md"></figure>
+              <h4 class="text-[#696868]">${category}</h4>
+            </div>
+              <div class='flex'>
+              <p class="mr-2 text-sm font-bold">$15.00</p>
+              <p class="text-[#696868] text-[12px]">of $<span>${maximum}.00</span></p>
+            </div>
+            </div>
+            <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-3"></figure>
+            </article>
+
+
+      </div>`
+
+
       
-      let budgetBox = ` <article data-name="budget" class="w-[608px] h-[510px] p-8 bg-[white] rounded-[12px]">
+      let budgetBox = ` <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
             <div data-name="budget_heading" class="flex items-center">
-              <figure class="w-4 h-4 rounded-4xl bg-[#277C78] mr-4"></figure>
-              <h5 class="font-semibold text-xl mr-[357px]">Entertainment</h5>
-              <figure data-name="three_dots" class="text-2xl tracking-[-0.06em] text-[#B3B3B3] pb-2">...</figure>
+              <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
+              <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
+              <figure data-name="three_dots" class="text-2xl tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto">...</figure>
             </div>
 
-            <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of $50.00</div>
+            <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of ${maximum}.00$</div>
            <div data-name="line" class="w-[544px] h-8 bg-[#F8F4F0] rounded-sm  mb-5" ></div>
 
           <div data-name="spent_remaining" class="flex gap-[210px]">
 
             <div class="flex">
-              <figure data-name="color_changing" class="w-[5px] h-[43px] mr-4 bg-[#277C78] rounded-lg"></figure>
+              <figure class="w-[5px] h-[43px] mr-4 bg-[${theme}] rounded-lg"></figure>
               <div data-name="spent">
                 <span class="text-[#696868]">Spent</span>
                 <p class="font-semibold pt-1.5">$15.00</p>
@@ -66,63 +101,53 @@
           </div>
 
 <!-- latest spending -->
-           <section class="flex flex-col mt-5 p-4 pb-1 bg-[#F8F4F0] rounded-md gap-4">
+           <section data-name='parent_spendings' class="flex flex-col mt-5 p-5 pb-1 bg-[#F8F4F0] h-[250px] rounded-[12px] gap-4">
 
           <div class="flex justify-between">
             <h6 class="font-semibold">Latest Spending</h6>
             <div class="flex gap-3">
-              <div class="text-[#696868]">See All</div>
+              <div class="text-[#696868] text-[16px]">See All</div>
               <img src="../assets/images/icon-caret-right.svg" alt="">
             </div>
           </div>
-
-          <article>
-            <div class="flex justify-between">
-              <div class="flex items-center">
-              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
-              <p class="text-sm font-semibold">Spark Electric Solutions</p>
-              </div>
-              <aside>
-                <div class="font-semibold text-sm">-$100.00</div>
-                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
-              </aside>
-            </div>
-            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
-          </article>
-
-          <article>
-            <div class="flex justify-between">
-              <div class="flex items-center">
-              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
-              <p class="text-sm font-semibold">Spark Electric Solutions</p>
-              </div>
-              <aside>
-                <div class="font-semibold text-sm">-$100.00</div>
-                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
-              </aside>
-            </div>
-            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
-          </article>
-
-          <article>
-            <div class="flex justify-between">
-              <div class="flex items-center">
-              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
-              <p class="text-sm font-semibold">Spark Electric Solutions</p>
-              </div>
-              <aside>
-                <div class="font-semibold text-sm">-$100.00</div>
-                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
-              </aside>
-            </div>
-            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
-          </article>
 
            </section>
            </article>`
 
            parentEle.innerHTML += budgetBox
+           spendingSummary.innerHTML += summaryBox
+
+          //  oneSpending.innerHTML = lastSpending
+
+    //         for(let i = 0; i < 3; i++){
+    //            oneSpending.forEach(parent =>{
+    //             parent.innerHTML += lastSpending
+    //  }
+    // )};
+
      });
+     let lastSpending = `         
+     <article>
+            <div class="flex justify-between">
+              <div class="flex items-center">
+              <img src="../assets/images/Ellipse 13.png" class="mr-4" alt="">
+              <p class="text-sm font-semibold">Spark Electric Solutions</p>
+              </div>
+              <aside>
+                <div class="font-semibold text-sm">-$100.00</div>
+                <span class="text-[#696868] flex text-[12px]">2 Aug 2024</span>
+              </aside>
+            </div>
+            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
+    </article>`
+
+
+     let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]')
+     oneSpending.forEach(parent => {
+                  for(let i = 0; i < 3; i++){
+                parent.innerHTML += lastSpending
+     }
+     })
 
 
   }

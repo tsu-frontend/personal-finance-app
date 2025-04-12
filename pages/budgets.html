@@ -7,9 +7,9 @@
     <title>Budgets</title>
     <link rel="icon" href="../assets/images/icon-nav-budgets.svg" />
 
-    <link rel="stylesheet" href="../output.css" />
+    <link rel="stylesheet" href="../styles/budgets.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
-
+ 
     <script type="module" src="../scripts/budgets.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script type="module" src="../scripts/all-pages.js" defer></script>
@@ -73,7 +73,7 @@
     </nav>
 
 
-    <main class="flex-1 p-9 box-border">
+    <main class="flex-1 p-9 box-border relative">
 <!-- heading -->
       <section class="w-full flex justify-between">
         <h2 class="text-[27px] font-semibold">Budgets</h2>
@@ -84,41 +84,28 @@
         <aside id="scheme" class="flex flex-col items-center p-8 h-auto pb-0 w-[428px] gap-8 bg-[white] rounded-[12px]">
 <!-- cyrcle -->
           <div class="relative h-[300px] w-[300px] flex justify-center items-center">
-             <canvas id="doughnut" class=""></canvas>
+             <canvas id="doughnut"></canvas>
              <div class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col">
-              <span class="font-bold text-[32px]">$338</span>
-              <span class='text-[12px] text-[#696868]'>of $975 limit</span>
+              <span id="spent_sum" class="font-bold text-[32px]">$338</span>
+              <span id="total_sum" class='text-[12px] text-[#696868]'></span>
              </div>
           </div>
           <div id="spending_summary">
           <h3 class="text-xl font-semibold tracking-[0.01em]">Spending Summary</h3>
 <!-- each part of summary -->
-          <div id="spending_summary" class="mt-6">
-
-            <article class="flex flex-col w-[364px]">
-            <div data-name="container" class="flex ">
-              <figure data-name="color_at_start" class="bg-[#277C78] w-1 h-[22px] mr-3 rounded-md"></figure>
-              <h4 class="text-[#696868] mr-[124px]">Entertainment</h4>
-              <p data-name="spent" class="mr-2 text-sm">$15.00</p>
-              <p data-name="remaining" class="text-[#696868] flex text-[12px] items-center">of $<span>50.00</span></p>
-            </div>
-            <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-4"></figure>
-            </article>
-
-
-          </div>
+          
           </div>
         </aside>
 <!-- budgets -->
 
-
-        <aside id="budgets_parent" class="w-[610px] flex flex-col">
+        <aside id="budgets_parent" class="w-[610px] flex flex-col gap-6">
 
 <!--each budget box goes here -->   
 
         </aside>
        </section>
-
-    </main>
+      </main>
+<!-- modals  -->
+    <section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0"></section>
   </body>
 </html>
