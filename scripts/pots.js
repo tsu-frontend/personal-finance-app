@@ -1,4 +1,4 @@
-const hereWeGoWithAnotherFetchAttempt = async () => {
+const runTheShow = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
 
@@ -8,7 +8,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
   // append each pot to the pots container
   pots.forEach((pot) => {
     potsContainer.innerHTML += `
-      <div data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
+      <div data-title="${pot.name}" data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
         <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
           <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-[50%]" style="background-color: ${pot.theme}"></div>
           <p data-name="pot-name" class="text-[#201F24] font-[Public Sans] text-[20px] font-bold leading-[120%]">${pot.name}</p>
@@ -51,6 +51,31 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
     const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
 
+    // get pot name and find the corresponding data from the pots array
+    let potName = pot.getAttribute("data-title");
+    const potData = pots.find((item) => item.name === potName);
+
+    // declare pot theme colors
+    const green = "#277C78";
+    const yellow = "#F2CDAC";
+    const cyan = "#82C9D7";
+    const navy = "#626070";
+    const red = "#C94736";
+    const purple = "#826CB0";
+    const turquoise = "#597C7C";
+    const brown = "#93674F";
+    const magenta = "#934F6F";
+    const blue = "#3F82B2";
+    const navyGrey = "#97A0AC";
+    const armyGreen = "#7F9161";
+    const pink = "#826CB0";
+    const gold = "#CAB361";
+    const orange = "#BE6C49";
+
+    //   let target = potData.target;
+    //   let total = potData.total;
+    //   let theme = potData.theme;
+
     potOptions.addEventListener("click", () => {
       // close other modals
       document.querySelectorAll('[data-name="pot-options-modal"]').forEach((otherModal) => {
@@ -72,7 +97,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       }, 100);
     });
 
-    // close on outside click but not if on modal
+    // close on outside click
     document.addEventListener("click", (e) => {
       if (!potOptions.contains(e.target) && !optionsModal.contains(e.target)) {
         if (!optionsModal.classList.contains("hidden")) {
@@ -106,7 +131,7 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
       }
 
       // declaring pot name
-      const potName = pot.querySelector('[data-name="pot-name"]').textContent;
+      let potName = pot.getAttribute("data-title");
 
       // append delete modal
       pot.insertAdjacentHTML(
@@ -181,15 +206,10 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
         }, 100);
       }
 
-      // declaring pot name
-      const potName = pot.querySelector('[data-name="pot-name"]').textContent;
-      // declaring pot target
-      const getTarget = pot.querySelector('[data-name="pot-target"]').textContent;
-      const filerTarget = getTarget.replace(/[^0-9.]/g, "");
-      const potTarget = parseFloat(filerTarget).toFixed(2);
-      // declaring pot theme
-      const getTheme = pot.querySelector('[data-name="pot-theme"]');
-      const potTheme = getComputedStyle(getTheme).backgroundColor;
+      // declaring pot information
+      let potName = pot.getAttribute("data-title");
+      let potTarget = potData.target;
+      let potTheme = potData.theme;
 
       // append edit modal
       pot.insertAdjacentHTML(
@@ -205,7 +225,6 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
               </div>
               <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
               <div class="w-full flex flex-col gap-[16px]">
-                <!-- 1 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
                   <div type="text" class="w-full px-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
@@ -213,8 +232,6 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
                   </div>
                   <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
                 </div>
-
-                <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
                   <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
@@ -222,8 +239,6 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
                     <input type="text" class="w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
-
-                <!-- 3 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
                   <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
@@ -231,8 +246,6 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
                     <p class="text-[#201F24] text-[14px] font-normal">Green</p>
                   </div>
                 </div>
-
-                <!-- btn -->
                 <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
                   <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
                 </button>
@@ -258,4 +271,4 @@ const hereWeGoWithAnotherFetchAttempt = async () => {
 };
 
 // call fetch function
-hereWeGoWithAnotherFetchAttempt();
+runTheShow();
