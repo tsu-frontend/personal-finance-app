@@ -106,6 +106,41 @@
        </section>
       </main>
 <!-- modals  -->
-    <section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0"></section>
+    <section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0 flex justify-center items-center">
+      <form class="w-[560px] h-[490px] bg-white rounded-xl">
+        <aside> 
+          <h4>Add New Budget</h4>
+          <img src="../assets/images/icon-close-modal.svg" alt="">
+        </aside>
+
+          <article>
+          Choose a category to set a spending budget. 
+          These categories can help you monitor spending.
+          </article>
+        <aside>
+
+          <p>Budget Category</p>
+          <div id="category_dropdown">
+            <p>Entertainment</p>
+            <img src="../assets/images/icon-caret-down.svg" alt="">
+          </div>
+
+          <label for="max">Maximum Spend</label>
+          <input type="text" name="max" placeholder="$ e.g. 2000">
+          
+          <p>Theme</p>
+          <div id="category_dropdown">
+              <div>
+                <figure></figure>
+                <p>Entertainment</p>
+              </div>
+            <img src="../assets/images/icon-caret-down.svg" alt="">
+          </div>
+
+          <button></button>
+        </aside>
+        
+      </form>
+    </section>
   </body>
 </html>
