@@ -1,7 +1,8 @@
  const ctx = document.getElementById('doughnut');
- const themeDropdown = document.querySelector('#theme_dropdown')
+ const themeDropdownParent = document.querySelector('#theme_dropdown')
  const catDropdownParent = document.querySelector('#category_dropdown')
  const catDropdown = document.querySelector('#cat_dropdown')
+ const themeDropdown = document.querySelector('#col_dropdown')
 
 
 // cyrcle chart
@@ -29,14 +30,23 @@
 
 
 // dropdowns
-catDropdownParent.addEventListener('click', () =>{
-  if(catDropdown.classList.contains('hidden')){
-    catDropdown.classList.replace('hidden', 'flex')
-  }else{
-    catDropdown.classList.replace('flex', 'hidden')
-  }
-  
-})
+function dropDown(parent, child){
+  parent.addEventListener('click', () =>{
+    parent.classList.toggle('border-[#98908B]')
+
+    if(child.classList.contains('hidden')){
+
+      child.classList.replace('hidden', 'flex')
+    }else{
+      child.classList.replace('flex', 'hidden')
+    }
+  })
+}
+
+dropDown(catDropdownParent, catDropdown)
+dropDown(themeDropdownParent, themeDropdown)
+
+
 
 
 
