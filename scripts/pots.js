@@ -222,8 +222,8 @@ const runTheShow = async () => {
                 <!-- 1 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                  <div type="text" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
-                    <input type="text" class="w-full focus:outline-none" value="${potName}" />
+                  <div class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
+                   <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potName}" />
                   </div>
                   <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
                 </div>
@@ -232,7 +232,7 @@ const runTheShow = async () => {
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
                   <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input type="text" class="w-full focus:outline-none" value="${potTarget}" />
+                    <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
                 <!-- 3 -->
