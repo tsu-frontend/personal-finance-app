@@ -129,39 +129,143 @@
         </div>
         <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
         <div class="w-full flex flex-col gap-[16px]">
-          <!-- 1 -->
+          <!-- section 1 -->
           <div class="w-full flex flex-col gap-[4px]">
             <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-            <div type="text" class="w-full px-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
-              <input type="text" class="w-full focus:outline-none" />
+            <div type="text" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
+              <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" />
             </div>
             <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
           </div>
-
-          <!-- 2 -->
+          <!-- section 2 -->
           <div class="w-full flex flex-col gap-[4px]">
             <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-            <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+            <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
               <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-              <input type="text" class="w-full focus:outline-none" />
+              <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" />
             </div>
           </div>
-
-          <!-- 3 -->
+          <!-- section 3 -->
           <div class="w-full flex flex-col gap-[4px]">
             <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
-            <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+            <div data-name="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
               <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: red"></span>
               <p class="text-[#201F24] text-[14px] font-normal">Green</p>
               <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
+              <div id="theme-modal-wrapper" class="hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px] py-[12px] gap-[12px]">
+                  <!-- 1 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#277C78]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Green</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 2 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#F2CDAC]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Yellow</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 3 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#82C9D7]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Cyan</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 4 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#626070]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Navy</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 5 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#C94736]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Red</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 6 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#826CB0]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Purple</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 7 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#597C7C]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Turquoise</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 8 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#93674F]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Brown</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 9 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#934F6F]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Magenta</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 10 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#3F82B2]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Blue</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 11 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#97A0AC]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Navy Grey</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 12 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#7F9161]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Army Green</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 13 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#826CB0]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Pink</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 14 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#CAB361]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Gold</p>
+                  </div>
+
+                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                  <!-- 15 -->
+                  <div class="w-full h-[21px] flex gap-[12px] items-center">
+                    <span class="w-[16px] h-[16px] rounded-[50%] bg-[#BE6C49]"></span>
+                    <p class="text-[#201F24] text-[14px] leading-[150%]">Orange</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <!-- btn -->
-          <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-            <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
-          </button>
         </div>
+        <!-- btn -->
+        <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+          <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
+        </button>
       </div>
     </div>
   </body>

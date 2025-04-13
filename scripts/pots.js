@@ -8,7 +8,7 @@ const runTheShow = async () => {
   // append each pot to the pots container
   pots.forEach((pot) => {
     potsContainer.innerHTML += `
-      <div data-title="${pot.name}" data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
+      <div data-id="${pot.id}" data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
         <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
           <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-[50%]" style="background-color: ${pot.theme}"></div>
           <p data-name="pot-name" class="text-[#201F24] font-[Public Sans] text-[20px] font-bold leading-[120%]">${pot.name}</p>
@@ -52,10 +52,10 @@ const runTheShow = async () => {
     const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
 
     // get pot name and find the corresponding data from the pots array
-    let potName = pot.getAttribute("data-title");
-    const potData = pots.find((item) => item.name === potName);
+    let potId = pot.getAttribute("data-id");
+    const potData = pots.find((item) => item.id === potId);
 
-    // declare pot theme colors
+    // declaring pot theme colors
     const green = "#277C78";
     const yellow = "#F2CDAC";
     const cyan = "#82C9D7";
@@ -71,10 +71,6 @@ const runTheShow = async () => {
     const pink = "#826CB0";
     const gold = "#CAB361";
     const orange = "#BE6C49";
-
-    //   let target = potData.target;
-    //   let total = potData.total;
-    //   let theme = potData.theme;
 
     potOptions.addEventListener("click", () => {
       // close other modals
@@ -130,8 +126,11 @@ const runTheShow = async () => {
         }, 100);
       }
 
+      // stop page scrolling in the background
+      document.body.classList.add("overflow-hidden");
+
       // declaring pot name
-      let potName = pot.getAttribute("data-title");
+      let potName = potData.name;
 
       // append delete modal
       pot.insertAdjacentHTML(
@@ -165,6 +164,9 @@ const runTheShow = async () => {
           deleteModal.classList.add("animate-fade-out");
           setTimeout(() => {
             deleteModal.remove();
+
+            // resume page scrolling
+            document.body.classList.remove("overflow-hidden");
           }, 200);
         });
       });
@@ -206,8 +208,11 @@ const runTheShow = async () => {
         }, 100);
       }
 
+      // stop page scrolling in the background
+      document.body.classList.add("overflow-hidden");
+
       // declaring pot information
-      let potName = pot.getAttribute("data-title");
+      let potName = potData.name;
       let potTarget = potData.target;
       let potTheme = potData.theme;
 
@@ -215,7 +220,7 @@ const runTheShow = async () => {
       pot.insertAdjacentHTML(
         "beforeend",
         `
-          <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+          <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
             <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
@@ -225,44 +230,184 @@ const runTheShow = async () => {
               </div>
               <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
               <div class="w-full flex flex-col gap-[16px]">
+                <!-- 1 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                  <div type="text" class="w-full px-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
+                  <div type="text" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
                     <input type="text" class="w-full focus:outline-none" value="${potName}" />
                   </div>
                   <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
                 </div>
+                <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                  <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
                     <input type="text" class="w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
+                <!-- 3 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
-                  <div class="w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div data-name="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: ${potTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">Green</p>
+                    <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
+                    <div id="theme-modal-wrapper" class="hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                      <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px] py-[12px] gap-[12px]">
+                        <!-- 1 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#277C78]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Green</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 2 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#F2CDAC]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Yellow</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 3 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#82C9D7]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Cyan</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 4 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#626070]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Navy</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 5 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#C94736]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Red</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 6 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#826CB0]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Purple</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 7 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#597C7C]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Turquoise</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 8 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#93674F]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Brown</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 9 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#934F6F]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Magenta</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 10 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#3F82B2]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Blue</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 11 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#97A0AC]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Navy Grey</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 12 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#7F9161]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Army Green</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 13 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#826CB0]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Pink</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 14 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#CAB361]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Gold</p>
+                        </div>
+            
+                        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+                        <!-- 15 -->
+                        <div class="w-full h-[21px] flex gap-[12px] items-center">
+                          <span class="w-[16px] h-[16px] rounded-[50%] bg-[#BE6C49]"></span>
+                          <p class="text-[#201F24] text-[14px] leading-[150%]">Orange</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-                  <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
-                </button>
               </div>
+              <!-- btn -->
+              <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+                <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
+              </button>
             </div>
           </div>
        `
       );
-      // edit close button
+
+      const editModal = pot.querySelector("#edit-modal");
       const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
+
+      // edit close button
       editCloseBtn.addEventListener("click", () => {
-        const editModal = pot.querySelector("#edit-modal");
         // animation
         editModal.classList.add("animate-fade-out");
         setTimeout(() => {
           editModal.remove();
+
+          // resume page scrolling
+          document.body.classList.remove("overflow-hidden");
         }, 200);
+      });
+
+      const themeButton = editModal.querySelector('[data-name="theme-button"]');
+      const themeModal = editModal.querySelector("#theme-modal-wrapper");
+
+      // toggle themes modal
+      themeButton.addEventListener("click", () => {
+        themeModal.classList.toggle("hidden");
+        themeModal.classList.toggle("flex");
+      });
+
+      // close on outside click
+      document.addEventListener("click", (e) => {
+        if (!editModal.contains(e.target) && !themeModal.contains(e.target)) {
+          if (!themeModal.classList.contains("hidden")) {
+            themeModal.classList.toggle("hidden", "flex");
+          }
+        }
+      });
+
+      // dont close themeModal if clicked inside
+      themeModal.addEventListener("click", (e) => {
+        e.stopPropagation();
       });
     });
   });
