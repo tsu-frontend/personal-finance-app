@@ -56,34 +56,24 @@ const runTheShow = async () => {
     const potData = pots.find((item) => item.id === potId);
 
     // declaring pot theme colors
-    const green = "#277C78";
-    const yellow = "#F2CDAC";
-    const cyan = "#82C9D7";
-    const navy = "#626070";
-    const red = "#C94736";
-    const purple = "#826CB0";
-    const turquoise = "#597C7C";
-    const brown = "#93674F";
-    const magenta = "#934F6F";
-    const blue = "#3F82B2";
-    const navyGrey = "#97A0AC";
-    const armyGreen = "#7F9161";
-    const pink = "#826CB0";
-    const gold = "#CAB361";
-    const orange = "#BE6C49";
+    const colors = {
+      "#277C78": "Green",
+      "#F2CDAC": "Yellow",
+      "#82C9D7": "Cyan",
+      "#626070": "Navy",
+      "#C94736": "Red",
+      "#826CB0": "Purple",
+      "#597C7C": "Turquoise",
+      "#93674F": "Brown",
+      "#934F6F": "Magenta",
+      "#3F82B2": "Blue",
+      "#97A0AC": "Navy Grey",
+      "#7F9161": "Army Green",
+      "#CAB361": "Gold",
+      "#BE6C49": "Orange",
+    };
 
     potOptions.addEventListener("click", () => {
-      // close other modals
-      document.querySelectorAll('[data-name="pot-options-modal"]').forEach((otherModal) => {
-        if (otherModal !== optionsModal && otherModal.classList.contains("flex")) {
-          otherModal.classList.add("animate-close");
-          setTimeout(() => {
-            otherModal.classList.add("hidden");
-            otherModal.classList.remove("flex", "animate-close");
-          }, 100);
-        }
-      });
-
       // toggle options modal
       optionsModal.classList.add("animate-close");
       setTimeout(() => {
@@ -94,15 +84,13 @@ const runTheShow = async () => {
     });
 
     // close on outside click
-    document.addEventListener("click", (e) => {
-      if (!potOptions.contains(e.target) && !optionsModal.contains(e.target)) {
-        if (!optionsModal.classList.contains("hidden")) {
-          optionsModal.classList.add("animate-close");
-          setTimeout(() => {
-            optionsModal.classList.add("hidden");
-            optionsModal.classList.remove("flex", "animate-close");
-          }, 100);
-        }
+    document.addEventListener("click", () => {
+      if (optionsModal.classList.contains("flex")) {
+        optionsModal.classList.add("animate-close");
+        setTimeout(() => {
+          optionsModal.classList.add("hidden");
+          optionsModal.classList.remove("flex", "animate-close");
+        }, 100);
       }
     });
 
@@ -110,9 +98,6 @@ const runTheShow = async () => {
     optionsModal.addEventListener("click", (e) => {
       e.stopPropagation();
     });
-
-    // const numStr = potTarget.replace(/[^0-9.]/g, "");
-    // const result = parseFloat(numStr).toFixed(2);
 
     // toggle delete modal
     const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
@@ -171,7 +156,7 @@ const runTheShow = async () => {
         });
       });
 
-      // delete pot confirm button
+      // delete pot confirm
       const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
       delConfirmBtn.addEventListener("click", () => {
         const deleteModal = pot.querySelector("#delete-modal");
@@ -179,6 +164,9 @@ const runTheShow = async () => {
         deleteModal.classList.add("animate-fade-out");
         setTimeout(() => {
           deleteModal.remove();
+
+          // resume page scrolling
+          document.body.classList.remove("overflow-hidden");
 
           // capture pot position and size, position it absolutely
           const rect = pot.getBoundingClientRect();
@@ -215,6 +203,7 @@ const runTheShow = async () => {
       let potName = potData.name;
       let potTarget = potData.target;
       let potTheme = potData.theme;
+      let potColorName = colors[potData.theme];
 
       // append edit modal
       pot.insertAdjacentHTML(
@@ -249,9 +238,9 @@ const runTheShow = async () => {
                 <!-- 3 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
-                  <div data-name="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div id="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: ${potTheme}"></span>
-                    <p class="text-[#201F24] text-[14px] font-normal">Green</p>
+                    <p class="text-[#201F24] text-[14px] font-normal">${potColorName}</p>
                     <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
                     <div id="theme-modal-wrapper" class="hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                       <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px] py-[12px] gap-[12px]">
@@ -387,21 +376,18 @@ const runTheShow = async () => {
         }, 200);
       });
 
-      const themeButton = editModal.querySelector('[data-name="theme-button"]');
+      const themeButton = editModal.querySelector("#theme-button");
       const themeModal = editModal.querySelector("#theme-modal-wrapper");
 
       // toggle themes modal
       themeButton.addEventListener("click", () => {
         themeModal.classList.toggle("hidden");
-        themeModal.classList.toggle("flex");
       });
 
       // close on outside click
       document.addEventListener("click", (e) => {
-        if (!editModal.contains(e.target) && !themeModal.contains(e.target)) {
-          if (!themeModal.classList.contains("hidden")) {
-            themeModal.classList.toggle("hidden", "flex");
-          }
+        if (!themeButton.contains(e.target)) {
+          themeModal.classList.add("hidden");
         }
       });
 
