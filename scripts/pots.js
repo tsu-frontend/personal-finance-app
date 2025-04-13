@@ -232,7 +232,7 @@ const runTheShow = async () => {
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
                   <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potName}" />
+                    <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
                 <!-- 3 -->
