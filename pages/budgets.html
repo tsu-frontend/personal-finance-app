@@ -104,7 +104,6 @@
 
         </aside>
        </section>
-      </main>
 <!-- modals  -->
     
 <section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0 flex justify-center items-center">
@@ -122,33 +121,34 @@
 
 <!-- form element -->
       <form class="w-[496px] h-[306px]">
-          <p class="text-xs font-bold text-[#696868]">Budget Category</p>
+          <p class="text-xs font-bold text-[#696868] mb-1">Budget Category</p>
 
-          <div id="category_dropdown" class="mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+          <div id="category_dropdown" class="cursor-pointer mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
             <p class="text-sm text-[#201F24]">Entertainment</p>
             <img src="../assets/images/icon-caret-down.svg" alt="">
           </div>
           
         <div class="mb-4">
-          <label for="max" class="text-xs font-bold text-[#696868]">Maximum Spend</label>
-          <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] border-[#98908B] rounded-lg border-[1px] pl-5">
+          <label for="max" class="text-xs font-bold text-[#696868] mb-1">Maximum Spend</label>
+          <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] cursor-pointer border-[#98908B] rounded-lg border-[1px] pl-5">
         </div>
 
-          <p class="text-xs font-bold text-[#696868]">Theme</p> 
-          <div id="theme_dropdown" class="mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
-              <div>
-                <figure></figure>
+          <p class="text-xs font-bold text-[#696868] mb-1">Theme</p> 
+          <div id="theme_dropdown" class="mb-4 h-[45px] border-[#98908B] cursor-pointer rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+              <div class="flex items-center gap-3">
+                <figure class="w-4 h-4 rounded-4xl bg-[#277C78]"></figure>
                 <p>Entertainment</p>
               </div>
             <img src="../assets/images/icon-caret-down.svg" alt="">
           </div>
 
-          <button></button>
+          <button class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer">Add Budget</button>
 
       </form>
       </div>
 
 
     </section>
+  </main>
   </body>
 </html>
