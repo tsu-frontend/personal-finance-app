@@ -120,26 +120,50 @@
           </article>
 
 <!-- form element -->
-      <form class="w-[496px] h-[306px]">
+      <form class="w-[496px] h-[306px] flex flex-col">
           <p class="text-xs font-bold text-[#696868] mb-1">Budget Category</p>
 
-          <div id="category_dropdown" class="cursor-pointer mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
-            <p class="text-sm text-[#201F24]">Entertainment</p>
-            <img src="../assets/images/icon-caret-down.svg" alt="">
-          </div>
-          
+          <div id="category_dropdown" class="relative mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+            <p class="text-sm text-[#201F24] cursor-pointer">Entertainment</p>
+            <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="">
+
+<!-- caregory dwopdown -->
+            <div id="cat_dropdown" class="hidden absolute top-[45px] -left-[1px] flex-col bg-white w-[456px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Entertainment</li>
+              <figure class="h-[5px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Bills</li>
+              <figure class="h-[1px] bg-red w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Groceries</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Dining Out</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Transportation</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Personal Care</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Education</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Lifestyle</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">General</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+              <li class="w-full h-5 cursor-pointer list-none text-sm">Shopping</li>
+              <figure class="h-[1px] bg-[#f8f4f0] w-full mt-3 mb-3"></figure>
+          </div> 
+
+        </div>
         <div class="mb-4">
           <label for="max" class="text-xs font-bold text-[#696868] mb-1">Maximum Spend</label>
-          <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] cursor-pointer border-[#98908B] rounded-lg border-[1px] pl-5">
+          <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] border-[#98908B] rounded-lg border-[1px] pl-5">
         </div>
 
           <p class="text-xs font-bold text-[#696868] mb-1">Theme</p> 
-          <div id="theme_dropdown" class="mb-4 h-[45px] border-[#98908B] cursor-pointer rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
-              <div class="flex items-center gap-3">
-                <figure class="w-4 h-4 rounded-4xl bg-[#277C78]"></figure>
-                <p>Entertainment</p>
+          <div id="theme_dropdown" class="mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+              <div id="theme_dropdown" class="flex items-center gap-3 cursor-pointer">
+                <figure class="w-4 h-4 rounded-4xl bg-[#277C78] "></figure>
+                <p class="text-sm">Green</p>
               </div>
-            <img src="../assets/images/icon-caret-down.svg" alt="">
+            <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="">
           </div>
 
           <button class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer">Add Budget</button>

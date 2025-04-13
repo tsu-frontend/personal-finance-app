@@ -1,7 +1,10 @@
-
- 
  const ctx = document.getElementById('doughnut');
+ const themeDropdown = document.querySelector('#theme_dropdown')
+ const catDropdownParent = document.querySelector('#category_dropdown')
+ const catDropdown = document.querySelector('#cat_dropdown')
 
+
+// cyrcle chart
  const cyrcle = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -25,6 +28,19 @@
   });
 
 
+// dropdowns
+catDropdownParent.addEventListener('click', () =>{
+  if(catDropdown.classList.contains('hidden')){
+    catDropdown.classList.replace('hidden', 'flex')
+  }else{
+    catDropdown.classList.replace('flex', 'hidden')
+  }
+  
+})
+
+
+
+// managing budget json data
   const getData = async () =>{
     const response = await fetch('../data.json')
     const data = await response.json() 
@@ -38,6 +54,7 @@
     let totalSum = document.querySelector('#total_sum')
     let spentSum = document.querySelector('#spent_sum')
 
+
      budgets.forEach(object => {
       const {category, maximum, theme} = object
 
@@ -47,6 +64,8 @@
       }
 
       totalSum.textContent = `of $${SUM} limit`
+
+      
 
       let summaryBox = `
       <div id="spending_summary" class="mt-6">
