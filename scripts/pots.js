@@ -73,11 +73,6 @@ const runTheShow = async () => {
       "#BE6C49": "Orange",
     };
 
-    pot.addEventListener("click", () => {
-      let potTheme = potData.theme;
-      console.log(potTheme);
-    });
-
     potOptions.addEventListener("click", () => {
       // close other modals
       document.querySelectorAll('[data-name="pot-options-modal"]').forEach((otherModal) => {
@@ -174,7 +169,7 @@ const runTheShow = async () => {
         });
       });
 
-      // delete pot confirm button
+      // delete pot confirm
       const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
       delConfirmBtn.addEventListener("click", () => {
         const deleteModal = pot.querySelector("#delete-modal");
@@ -182,6 +177,9 @@ const runTheShow = async () => {
         deleteModal.classList.add("animate-fade-out");
         setTimeout(() => {
           deleteModal.remove();
+
+          // resume page scrolling
+          document.body.classList.remove("overflow-hidden");
 
           // capture pot position and size, position it absolutely
           const rect = pot.getBoundingClientRect();
