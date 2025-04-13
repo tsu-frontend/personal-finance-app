@@ -74,17 +74,6 @@ const runTheShow = async () => {
     };
 
     potOptions.addEventListener("click", () => {
-      // close other modals
-      document.querySelectorAll('[data-name="pot-options-modal"]').forEach((otherModal) => {
-        if (otherModal !== optionsModal && otherModal.classList.contains("flex")) {
-          otherModal.classList.add("animate-close");
-          setTimeout(() => {
-            otherModal.classList.add("hidden");
-            otherModal.classList.remove("flex", "animate-close");
-          }, 100);
-        }
-      });
-
       // toggle options modal
       optionsModal.classList.add("animate-close");
       setTimeout(() => {
@@ -95,15 +84,13 @@ const runTheShow = async () => {
     });
 
     // close on outside click
-    document.addEventListener("click", (e) => {
-      if (!potOptions.contains(e.target) && !optionsModal.contains(e.target)) {
-        if (!optionsModal.classList.contains("hidden")) {
-          optionsModal.classList.add("animate-close");
-          setTimeout(() => {
-            optionsModal.classList.add("hidden");
-            optionsModal.classList.remove("flex", "animate-close");
-          }, 100);
-        }
+    document.addEventListener("click", () => {
+      if (optionsModal.classList.contains("flex")) {
+        optionsModal.classList.add("animate-close");
+        setTimeout(() => {
+          optionsModal.classList.add("hidden");
+          optionsModal.classList.remove("flex", "animate-close");
+        }, 100);
       }
     });
 
@@ -251,7 +238,7 @@ const runTheShow = async () => {
                 <!-- 3 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
-                  <div data-name="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div id="theme-button" class="relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="w-[16px] h-[16px] rounded-[50%]" style="background-color: ${potTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">${potColorName}</p>
                     <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
@@ -389,21 +376,18 @@ const runTheShow = async () => {
         }, 200);
       });
 
-      const themeButton = editModal.querySelector('[data-name="theme-button"]');
+      const themeButton = editModal.querySelector("#theme-button");
       const themeModal = editModal.querySelector("#theme-modal-wrapper");
 
       // toggle themes modal
       themeButton.addEventListener("click", () => {
         themeModal.classList.toggle("hidden");
-        themeModal.classList.toggle("flex");
       });
 
       // close on outside click
       document.addEventListener("click", (e) => {
-        if (!editModal.contains(e.target) && !themeModal.contains(e.target)) {
-          if (!themeModal.classList.contains("hidden")) {
-            themeModal.classList.toggle("hidden", "flex");
-          }
+        if (!themeButton.contains(e.target)) {
+          themeModal.classList.add("hidden");
         }
       });
 
