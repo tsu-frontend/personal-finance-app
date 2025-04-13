@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../styles/budgets.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
  
-    <script type="module" src="../scripts/budgets.js" defer></script>
+    <script src="../scripts/budgets.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script type="module" src="../scripts/all-pages.js" defer></script>
   </head>
@@ -123,12 +123,12 @@
       <form class="w-[496px] h-[306px] flex flex-col">
           <p class="text-xs font-bold text-[#696868] mb-1">Budget Category</p>
 
-          <div id="category_dropdown" class="relative mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
+          <div id="category_dropdown"  class="relative mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
             <p class="text-sm text-[#201F24] cursor-pointer">Entertainment</p>
             <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="">
 
 <!-- caregory dwopdown -->
-            <div id="cat_dropdown" class="hidden absolute gap-3 top-[60px] z-10 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] -left-[1px] flex-col bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
+            <div id="cat_dropdown" onclick="chooseCat(event)" class="hidden absolute gap-3 top-[60px] z-10 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] -left-[1px] flex-col bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
               <li class="w-full h-5 cursor-pointer list-none text-sm">Entertainment</li>
               <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
               <li class="w-full h-5 cursor-pointer list-none text-sm">Bills</li>
@@ -201,7 +201,7 @@
 
            </div>
 
-          <button class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer">Add Budget</button>
+          <button id="add_new" class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer">Add Budget</button>
 
       </form>
       </div>

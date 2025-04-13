@@ -3,6 +3,7 @@
  const catDropdownParent = document.querySelector('#category_dropdown')
  const catDropdown = document.querySelector('#cat_dropdown')
  const themeDropdown = document.querySelector('#col_dropdown')
+ const addBtn = document.querySelector('#add_new')
 
 
 // cyrcle chart
@@ -40,6 +41,10 @@ function dropDown(parent, child){
     }else{
       child.classList.replace('flex', 'hidden')
     }
+
+    if(parent === catDropdownParent){
+      themeDropdown.classList.replace('flex', 'hidden')
+    }
   })
 }
 
@@ -47,6 +52,22 @@ dropDown(catDropdownParent, catDropdown)
 dropDown(themeDropdownParent, themeDropdown)
 
 
+// choose category and theme
+function chooseCat(event){
+ let clickedEle = event.target
+//  console.log(clickedEle.innerText)
+//  if(clickedEle.textContent === '' ){
+//  console.log()
+//  }
+}
+
+
+// click on add-budget Button, adding new budget
+addBtn.addEventListener('click', (event) =>{
+event.preventDefault()
+
+// let category = 
+})
 
 
 

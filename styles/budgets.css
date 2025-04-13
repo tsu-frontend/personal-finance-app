@@ -516,6 +516,9 @@
   .w-\[364px\] {
     width: 364px;
   }
+  .w-\[400px\] {
+    width: 400px;
+  }
   .w-\[428px\] {
     width: 428px;
   }
@@ -536,6 +539,9 @@
   }
   .w-\[610px\] {
     width: 610px;
+  }
+  .w-\[px\] {
+    width: px;
   }
   .w-\[w-\[496px\]\] {
     width: w-[496px];
