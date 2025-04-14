@@ -218,6 +218,9 @@
   .top-\[36px\] {
     top: 36px;
   }
+  .top-\[63px\] {
+    top: 63px;
+  }
   .top-\[64px\] {
     top: 64px;
   }
@@ -247,6 +250,9 @@
   }
   .bottom-\[-100px\] {
     bottom: -100px;
+  }
+  .bottom-\[-100v00px\] {
+    bottom: -100v00px;
   }
   .bottom-\[-100vh00px\] {
     bottom: -100vh00px;
@@ -293,9 +299,6 @@
   .bottom-\[2bh\] {
     bottom: 2bh;
   }
-  .bottom-\[2v\] {
-    bottom: 2v;
-  }
   .bottom-\[2vh\] {
     bottom: 2vh;
   }
@@ -341,8 +344,14 @@
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
+  .left-\[-1\] {
+    left: -1;
+  }
   .left-\[-1px\] {
     left: -1px;
+  }
+  .left-\[0\] {
+    left: 0;
   }
   .z-1 {
     z-index: 1;
@@ -509,6 +518,15 @@
   .h-\[8px\] {
     height: 8px;
   }
+  .h-\[10\] {
+    height: 10;
+  }
+  .h-\[10p\] {
+    height: 10p;
+  }
+  .h-\[10px\] {
+    height: 10px;
+  }
   .h-\[13\] {
     height: 13;
   }
@@ -544,6 +562,9 @@
   }
   .h-\[48px\] {
     height: 48px;
+  }
+  .h-\[50px\] {
+    height: 50px;
   }
   .h-\[52px\] {
     height: 52px;
@@ -593,6 +614,9 @@
   .max-h-\[100vh\] {
     max-height: 100vh;
   }
+  .max-h-\[298px\] {
+    max-height: 298px;
+  }
   .max-h-\[300px\] {
     max-height: 300px;
   }
@@ -641,6 +665,9 @@
   .w-\[5px\] {
     width: 5px;
   }
+  .w-\[10\] {
+    width: 10;
+  }
   .w-\[13px\] {
     width: 13px;
   }
@@ -659,11 +686,32 @@
   .w-\[40px\] {
     width: 40px;
   }
+  .w-\[50px\] {
+    width: 50px;
+  }
   .w-\[68\.6px\] {
     width: 68.6px;
   }
+  .w-\[100\$\] {
+    width: 100$;
+  }
+  .w-\[100\%\+2\] {
+    width: 100%+2;
+  }
+  .w-\[100\%\+2px\] {
+    width: 100%+2px;
+  }
+  .w-\[100\%\+\] {
+    width: 100%+;
+  }
+  .w-\[100\%\=\] {
+    width: 100%=;
+  }
   .w-\[100\%\] {
     width: 100%;
+  }
+  .w-\[100\] {
+    width: 100;
   }
   .w-\[100vw\] {
     width: 100vw;
@@ -698,8 +746,35 @@
   .w-\[610px\] {
     width: 610px;
   }
+  .w-\[c\] {
+    width: c;
+  }
+  .w-\[cal\] {
+    width: cal;
+  }
   .w-\[calc\(100\%\+2px\)\] {
     width: calc(100% + 2px);
+  }
+  .w-\[calc\] {
+    width: calc;
+  }
+  .w-\[call\(\)\] {
+    width: call();
+  }
+  .w-\[call\(100\%\)\] {
+    width: call(100%);
+  }
+  .w-\[call\(100\%\+\)\] {
+    width: call(100%+);
+  }
+  .w-\[call\(100\)\] {
+    width: call(100);
+  }
+  .w-\[call\] {
+    width: call;
+  }
+  .w-\[full\] {
+    width: full;
   }
   .w-full {
     width: 100%;
@@ -880,6 +955,15 @@
   .border-\[\#98908B\] {
     border-color: #98908B;
   }
+  .border-\[\#FFF\] {
+    border-color: #FFF;
+  }
+  .border-\[\#\] {
+    border-color: #;
+  }
+  .border-\[\$\] {
+    border-color: $;
+  }
   .border-transparent {
     border-color: transparent;
   }
@@ -955,8 +1039,17 @@
   .bg-\[\#ffffff38\] {
     background-color: #ffffff38;
   }
+  .bg-\[\#r\] {
+    background-color: #r;
+  }
+  .bg-\[\#re\] {
+    background-color: #re;
+  }
   .bg-\[r\] {
     background-color: r;
+  }
+  .bg-\[re\] {
+    background-color: re;
   }
   .bg-\[red\] {
     background-color: red;
@@ -994,11 +1087,23 @@
   .px-20 {
     padding-inline: calc(var(--spacing) * 20);
   }
+  .px-\[2px\] {
+    padding-inline: 2px;
+  }
+  .px-\[12px\] {
+    padding-inline: 12px;
+  }
   .px-\[16px\] {
     padding-inline: 16px;
   }
   .px-\[20px\] {
     padding-inline: 20px;
+  }
+  .py-\[12\] {
+    padding-block: 12;
+  }
+  .py-\[12p\] {
+    padding-block: 12p;
   }
   .py-\[12px\] {
     padding-block: 12px;
@@ -1033,14 +1138,14 @@
   .pb-\[20\] {
     padding-bottom: 20;
   }
-  .pb-\[20p\] {
-    padding-bottom: 20p;
-  }
   .pb-\[20px\] {
     padding-bottom: 20px;
   }
   .pb-\[52px\] {
     padding-bottom: 52px;
+  }
+  .pl-\[20px\] {
+    padding-left: 20px;
   }
   .pl-\[33\.5px\] {
     padding-left: 33.5px;
@@ -1123,10 +1228,6 @@
   .font-\[12\] {
     --tw-font-weight: 12;
     font-weight: 12;
-  }
-  .font-\[12p\] {
-    --tw-font-weight: 12p;
-    font-weight: 12p;
   }
   .font-\[12px\] {
     --tw-font-weight: 12px;
@@ -1267,6 +1368,13 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .hover\:w-full {
+    &:hover {
+      @media (hover: hover) {
+        width: 100%;
+      }
+    }
+  }
   .hover\:translate-x-1 {
     &:hover {
       @media (hover: hover) {
@@ -1320,6 +1428,16 @@
       @media (hover: hover) {
         --tw-translate-x: 40px;
         translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:scale-1 {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-x: 1%;
+        --tw-scale-y: 1%;
+        --tw-scale-z: 1%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
       }
     }
   }
