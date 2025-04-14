@@ -386,9 +386,21 @@ const runTheShow = async () => {
       const themeDiv = document.getElementById(themeId);
 
       // append the selected theme icon to the corresponding pot theme
-      if (themeDiv) {
-        themeDiv.innerHTML += `<img src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-      }
+      themeDiv.innerHTML += `<img src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+      // loop through each pot to check if its theme is already used
+      pots.forEach((pot) => {
+        // get the used theme name and corresponding dom element id
+        const usedTheme = colors[pot.theme];
+        const usedThemeElementId = colorIds[usedTheme];
+
+        // check if the used theme element id doesnt match the current themeId
+        if (usedThemeElementId !== themeId) {
+          // add already used message to the theme element
+          const usedThemeElement = document.getElementById(usedThemeElementId);
+          usedThemeElement.innerHTML += `<p class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2]  transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+        }
+      });
 
       const editModal = pot.querySelector("#edit-modal");
       const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
