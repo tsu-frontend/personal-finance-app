@@ -69,8 +69,28 @@ const runTheShow = async () => {
       "#3F82B2": "Blue",
       "#97A0AC": "Navy Grey",
       "#7F9161": "Army Green",
+      "#f72d93": "Pink",
       "#CAB361": "Gold",
       "#BE6C49": "Orange",
+    };
+
+    // mapping color names to their respective dom element ids
+    const colorIds = {
+      Green: "green",
+      Yellow: "yellow",
+      Cyan: "cyan",
+      Navy: "navy",
+      Red: "red",
+      Purple: "purple",
+      Turquoise: "turquoise",
+      Brown: "brown",
+      Magenta: "magenta",
+      Blue: "blue",
+      "Navy Grey": "navyGrey",
+      "Army Green": "armyGreen",
+      Pink: "pink",
+      Gold: "gold",
+      Orange: "orange",
     };
 
     potOptions.addEventListener("click", () => {
@@ -102,8 +122,8 @@ const runTheShow = async () => {
     // toggle delete modal
     const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
     deleteButton.addEventListener("click", () => {
-      // close all open options modal
       if (!optionsModal.classList.contains("hidden")) {
+        // animation
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.classList.add("hidden");
@@ -187,8 +207,8 @@ const runTheShow = async () => {
     // toggle edit modal
     const editButton = pot.querySelector('[data-name="edit-pot-button"]');
     editButton.addEventListener("click", () => {
-      // close all open options modal
       if (!optionsModal.classList.contains("hidden")) {
+        // animation
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.classList.add("hidden");
@@ -209,7 +229,7 @@ const runTheShow = async () => {
       pot.insertAdjacentHTML(
         "beforeend",
         `
-          <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+          <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
             <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
@@ -242,110 +262,110 @@ const runTheShow = async () => {
                     <span class="w-[16px] h-[16px] rounded-full" style="background-color: ${potTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">${potColorName}</p>
                     <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-                    <div id="theme-modal-wrapper" class="animate-theme-open hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                    <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                     <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
                       <!-- 1 -->
-                      <div id="green" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#277C78]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Green</p>
+                      <div id="green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#277C78] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Green</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 2 -->
-                      <div id="yellow" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Yellow</p>
+                      <div id="yellow" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Yellow</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 3 -->
-                      <div id="cyan" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#82C9D7]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Cyan</p>
+                      <div id="cyan" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#82C9D7] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Cyan</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 4 -->
-                      <div id="navy" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#626070]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Navy</p>
+                      <div id="navy" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#626070] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 5 -->
-                      <div id="red" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#C94736]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Red</p>
+                      <div id="red" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#C94736] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Red</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 6 -->
-                      <div id="purple" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Purple</p>
+                      <div id="purple" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Purple</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 7 -->
-                      <div id="turquoise" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#597C7C]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Turquoise</p>
+                      <div id="turquoise" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#597C7C] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Turquoise</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 8 -->
-                      <div id="brown" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#93674F]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Brown</p>
+                      <div id="brown" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#93674F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Brown</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 9 -->
-                      <div id="magenta" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#934F6F]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Magenta</p>
+                      <div id="magenta" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#934F6F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Magenta</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 10 -->
-                      <div id="blue" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#3F82B2]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Blue</p>
+                      <div id="blue" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#3F82B2] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Blue</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 11 -->
-                      <div id="navy-grey" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Navy Grey</p>
+                      <div id="navy-grey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy Grey</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 12 -->
-                      <div id="army-green" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Army Green</p>
+                      <div id="army-green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Army Green</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 13 -->
-                      <div id="pink" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Pink</p>
+                      <div id="pink" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#f72d93] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Pink</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 14 -->
-                      <div id="gold" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#CAB361]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Gold</p>
+                      <div id="gold" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#CAB361] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Gold</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 15 -->
-                      <div id="orange" class="hover:cursor-pointer hover:scale-[1.2] hover:translate-x-[40px] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#BE6C49]"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%]">Orange</p>
+                      <div id="orange" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                        <span class="w-[16px] h-[16px] rounded-full bg-[#BE6C49] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Orange</p>
                       </div>
                     </div>
                     </div>
@@ -360,6 +380,27 @@ const runTheShow = async () => {
           </div>
        `
       );
+
+      // get the corresponding color id from the colorIds map
+      const themeId = colorIds[potColorName];
+      const themeDiv = document.getElementById(themeId);
+
+      // append the selected theme icon to the corresponding pot theme
+      themeDiv.innerHTML += `<img src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+      // loop through each pot to check if its theme is already used
+      pots.forEach((pot) => {
+        // get the used theme name and corresponding dom element id
+        const usedTheme = colors[pot.theme];
+        const usedThemeElementId = colorIds[usedTheme];
+
+        // check if the used theme element id doesnt match the current themeId
+        if (usedThemeElementId !== themeId) {
+          // add already used message to the theme element
+          const usedThemeElement = document.getElementById(usedThemeElementId);
+          usedThemeElement.innerHTML += `<p class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2]  transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+        }
+      });
 
       const editModal = pot.querySelector("#edit-modal");
       const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
