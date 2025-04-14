@@ -96,3 +96,7 @@
 .animate-theme-close {
   animation: animate-theme-close 0.3s ease forwards;
 }
+
+* {
+  /* border: 1px solid red; */
+}

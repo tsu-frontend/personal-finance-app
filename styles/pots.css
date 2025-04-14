@@ -662,6 +662,9 @@
   .w-\[1\] {
     width: 1;
   }
+  .w-\[5\] {
+    width: 5;
+  }
   .w-\[5px\] {
     width: 5px;
   }
@@ -685,6 +688,9 @@
   }
   .w-\[40px\] {
     width: 40px;
+  }
+  .w-\[50\] {
+    width: 50;
   }
   .w-\[50px\] {
     width: 50px;
@@ -712,6 +718,12 @@
   }
   .w-\[100\] {
     width: 100;
+  }
+  .w-\[100p\] {
+    width: 100p;
+  }
+  .w-\[100px\] {
+    width: 100px;
   }
   .w-\[100vw\] {
     width: 100vw;
@@ -752,8 +764,38 @@
   .w-\[cal\] {
     width: cal;
   }
+  .w-\[calc\(\)\] {
+    width: calc();
+  }
+  .w-\[calc\(1\)\] {
+    width: calc(1);
+  }
+  .w-\[calc\(10\)\] {
+    width: calc(10);
+  }
+  .w-\[calc\(100\%\)\] {
+    width: calc(100%);
+  }
   .w-\[calc\(100\%\+2px\)\] {
     width: calc(100% + 2px);
+  }
+  .w-\[calc\(100\%-\)\] {
+    width: calc(100% - );
+  }
+  .w-\[calc\(100\%-40\)\] {
+    width: calc(100% - 40);
+  }
+  .w-\[calc\(100\%-40p\)\] {
+    width: calc(100% - 40p);
+  }
+  .w-\[calc\(100\%-40px\)\] {
+    width: calc(100% - 40px);
+  }
+  .w-\[calc\(100\)\] {
+    width: calc(100);
+  }
+  .w-\[calc\(w\)\] {
+    width: calc(w);
   }
   .w-\[calc\] {
     width: calc;
@@ -821,6 +863,9 @@
   }
   .transform-gpu {
     transform: translateZ(0) var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
+  }
+  .cursor-auto {
+    cursor: auto;
   }
   .resize {
     resize: both;
@@ -1371,6 +1416,265 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .hover\:left-0 {
+    &:hover {
+      @media (hover: hover) {
+        left: calc(var(--spacing) * 0);
+      }
+    }
+  }
+  .hover\:w-\[100px\] {
+    &:hover {
+      @media (hover: hover) {
+        width: 100px;
+      }
+    }
+  }
+  .hover\:w-\[c\] {
+    &:hover {
+      @media (hover: hover) {
+        width: c;
+      }
+    }
+  }
+  .hover\:w-\[ca\;\] {
+    &:hover {
+      @media (hover: hover) {
+        width: ca;;
+      }
+    }
+  }
+  .hover\:w-\[ca\;c\(\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: ca;c();
+      }
+    }
+  }
+  .hover\:w-\[ca\;c\] {
+    &:hover {
+      @media (hover: hover) {
+        width: ca;c;
+      }
+    }
+  }
+  .hover\:w-\[ca\] {
+    &:hover {
+      @media (hover: hover) {
+        width: ca;
+      }
+    }
+  }
+  .hover\:w-\[cal\] {
+    &:hover {
+      @media (hover: hover) {
+        width: cal;
+      }
+    }
+  }
+  .hover\:w-\[calc\(\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc();
+      }
+    }
+  }
+  .hover\:w-\[calc\(1\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(1);
+      }
+    }
+  }
+  .hover\:w-\[calc\(10\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(10);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100%);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - );
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-1\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 1);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-5\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 5);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-7\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 7);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-7px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 7px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-8px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 8px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-40px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 40px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-50\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 50);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-50p\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 50p);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-50px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 50px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-70px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 70px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-72px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 72px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-75\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 75);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-75p\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 75p);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-75px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 75px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-76px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 76px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-77px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 77px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-79px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 79px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-80px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 80px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-100\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 100);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-100p\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 100p);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\%-100px\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100% - 100px);
+      }
+    }
+  }
+  .hover\:w-\[calc\(100\)\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc(100);
+      }
+    }
+  }
+  .hover\:w-\[calc9\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc9;
+      }
+    }
+  }
+  .hover\:w-\[calc\] {
+    &:hover {
+      @media (hover: hover) {
+        width: calc;
+      }
+    }
+  }
   .hover\:w-full {
     &:hover {
       @media (hover: hover) {
@@ -1410,10 +1714,90 @@
       }
     }
   }
+  .hover\:translate-x-\[3px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 3px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[4px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 4px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
   .hover\:translate-x-\[10\] {
     &:hover {
       @media (hover: hover) {
         --tw-translate-x: 10;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[30px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 30px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[32px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 32px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[34px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 34px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[35px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 35px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[36px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 36px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[37px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 37px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[38px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 38px;
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .hover\:translate-x-\[39px\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-translate-x: 39px;
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
     }
@@ -1440,6 +1824,30 @@
         --tw-scale-x: 1%;
         --tw-scale-y: 1%;
         --tw-scale-z: 1%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:scale-y-\[1\.2\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-y: 1.2;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:scale-y-\[1\.\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-y: 1.;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:scale-y-\[1\] {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-y: 1;
         scale: var(--tw-scale-x) var(--tw-scale-y);
       }
     }
