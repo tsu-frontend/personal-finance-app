@@ -102,8 +102,8 @@ const runTheShow = async () => {
     // toggle delete modal
     const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
     deleteButton.addEventListener("click", () => {
-      // close all open options modal
       if (!optionsModal.classList.contains("hidden")) {
+        // animation
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.classList.add("hidden");
@@ -187,8 +187,8 @@ const runTheShow = async () => {
     // toggle edit modal
     const editButton = pot.querySelector('[data-name="edit-pot-button"]');
     editButton.addEventListener("click", () => {
-      // close all open options modal
       if (!optionsModal.classList.contains("hidden")) {
+        // animation
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.classList.add("hidden");
@@ -209,7 +209,7 @@ const runTheShow = async () => {
       pot.insertAdjacentHTML(
         "beforeend",
         `
-          <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+          <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
             <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
