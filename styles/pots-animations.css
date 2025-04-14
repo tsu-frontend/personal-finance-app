@@ -68,3 +68,31 @@
 .animate-pop-out {
   animation: animate-pop-out 2s ease;
 }
+
+@keyframes animate-theme-open {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-theme-open {
+  animation: animate-theme-open 0.3s ease forwards;
+}
+
+@keyframes animate-theme-close {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.animate-theme-close {
+  animation: animate-theme-close 0.3s ease forwards;
+}
