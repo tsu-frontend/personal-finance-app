@@ -103,7 +103,7 @@ const runTheShow = async () => {
       }, 100);
     });
 
-    // close on outside click
+    // close options modal on outside click
     document.addEventListener("click", () => {
       if (optionsModal.classList.contains("flex")) {
         optionsModal.classList.add("animate-close");
@@ -114,7 +114,7 @@ const runTheShow = async () => {
       }
     });
 
-    // dont close optionsModal if clicked inside
+    // dont close options modal if clicked inside
     optionsModal.addEventListener("click", (e) => {
       e.stopPropagation();
     });
@@ -335,14 +335,14 @@ const runTheShow = async () => {
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 11 -->
-                      <div id="navy-grey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                      <div id="navyGrey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
                         <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
                         <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy Grey</p>
                       </div>
 
                       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
                       <!-- 12 -->
-                      <div id="army-green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                      <div id="armyGreen" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
                         <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
                         <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Army Green</p>
                       </div>
@@ -383,10 +383,44 @@ const runTheShow = async () => {
 
       // get the corresponding color id from the colorIds map
       const themeId = colorIds[potColorName];
-      const themeDiv = document.getElementById(themeId);
+      let selectedTheme = document.getElementById(themeId);
 
       // append the selected theme icon to the corresponding pot theme
-      themeDiv.innerHTML += `<img src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+      if (selectedTheme) {
+        selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+      }
+
+      ///////////////////////////////////////////////////////
+      const themes = document.querySelector("#theme-modal").children;
+
+      // loop through each theme option
+      Array.from(themes).forEach((theme) => {
+        theme.addEventListener("click", () => {
+          // ignore click if theme already used or selected
+          if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
+
+          // get theme name from id, then get both name and hex color
+          const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
+          const chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+
+          // mark new selected theme
+          selectedTheme = theme;
+          document.querySelector("#selectedTheme").remove();
+          selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+          // close theme modal after theme is selected
+          // themeModal.classList.add("animate-theme-close");
+          // setTimeout(() => {
+          //   themeModal.classList.add("hidden");
+          //   themeModal.classList.remove("animate-theme-close");
+          // }, 300);
+
+          // update theme color and label text
+          themeButton.querySelector("span").style.backgroundColor = chosenTheme;
+          themeButton.querySelector("p").textContent = chosenThemeName;
+        });
+      });
+      ///////////////////////////////////////////////////////
 
       // loop through each pot to check if its theme is already used
       pots.forEach((pot) => {
@@ -398,7 +432,7 @@ const runTheShow = async () => {
         if (usedThemeElementId !== themeId) {
           // add already used message to the theme element
           const usedThemeElement = document.getElementById(usedThemeElementId);
-          usedThemeElement.innerHTML += `<p class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2]  transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+          usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
         }
       });
 
@@ -420,7 +454,7 @@ const runTheShow = async () => {
       const themeButton = editModal.querySelector("#theme-button");
       const themeModal = editModal.querySelector("#theme-modal-wrapper");
 
-      // toggle themes modal
+      // toggle theme modal
       themeButton.addEventListener("click", () => {
         if (!themeModal.classList.contains("hidden")) {
           // animation
@@ -434,7 +468,7 @@ const runTheShow = async () => {
         }
       });
 
-      // close on outside click
+      // close theme modal on outside click
       document.addEventListener("click", (e) => {
         if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
           if (!themeModal.classList.contains("hidden")) {
@@ -448,7 +482,7 @@ const runTheShow = async () => {
         }
       });
 
-      // dont close themeModal if clicked inside
+      // dont close theme modal if clicked inside
       themeModal.addEventListener("click", (e) => {
         e.stopPropagation();
       });
