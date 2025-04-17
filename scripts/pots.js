@@ -221,7 +221,7 @@ const runTheShow = async () => {
 
       // declaring pot information
       let potName = potData.name;
-      let potTarget = potData.target;
+      let potTarget = potData.target.toLocaleString("en-US", { minimumFractionDigits: 2 });
       let potTheme = potData.theme;
       let potColorName = colors[potData.theme];
 
@@ -242,10 +242,10 @@ const runTheShow = async () => {
                 <!-- 1 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                  <div class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
-                   <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potName}" />
+                  <div id="pot-name-div" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
+                   <input id="pot-name-input" type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potName}" />
                   </div>
-                  <p class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right">16 characters left</p>
+                  <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
                 </div>
                 <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
@@ -381,6 +381,28 @@ const runTheShow = async () => {
        `
       );
 
+      // declare input, counter, and div elements
+      const input = document.querySelector("#pot-name-input");
+      const counter = document.querySelector("#characters-left");
+      const inputDiv = document.querySelector("#pot-name-div");
+
+      // update character count and border color
+      const updateCounter = () => {
+        const charsLeft = 30 - input.value.length;
+
+        if (charsLeft < 0) {
+          counter.textContent = "Too long!";
+        } else {
+          counter.textContent = `${charsLeft} characters left`;
+        }
+
+        inputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+      };
+
+      // listen for input changes and update counter
+      input.addEventListener("input", updateCounter);
+      updateCounter();
+
       // get the corresponding color id from the colorIds map
       const themeId = colorIds[potColorName];
       let selectedTheme = document.getElementById(themeId);
@@ -408,16 +430,16 @@ const runTheShow = async () => {
           document.querySelector("#selectedTheme").remove();
           selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
 
-          // close theme modal after theme is selected
-          // themeModal.classList.add("animate-theme-close");
-          // setTimeout(() => {
-          //   themeModal.classList.add("hidden");
-          //   themeModal.classList.remove("animate-theme-close");
-          // }, 300);
-
           // update theme color and label text
           themeButton.querySelector("span").style.backgroundColor = chosenTheme;
           themeButton.querySelector("p").textContent = chosenThemeName;
+
+          // close theme modal after theme is selected
+          themeModal.classList.add("animate-theme-close");
+          setTimeout(() => {
+            themeModal.classList.add("hidden");
+            themeModal.classList.remove("animate-theme-close");
+          }, 300);
         });
       });
       ///////////////////////////////////////////////////////
