@@ -390,6 +390,7 @@ const runTheShow = async () => {
       const updateCounter = () => {
         const charsLeft = 30 - input.value.length;
 
+        // display "Too long!" if character count is below 0, else show remaining characters
         if (charsLeft < 0) {
           counter.textContent = "Too long!";
         } else {
