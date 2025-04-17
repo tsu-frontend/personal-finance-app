@@ -282,7 +282,7 @@ const initPotEvents = () => {
                 </div>
                 <!-- 3 -->
                 <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
                   <div id="theme-button" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="w-[16px] h-[16px] rounded-full" style="background-color: ${potTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">${potColorName}</p>
@@ -553,12 +553,12 @@ const addNewPot = () => {
         <div id="new-pot-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
           <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
             <div class="w-full flex justify-between">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
+              <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Add New Pot</h1>
               <button data-name="new-pot-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
                 <img src="../assets/images/icon-close-modal.svg" />
               </button>
             </div>
-            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
+            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Create a pot to set savings targets. These can help keep you on track as you save for special purchases.</p>
             <div class="w-full flex flex-col gap-[16px]">
               <!-- 1 -->
               <div class="w-full flex flex-col gap-[4px]">
@@ -578,10 +578,10 @@ const addNewPot = () => {
               </div>
               <!-- 3 -->
               <div class="w-full flex flex-col gap-[4px]">
-                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Color Tag</p>
+                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
                 <div id="theme-button" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                  <span class="w-[16px] h-[16px] rounded-full"></span>
-                  <p class="text-[#201F24] text-[14px] font-normal"></p>
+                    <span class="animate-color w-[16px] h-[16px] rounded-full" style="background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)"></span>
+                    <p class="text-[#201F24] text-[14px] font-normal">Pick a theme</p>
                   <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
                   <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                   <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
