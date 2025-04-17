@@ -97,6 +97,61 @@
   animation: animate-theme-close 0.3s ease forwards;
 }
 
+@keyframes animate-color {
+  0% {
+    background: #277c78;
+  }
+  6.67% {
+    background: #f2cdac;
+  }
+  13.33% {
+    background: #82c9d7;
+  }
+  20% {
+    background: #626070;
+  }
+  26.67% {
+    background: #c94736;
+  }
+  33.33% {
+    background: #826cb0;
+  }
+  40% {
+    background: #597c7c;
+  }
+  46.67% {
+    background: #93674f;
+  }
+  53.33% {
+    background: #934f6f;
+  }
+  60% {
+    background: #3f82b2;
+  }
+  66.67% {
+    background: #97a0ac;
+  }
+  73.33% {
+    background: #7f9161;
+  }
+  80% {
+    background: #f72d93;
+  }
+  86.67% {
+    background: #cab361;
+  }
+  93.33% {
+    background: #be6c49;
+  }
+  100% {
+    background: #277c78;
+  }
+}
+
+.animate-color {
+  animation: animate-color 10s linear infinite;
+}
+
 * {
   /* border: 1px solid red; */
 }
