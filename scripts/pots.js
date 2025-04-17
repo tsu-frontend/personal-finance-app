@@ -1,9 +1,21 @@
+let pots = [];
+
 const runTheShow = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
+  pots = data.pots;
 
-  const pots = data.pots;
+  renderPots(pots);
+  initPotEvents();
+};
+runTheShow();
+
+// render pots into container
+const renderPots = (pots) => {
   const potsContainer = document.querySelector("#pots-container");
+
+  // clear container to avoid duplicates in case of re-rendering pots
+  potsContainer.innerHTML = "";
 
   // append each pot to the pots container
   pots.forEach((pot) => {
@@ -45,7 +57,10 @@ const runTheShow = async () => {
       </div>
     `;
   });
+};
 
+// initialize event listeners for pot actions (e.g. edit, delete)
+const initPotEvents = () => {
   // loop through all pots
   document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
@@ -511,9 +526,4 @@ const runTheShow = async () => {
       });
     });
   });
-
-  // ------------------------------
 };
-
-// call fetch function
-runTheShow();
