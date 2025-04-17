@@ -1,13 +1,34 @@
-const runTheShow = async () => {
+let pots = [];
+
+const renderPotsData = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
+  pots = data.pots;
 
-  const pots = data.pots;
+  renderPots(pots);
+  initPotEvents();
+};
+renderPotsData();
+
+// render pots into container
+const renderPots = (pots) => {
   const potsContainer = document.querySelector("#pots-container");
 
-  // append each pot to the pots container
-  pots.forEach((pot) => {
-    potsContainer.innerHTML += `
+  // clear container to avoid duplicates in case of re-rendering pots
+  potsContainer.innerHTML = "";
+
+  // check if there are pots
+  if (pots.length === 0) {
+    // show no pots message if pots array is empty
+    potsContainer.innerHTML = `
+      <h1 class="absolute inset-0 h-fit border-2 border-dashed border-gray-400 text-center text-3xl text-gray-600 font-medium p-10 rounded-lg shadow-sm">
+      You haven’t added any pots yet. Start by creating one!
+      </h1>
+    `;
+  } else {
+    // append each pot to the pots container
+    pots.forEach((pot) => {
+      potsContainer.innerHTML += `
       <div data-id="${pot.id}" data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
         <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
           <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-full" style="background-color: ${pot.theme}"></div>
@@ -44,8 +65,12 @@ const runTheShow = async () => {
         </div>
       </div>
     `;
-  });
+    });
+  }
+};
 
+// initialize event listeners for pot actions (e.g. edit, delete)
+const initPotEvents = () => {
   // loop through all pots
   document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
@@ -190,7 +215,7 @@ const runTheShow = async () => {
 
           // capture pot position and size, position it absolutely
           const rect = pot.getBoundingClientRect();
-          pot.style.position = "absolute";
+          pot.style.position = "fixed";
           pot.style.left = `${rect.left}px`;
           pot.style.top = `${rect.top}px`;
           pot.style.width = `${rect.width}px`;
@@ -511,9 +536,4 @@ const runTheShow = async () => {
       });
     });
   });
-
-  // ------------------------------
 };
-
-// call fetch function
-runTheShow();

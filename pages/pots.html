@@ -77,7 +77,8 @@
         <h1 class="text-[#201F24] text-[32px] font-bold leading-[120%]">Pots</h1>
         <button class="hover:cursor-pointer hover:bg-[#696868] transition-all duration-300 ease w-[128px] h-full rounded-[8px] bg-[#201F24] text-[#FFF] text-[14px] font-bold leading-[150%]">+ Add New Pot</button>
       </header>
-      <div id="pots-container" class="grid grid-cols-1 gap-[24px] xl:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]">
+      <div id="pots-container" class="relative grid grid-cols-1 gap-[24px] xl:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]">
+        <!-- test pot -->
         <div data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] hidden flex-col gap-[32px] flex-1 basis-0 grow-0">
           <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
             <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-full" style="background-color: red"></div>
@@ -113,12 +114,15 @@
             </div>
           </div>
         </div>
+        <!----------------------->
+
+        <!-- <h1 class="absolute inset-0 h-fit border-2 border-dashed border-gray-400 text-center text-3xl text-gray-600 font-medium p-10 rounded-lg shadow-sm">You haven’t added any pots yet. Start by creating one!</h1> -->
       </div>
     </main>
 
     <!-- modals -->
 
-    <!-- edit modal -->
+    <!-- test edit modal -->
     <div id="edit-modal" class="z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] hidden justify-center items-center">
       <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
         <div class="w-full flex justify-between">
