@@ -215,7 +215,7 @@ const initPotEvents = () => {
 
           // capture pot position and size, position it absolutely
           const rect = pot.getBoundingClientRect();
-          pot.style.position = "absolute";
+          pot.style.position = "fixed";
           pot.style.left = `${rect.left}px`;
           pot.style.top = `${rect.top}px`;
           pot.style.width = `${rect.width}px`;
