@@ -1,5 +1,43 @@
 let pots = [];
 
+// declaring pot theme colors
+const colors = {
+  "#277C78": "Green",
+  "#F2CDAC": "Yellow",
+  "#82C9D7": "Cyan",
+  "#626070": "Navy",
+  "#C94736": "Red",
+  "#826CB0": "Purple",
+  "#597C7C": "Turquoise",
+  "#93674F": "Brown",
+  "#934F6F": "Magenta",
+  "#3F82B2": "Blue",
+  "#97A0AC": "Navy Grey",
+  "#7F9161": "Army Green",
+  "#f72d93": "Pink",
+  "#CAB361": "Gold",
+  "#BE6C49": "Orange",
+};
+
+// mapping color names to their respective dom element ids
+const colorIds = {
+  Green: "green",
+  Yellow: "yellow",
+  Cyan: "cyan",
+  Navy: "navy",
+  Red: "red",
+  Purple: "purple",
+  Turquoise: "turquoise",
+  Brown: "brown",
+  Magenta: "magenta",
+  Blue: "blue",
+  "Navy Grey": "navyGrey",
+  "Army Green": "armyGreen",
+  Pink: "pink",
+  Gold: "gold",
+  Orange: "orange",
+};
+
 const renderPotsData = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
@@ -80,44 +118,6 @@ const initPotEvents = () => {
     let potId = pot.getAttribute("data-id");
     const potData = pots.find((item) => item.id === potId);
 
-    // declaring pot theme colors
-    const colors = {
-      "#277C78": "Green",
-      "#F2CDAC": "Yellow",
-      "#82C9D7": "Cyan",
-      "#626070": "Navy",
-      "#C94736": "Red",
-      "#826CB0": "Purple",
-      "#597C7C": "Turquoise",
-      "#93674F": "Brown",
-      "#934F6F": "Magenta",
-      "#3F82B2": "Blue",
-      "#97A0AC": "Navy Grey",
-      "#7F9161": "Army Green",
-      "#f72d93": "Pink",
-      "#CAB361": "Gold",
-      "#BE6C49": "Orange",
-    };
-
-    // mapping color names to their respective dom element ids
-    const colorIds = {
-      Green: "green",
-      Yellow: "yellow",
-      Cyan: "cyan",
-      Navy: "navy",
-      Red: "red",
-      Purple: "purple",
-      Turquoise: "turquoise",
-      Brown: "brown",
-      Magenta: "magenta",
-      Blue: "blue",
-      "Navy Grey": "navyGrey",
-      "Army Green": "armyGreen",
-      Pink: "pink",
-      Gold: "gold",
-      Orange: "orange",
-    };
-
     potOptions.addEventListener("click", () => {
       // toggle options modal
       optionsModal.classList.add("animate-close");
@@ -169,7 +169,7 @@ const initPotEvents = () => {
          <div id="delete-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
            <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
              <div class="w-full flex justify-between">
-               <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Delete ‘${potName}’?</h1>
+               <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Delete ‘${potName}’?</h1>
                <button data-name="delete-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
                  <img src="../assets/images/icon-close-modal.svg" />
                </button>
@@ -256,11 +256,9 @@ const initPotEvents = () => {
         `
           <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
             <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-              <div class="w-full flex justify-between">
-                <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Edit Pot</h1>
-                <button data-name="edit-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
-                  <img src="../assets/images/icon-close-modal.svg" />
-                </button>
+              <div class="w-full flex justify-between items-center">
+                <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Edit Pot</h1>
+                <img data-name="edit-close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
               </div>
               <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
               <div class="w-full flex flex-col gap-[16px]">
@@ -552,11 +550,9 @@ const addNewPot = () => {
       `
         <div id="new-pot-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
           <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-            <div class="w-full flex justify-between">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] not-ital font-bold leading-[120%]">Add New Pot</h1>
-              <button data-name="new-pot-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
-                <img src="../assets/images/icon-close-modal.svg" />
-              </button>
+            <div class="w-full flex justify-between items-center">
+              <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Add New Pot</h1>
+              <img data-name="new-pot-close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
             </div>
             <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Create a pot to set savings targets. These can help keep you on track as you save for special purchases.</p>
             <div class="w-full flex flex-col gap-[16px]">
@@ -738,6 +734,42 @@ const addNewPot = () => {
         // resume page scrolling
         document.body.classList.remove("overflow-hidden");
       }, 200);
+    });
+
+    const themeButton = newPotModal.querySelector("#theme-button");
+    const themeModal = newPotModal.querySelector("#theme-modal-wrapper");
+
+    // toggle theme modal
+    themeButton.addEventListener("click", () => {
+      if (!themeModal.classList.contains("hidden")) {
+        // animation
+        themeModal.classList.add("animate-theme-close");
+        setTimeout(() => {
+          themeModal.classList.add("hidden");
+          themeModal.classList.remove("animate-theme-close");
+        }, 300);
+      } else {
+        themeModal.classList.remove("hidden");
+      }
+    });
+
+    // close theme modal on outside click
+    document.addEventListener("click", (e) => {
+      if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
+        if (!themeModal.classList.contains("hidden")) {
+          // animation
+          themeModal.classList.add("animate-theme-close");
+          setTimeout(() => {
+            themeModal.classList.add("hidden");
+            themeModal.classList.remove("animate-theme-close");
+          }, 300);
+        }
+      }
+    });
+
+    // dont close theme modal if clicked inside
+    themeModal.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
   });
 };
