@@ -473,11 +473,11 @@ const initPotEvents = () => {
         // get the used theme name and corresponding dom element id
         const usedTheme = colors[pot.theme];
         const usedThemeElementId = colorIds[usedTheme];
+        const usedThemeElement = document.getElementById(usedThemeElementId);
 
         // check if the used theme element id doesnt match the current themeId
         if (usedThemeElementId !== themeId) {
           // add already used message to the theme element
-          const usedThemeElement = document.getElementById(usedThemeElementId);
           usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
         }
       });
@@ -770,6 +770,24 @@ const addNewPot = () => {
     // dont close theme modal if clicked inside
     themeModal.addEventListener("click", (e) => {
       e.stopPropagation();
+    });
+
+    // create an array of dom elements based on the color theme of each pot
+    const usedThemeElements = pots.map((pot) => {
+      const usedTheme = colors[pot.theme];
+      const usedThemeElementId = colorIds[usedTheme];
+
+      // get the dom element associated with the theme id and return it as an object
+      const usedThemeElement = document.getElementById(usedThemeElementId);
+      return { usedThemeElement };
+    });
+
+    usedThemeElements.forEach((item) => {
+      // access the dom element inside the object
+      const el = item.usedThemeElement;
+
+      // add already used message to the theme element
+      el.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
     });
   });
 };
