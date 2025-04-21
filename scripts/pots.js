@@ -436,7 +436,6 @@ const initPotEvents = () => {
         selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
       }
 
-      ///////////////////////////////////////////////////////
       const themes = document.querySelector("#theme-modal").children;
 
       // loop through each theme option
@@ -466,7 +465,6 @@ const initPotEvents = () => {
           }, 300);
         });
       });
-      ///////////////////////////////////////////////////////
 
       // loop through each pot to check if its theme is already used
       pots.forEach((pot) => {
@@ -788,6 +786,41 @@ const addNewPot = () => {
 
       // add already used message to the theme element
       el.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+    });
+
+    // get all theme options inside the theme modal & init selected theme as null (nothing selected yet)
+    const themes = document.querySelector("#theme-modal").children;
+    let selectedTheme = null;
+
+    // loop through each theme option
+    Array.from(themes).forEach((theme) => {
+      theme.addEventListener("click", () => {
+        // ignore click if theme already used or selected
+        if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
+
+        // get theme name from id, then get both name and hex color
+        const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
+        const chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+
+        // mark new selected theme
+        selectedTheme = theme;
+        if (document.querySelector("#selectedTheme")) document.querySelector("#selectedTheme").remove();
+        selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+        // update theme color and label text
+        themeButton.querySelector("span").classList.remove("animate-color");
+        themeButton.querySelector("span").style.background = chosenTheme;
+        themeButton.querySelector("p").textContent = chosenThemeName;
+
+        console.log(chosenTheme);
+        console.log(chosenThemeName);
+        // close theme modal after theme is selected
+        themeModal.classList.add("animate-theme-close");
+        setTimeout(() => {
+          themeModal.classList.add("hidden");
+          themeModal.classList.remove("animate-theme-close");
+        }, 300);
+      });
     });
   });
 };
