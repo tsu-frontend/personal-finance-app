@@ -93,11 +93,11 @@ const renderPots = (pots) => {
             <p data-name="pot-target" class="text-[#696868] text-[12px] font-[Public Sans] font-normal leading-[150%]">Target of $${pot.target.toLocaleString()}</p>
           </div>
           <div data-name="pot-actions" class="w-full flex gap-[16px]">
-            <div data-name="add-money" class="select-none border-1 border-transparent hover:border-[#98908B] hover:bg-[#FFF] hover:cursor-pointer transition-all duration-300 ease bg-[#F8F4F0] rounded-[8px] p-[16px] flex justify-center items-center flex-1">
-              <p class="text-[#201F24] text-[14px] font-[Public Sans] font-bold leading-[150%]">+ Add Money</p>
+            <div data-name="add-money" class="select-none border-1 border-transparent hover:border-[#98908B] hover:bg-[#FFF] hover:cursor-pointer transition-all duration-300 ease bg-[#F8F4F0] rounded-[8px] py-[16px] flex justify-center items-center flex-1">
+              <p class="text-[#201F24] text-[14px] font-bold leading-[150%]">+ Add Money</p>
             </div>
-            <div data-name="withdraw-money" class="select-none border-1 border-transparent hover:border-1 hover:border-[#98908B] hover:bg-[#FFF] hover:cursor-pointer transition-all duration-300 ease bg-[#F8F4F0] rounded-[8px] p-[16px] flex justify-center items-center flex-1">
-              <p class="text-[#201F24] text-[14px] font-[Public Sans] font-bold leading-[150%]">Withdraw</p>
+            <div data-name="withdraw-money" class="select-none border-1 border-transparent hover:border-1 hover:border-[#98908B] hover:bg-[#FFF] hover:cursor-pointer transition-all duration-300 ease bg-[#F8F4F0] rounded-[8px] py-[16px] flex justify-center items-center flex-1">
+              <p class="text-[#201F24] text-[14px] font-bold leading-[150%]">Withdraw</p>
             </div>
           </div>
         </div>
@@ -275,7 +275,7 @@ const initPotEvents = () => {
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
                   <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potTarget}" />
+                    <input id="pot-target-input" type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
                 <!-- 3 -->
@@ -578,7 +578,7 @@ const addNewPot = () => {
                 <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
                 <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                   <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                  <input type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-full w-full focus:outline-none" />
+                  <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-full w-full focus:outline-none" />
                 </div>
               </div>
               <!-- 3 -->
