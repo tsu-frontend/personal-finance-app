@@ -265,17 +265,17 @@ const initPotEvents = () => {
                 <!-- 1 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                  <div id="pot-name-div" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
-                   <input id="pot-name-input" type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potName}" />
+                  <div id="pot-name-div" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+                   <input id="pot-name-input" type="text" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potName}" />
                   </div>
                   <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
                 </div>
                 <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                  <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input id="pot-target-input" type="text" class="hover:cursor-pointer h-full w-full focus:outline-none" value="${potTarget}" />
+                    <input id="pot-target-input" type="text" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${potTarget}" />
                   </div>
                 </div>
                 <!-- 3 -->
@@ -396,7 +396,7 @@ const initPotEvents = () => {
                 </div>
               </div>
               <!-- btn -->
-              <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+              <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
                 <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
               </button>
             </div>
@@ -404,14 +404,14 @@ const initPotEvents = () => {
        `
       );
 
-      // declare input, counter, and div elements
-      const input = document.querySelector("#pot-name-input");
+      // declare nameInput, counter, and div elements
+      const nameInput = document.querySelector("#pot-name-input");
       const counter = document.querySelector("#characters-left");
-      const inputDiv = document.querySelector("#pot-name-div");
+      const nameInputDiv = document.querySelector("#pot-name-div");
 
       // update character count and border color
       const updateCounter = () => {
-        const charsLeft = 30 - input.value.length;
+        const charsLeft = 30 - nameInput.value.length;
 
         // display "Too long!" if character count is below 0, else show remaining characters
         if (charsLeft < 0) {
@@ -420,11 +420,12 @@ const initPotEvents = () => {
           counter.textContent = `${charsLeft} characters left`;
         }
 
-        inputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+        // change border color to red if input too long, else keep it default
+        nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
       };
 
       // listen for input changes and update counter
-      input.addEventListener("input", updateCounter);
+      nameInput.addEventListener("input", updateCounter);
       updateCounter();
 
       // get the corresponding color id from the colorIds map
@@ -568,17 +569,17 @@ const addNewPot = () => {
               <!-- 1 -->
               <div class="w-full flex flex-col gap-[4px]">
                 <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                <div id="pot-name-div" class="w-full px-[20px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B]">
-                 <input id="pot-name-input" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-full w-full focus:outline-none" />
+                <div id="pot-name-div" class="w-full px-[20px] py-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+                 <input id="pot-name-input" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
                 </div>
                 <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
               </div>
               <!-- 2 -->
               <div class="w-full flex flex-col gap-[4px]">
                 <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
                   <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                  <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-full w-full focus:outline-none" />
+                  <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
                 </div>
               </div>
               <!-- 3 -->
@@ -699,7 +700,7 @@ const addNewPot = () => {
               </div>
             </div>
             <!-- btn -->
-            <button class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+            <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
               <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
             </button>
           </div>
@@ -707,14 +708,14 @@ const addNewPot = () => {
       `
     );
 
-    // declare input, counter, and div elements
-    const input = document.querySelector("#pot-name-input");
+    // declare nameInput, counter, and div elements
+    const nameInput = document.querySelector("#pot-name-input");
     const counter = document.querySelector("#characters-left");
-    const inputDiv = document.querySelector("#pot-name-div");
+    const nameInputDiv = document.querySelector("#pot-name-div");
 
     // update character count and border color
     const updateCounter = () => {
-      const charsLeft = 30 - input.value.length;
+      const charsLeft = 30 - nameInput.value.length;
 
       // display "Too long!" if character count is below 0, else show remaining characters
       if (charsLeft < 0) {
@@ -723,11 +724,12 @@ const addNewPot = () => {
         counter.textContent = `${charsLeft} characters left`;
       }
 
-      inputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+      // change border color to red if input too long, else keep it default
+      nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
     };
 
     // listen for input changes and update counter
-    input.addEventListener("input", updateCounter);
+    nameInput.addEventListener("input", updateCounter);
     updateCounter();
 
     const newPotModal = document.querySelector("#new-pot-modal");
@@ -844,6 +846,41 @@ const addNewPot = () => {
           selectedTheme.classList.add("hover:cursor-not-allowed");
         }, 300);
       });
+    });
+
+    const saveChangesBtn = document.querySelector("#save-changes-button");
+
+    // nameInput
+    const targetInput = document.querySelector("#pot-target-input");
+
+    nameInput.addEventListener("input", () => {
+      const redMsg = nameInputDiv.querySelector("#red-msg");
+      if (redMsg) redMsg.remove();
+    });
+
+    saveChangesBtn.addEventListener("click", () => {
+      nameInput.addEventListener("input", () => {
+        const redMsg = nameInputDiv.querySelector("#red-msg");
+        if (redMsg) redMsg.remove();
+      });
+
+      if (nameInput.value.length === 0) {
+        nameInputDiv.style.borderColor = "red";
+        nameInputDiv.insertAdjacentHTML(
+          "beforeend",
+          `
+            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+          `
+        );
+      } else if (nameInput.value.length > 30) {
+        nameInputDiv.style.borderColor = "red";
+        nameInputDiv.insertAdjacentHTML(
+          "beforeend",
+          `
+            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+          `
+        );
+      }
     });
   });
 };
