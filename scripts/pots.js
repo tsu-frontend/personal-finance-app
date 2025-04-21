@@ -448,9 +448,12 @@ const initPotEvents = () => {
           const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
           const chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
 
+          // remove previously selected theme's icon and re-enable hover cursor
+          document.querySelector("#selectedTheme").remove();
+          selectedTheme.classList.add("hover:cursor-pointer");
+          selectedTheme.classList.remove("hover:cursor-not-allowed");
           // mark new selected theme
           selectedTheme = theme;
-          document.querySelector("#selectedTheme").remove();
           selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
 
           // update theme color and label text
@@ -462,6 +465,10 @@ const initPotEvents = () => {
           setTimeout(() => {
             themeModal.classList.add("hidden");
             themeModal.classList.remove("animate-theme-close");
+
+            // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
+            selectedTheme.classList.remove("hover:cursor-pointer");
+            selectedTheme.classList.add("hover:cursor-not-allowed");
           }, 300);
         });
       });
@@ -477,6 +484,8 @@ const initPotEvents = () => {
         if (usedThemeElementId !== themeId) {
           // add already used message to the theme element
           usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+          usedThemeElement.classList.remove("hover:cursor-pointer");
+          usedThemeElement.classList.add("hover:cursor-not-allowed");
         }
       });
 
@@ -786,6 +795,8 @@ const addNewPot = () => {
 
       // add already used message to the theme element
       el.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+      el.classList.remove("hover:cursor-pointer");
+      el.classList.add("hover:cursor-not-allowed");
     });
 
     // get all theme options inside the theme modal & init selected theme as null (nothing selected yet)
@@ -802,9 +813,14 @@ const addNewPot = () => {
         const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
         const chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
 
+        // if theres a previously selected theme, remove its icon and re-enable hover cursor
+        if (document.querySelector("#selectedTheme")) {
+          document.querySelector("#selectedTheme").remove();
+          selectedTheme.classList.add("hover:cursor-pointer");
+          selectedTheme.classList.remove("hover:cursor-not-allowed");
+        }
         // mark new selected theme
         selectedTheme = theme;
-        if (document.querySelector("#selectedTheme")) document.querySelector("#selectedTheme").remove();
         selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
 
         // update theme color and label text
@@ -814,11 +830,16 @@ const addNewPot = () => {
 
         console.log(chosenTheme);
         console.log(chosenThemeName);
+
         // close theme modal after theme is selected
         themeModal.classList.add("animate-theme-close");
         setTimeout(() => {
           themeModal.classList.add("hidden");
           themeModal.classList.remove("animate-theme-close");
+
+          // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
+          selectedTheme.classList.remove("hover:cursor-pointer");
+          selectedTheme.classList.add("hover:cursor-not-allowed");
         }, 300);
       });
     });
