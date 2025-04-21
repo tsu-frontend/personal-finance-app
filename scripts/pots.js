@@ -434,6 +434,8 @@ const initPotEvents = () => {
       // append the selected theme icon to the corresponding pot theme
       if (selectedTheme) {
         selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+        selectedTheme.classList.remove("hover:cursor-pointer");
+        selectedTheme.classList.add("hover:cursor-not-allowed");
       }
 
       const themes = document.querySelector("#theme-modal").children;
