@@ -273,7 +273,7 @@ const initPotEvents = () => {
                 <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                  <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <div id="pot-target-div" class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
                     <input id="pot-target-input" type="text" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${potTarget}" />
                   </div>
@@ -404,13 +404,15 @@ const initPotEvents = () => {
        `
       );
 
-      // declare nameInput, counter, and div elements
+      // declare nameInput, targetInput, counter, and div elements
       const nameInput = document.querySelector("#pot-name-input");
       const counter = document.querySelector("#characters-left");
       const nameInputDiv = document.querySelector("#pot-name-div");
+      const targetInput = document.querySelector("#pot-target-input");
+      const targetInputDiv = document.querySelector("#pot-target-div");
 
       // update character count and border color
-      const updateCounter = () => {
+      const updateNameCounter = () => {
         const charsLeft = 30 - nameInput.value.length;
 
         // display "Too long!" if character count is below 0, else show remaining characters
@@ -424,9 +426,17 @@ const initPotEvents = () => {
         nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
       };
 
-      // listen for input changes and update counter
-      nameInput.addEventListener("input", updateCounter);
-      updateCounter();
+      // reset target input border color to default
+      const updateTargetBorder = () => {
+        targetInputDiv.style.borderColor = "#98908B";
+      };
+
+      // listen for input changes and trigger their specific update funcs
+      nameInput.addEventListener("input", updateNameCounter);
+      targetInput.addEventListener("input", updateTargetBorder);
+
+      updateNameCounter();
+      updateTargetBorder();
 
       // get the corresponding color id from the colorIds map
       const themeId = colorIds[potColorName];
@@ -577,7 +587,7 @@ const addNewPot = () => {
               <!-- 2 -->
               <div class="w-full flex flex-col gap-[4px]">
                 <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                <div class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                <div id="pot-target-div" class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                   <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
                   <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
                 </div>
@@ -708,13 +718,15 @@ const addNewPot = () => {
       `
     );
 
-    // declare nameInput, counter, and div elements
+    // declare nameInput, targetInput, counter, and div elements
     const nameInput = document.querySelector("#pot-name-input");
     const counter = document.querySelector("#characters-left");
     const nameInputDiv = document.querySelector("#pot-name-div");
+    const targetInput = document.querySelector("#pot-target-input");
+    const targetInputDiv = document.querySelector("#pot-target-div");
 
     // update character count and border color
-    const updateCounter = () => {
+    const updateNameCounter = () => {
       const charsLeft = 30 - nameInput.value.length;
 
       // display "Too long!" if character count is below 0, else show remaining characters
@@ -728,9 +740,17 @@ const addNewPot = () => {
       nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
     };
 
-    // listen for input changes and update counter
-    nameInput.addEventListener("input", updateCounter);
-    updateCounter();
+    // reset target input border color to default
+    const updateTargetBorder = () => {
+      targetInputDiv.style.borderColor = "#98908B";
+    };
+
+    // listen for input changes and trigger their specific update funcs
+    nameInput.addEventListener("input", updateNameCounter);
+    targetInput.addEventListener("input", updateTargetBorder);
+
+    updateNameCounter();
+    updateTargetBorder();
 
     const newPotModal = document.querySelector("#new-pot-modal");
     const newPotCloseBtn = document.querySelector('[data-name="new-pot-close-button"]');
@@ -850,20 +870,16 @@ const addNewPot = () => {
 
     const saveChangesBtn = document.querySelector("#save-changes-button");
 
-    // nameInput
-    const targetInput = document.querySelector("#pot-target-input");
-
     nameInput.addEventListener("input", () => {
       const redMsg = nameInputDiv.querySelector("#red-msg");
       if (redMsg) redMsg.remove();
     });
+    targetInput.addEventListener("input", () => {
+      const redMsg = targetInputDiv.querySelector("#red-msg");
+      if (redMsg) redMsg.remove();
+    });
 
     saveChangesBtn.addEventListener("click", () => {
-      nameInput.addEventListener("input", () => {
-        const redMsg = nameInputDiv.querySelector("#red-msg");
-        if (redMsg) redMsg.remove();
-      });
-
       if (nameInput.value.length === 0) {
         nameInputDiv.style.borderColor = "red";
         nameInputDiv.insertAdjacentHTML(
@@ -878,6 +894,26 @@ const addNewPot = () => {
           "beforeend",
           `
             <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+          `
+        );
+      }
+
+      //////////////////////////////////
+
+      if (targetInput.value.length === 0) {
+        targetInputDiv.style.borderColor = "red";
+        targetInputDiv.insertAdjacentHTML(
+          "beforeend",
+          `
+            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+          `
+        );
+      } else if (!/^\d+$/.test(targetInput.value)) {
+        targetInputDiv.style.borderColor = "red";
+        targetInputDiv.insertAdjacentHTML(
+          "beforeend",
+          `
+            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
           `
         );
       }
