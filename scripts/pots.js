@@ -908,13 +908,21 @@ const addNewPot = () => {
             <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
           `
         );
-      } else if (!/^\d+$/.test(targetInput.value)) {
+      } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 0.01) {
         targetInputDiv.style.borderColor = "red";
         targetInputDiv.insertAdjacentHTML(
           "beforeend",
           `
             <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
           `
+        );
+      } else if (targetInput.value == 69) {
+        targetInputDiv.style.borderColor = "red";
+        targetInputDiv.insertAdjacentHTML(
+          "beforeend",
+          `
+                <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+              `
         );
       }
     });
