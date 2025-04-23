@@ -353,9 +353,6 @@
   .hidden {
     display: none;
   }
-  .table {
-    display: table;
-  }
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -521,26 +518,20 @@
   .w-full {
     width: 100%;
   }
+  .max-w-\[200px\] {
+    max-width: 200px;
+  }
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
-  }
-  .flex-grow {
-    flex-grow: 1;
   }
   .grow-0 {
     flex-grow: 0;
   }
   .basis-0 {
     flex-basis: calc(var(--spacing) * 0);
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .translate-y-\[-10px\] {
     --tw-translate-y: -10px;
@@ -555,17 +546,11 @@
   .rotate-180 {
     rotate: 180deg;
   }
-  .transform {
-    transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
-  }
   .transform-gpu {
     transform: translateZ(0) var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
   }
   .cursor-auto {
     cursor: auto;
-  }
-  .resize {
-    resize: both;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -700,48 +685,6 @@
   }
   .border-\[\#98908B\] {
     border-color: #98908B;
-  }
-  .border-\[h\] {
-    border-color: h;
-  }
-  .border-\[ho\] {
-    border-color: ho;
-  }
-  .border-\[hot\] {
-    border-color: hot;
-  }
-  .border-\[hotk\] {
-    border-color: hotk;
-  }
-  .border-\[hotki\] {
-    border-color: hotki;
-  }
-  .border-\[hotp\] {
-    border-color: hotp;
-  }
-  .border-\[hotpi\] {
-    border-color: hotpi;
-  }
-  .border-\[hotpin\] {
-    border-color: hotpin;
-  }
-  .border-\[hotpink\] {
-    border-color: hotpink;
-  }
-  .border-\[hotpinkk\] {
-    border-color: hotpinkk;
-  }
-  .border-\[p\] {
-    border-color: p;
-  }
-  .border-\[pi\] {
-    border-color: pi;
-  }
-  .border-\[pin\] {
-    border-color: pin;
-  }
-  .border-\[pink\] {
-    border-color: pink;
   }
   .border-gray-400 {
     border-color: var(--color-gray-400);
@@ -878,9 +821,6 @@
   .py-\[24px\] {
     padding-block: 24px;
   }
-  .pt-1 {
-    padding-top: calc(var(--spacing) * 1);
-  }
   .pt-1\.5 {
     padding-top: calc(var(--spacing) * 1.5);
   }
@@ -1016,15 +956,6 @@
   .text-\[\#FFF\] {
     color: #FFF;
   }
-  .text-\[hotpink\] {
-    color: hotpink;
-  }
-  .text-\[r\] {
-    color: r;
-  }
-  .text-\[re\] {
-    color: re;
-  }
   .text-\[red\] {
     color: red;
   }
@@ -1043,12 +974,6 @@
   .text-white {
     color: var(--color-white);
   }
-  .capitalize {
-    text-transform: capitalize;
-  }
-  .underline {
-    text-decoration-line: underline;
-  }
   .opacity-15 {
     opacity: 15%;
   }
@@ -1059,15 +984,6 @@
   .shadow-sm {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
-  .transition {
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
   .transition-all {
     transition-property: all;
@@ -1150,96 +1066,6 @@
       content: var(--tw-content);
       border-left-style: var(--tw-border-style);
       border-left-width: 1px;
-    }
-  }
-  .after\:border-\[black\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: black;
-    }
-  }
-  .after\:border-\[h\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: h;
-    }
-  }
-  .after\:border-\[ho\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: ho;
-    }
-  }
-  .after\:border-\[hot\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hot;
-    }
-  }
-  .after\:border-\[hotk\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotk;
-    }
-  }
-  .after\:border-\[hotki\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotki;
-    }
-  }
-  .after\:border-\[hotp\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotp;
-    }
-  }
-  .after\:border-\[hotpi\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotpi;
-    }
-  }
-  .after\:border-\[hotpin\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotpin;
-    }
-  }
-  .after\:border-\[hotpink\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotpink;
-    }
-  }
-  .after\:border-\[hotpinkk\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: hotpinkk;
-    }
-  }
-  .after\:border-\[p\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: p;
-    }
-  }
-  .after\:border-\[pink\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: pink;
-    }
-  }
-  .after\:border-\[r\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: r;
-    }
-  }
-  .after\:border-\[re\] {
-    &::after {
-      content: var(--tw-content);
-      border-color: re;
     }
   }
   .after\:border-\[red\] {
@@ -1712,31 +1538,6 @@
   inherits: false;
   initial-value: 1;
 }
-@property --tw-rotate-x {
-  syntax: "*";
-  inherits: false;
-  initial-value: rotateX(0);
-}
-@property --tw-rotate-y {
-  syntax: "*";
-  inherits: false;
-  initial-value: rotateY(0);
-}
-@property --tw-rotate-z {
-  syntax: "*";
-  inherits: false;
-  initial-value: rotateZ(0);
-}
-@property --tw-skew-x {
-  syntax: "*";
-  inherits: false;
-  initial-value: skewX(0);
-}
-@property --tw-skew-y {
-  syntax: "*";
-  inherits: false;
-  initial-value: skewY(0);
-}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -1808,11 +1609,6 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
-}
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
 }
 @property --tw-duration {
   syntax: "*";

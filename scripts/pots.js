@@ -273,7 +273,7 @@ const initPotEvents = () => {
                 <!-- 2 -->
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                  <div id="pot-target-div" class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                  <div id="pot-target-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
                     <input id="pot-target-input" type="text" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${potTarget}" />
                   </div>
@@ -587,7 +587,7 @@ const addNewPot = () => {
               <!-- 2 -->
               <div class="w-full flex flex-col gap-[4px]">
                 <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                <div id="pot-target-div" class="hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                <div id="pot-target-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                   <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
                   <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
                 </div>
@@ -868,65 +868,90 @@ const addNewPot = () => {
       });
     });
 
-    const saveChangesBtn = document.querySelector("#save-changes-button");
+    // validate inputs before submitting data
+    validateInputs();
+  });
+};
 
+addNewPot();
+
+// validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements
+const validateInputs = () => {
+  // declare dom elements for pot name, target, and save button
+  const saveChangesBtn = document.querySelector("#save-changes-button");
+
+  const nameInput = document.querySelector("#pot-name-input");
+  const targetInput = document.querySelector("#pot-target-input");
+
+  const nameInputDiv = document.querySelector("#pot-name-div");
+  const targetInputDiv = document.querySelector("#pot-target-div");
+
+  // listen for click event on save button
+  saveChangesBtn.addEventListener("click", () => {
+    // clear error message when user types in name input
     nameInput.addEventListener("input", () => {
       const redMsg = nameInputDiv.querySelector("#red-msg");
       if (redMsg) redMsg.remove();
     });
+
+    // validate name input: required, max 30 chars, alphanumeric
+    if (nameInput.value.length === 0) {
+      nameInputDiv.style.borderColor = "red";
+      nameInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+      `
+      );
+    } else if (nameInput.value.length > 30) {
+      nameInputDiv.style.borderColor = "red";
+      nameInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+      `
+      );
+    } else if (!/^[a-zA-Z0-9 ]+$/.test(nameInput.value)) {
+      nameInputDiv.style.borderColor = "red";
+      nameInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
+      `
+      );
+    }
+
+    // clear error message when user types in target input
     targetInput.addEventListener("input", () => {
       const redMsg = targetInputDiv.querySelector("#red-msg");
       if (redMsg) redMsg.remove();
     });
 
-    saveChangesBtn.addEventListener("click", () => {
-      if (nameInput.value.length === 0) {
-        nameInputDiv.style.borderColor = "red";
-        nameInputDiv.insertAdjacentHTML(
-          "beforeend",
-          `
-            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-          `
-        );
-      } else if (nameInput.value.length > 30) {
-        nameInputDiv.style.borderColor = "red";
-        nameInputDiv.insertAdjacentHTML(
-          "beforeend",
-          `
-            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
-          `
-        );
-      }
-
-      //////////////////////////////////
-
-      if (targetInput.value.length === 0) {
-        targetInputDiv.style.borderColor = "red";
-        targetInputDiv.insertAdjacentHTML(
-          "beforeend",
-          `
-            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-          `
-        );
-      } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 0.01) {
-        targetInputDiv.style.borderColor = "red";
-        targetInputDiv.insertAdjacentHTML(
-          "beforeend",
-          `
-            <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
-          `
-        );
-      } else if (targetInput.value == 69) {
-        targetInputDiv.style.borderColor = "red";
-        targetInputDiv.insertAdjacentHTML(
-          "beforeend",
-          `
-                <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
-              `
-        );
-      }
-    });
+    // validate target input: required, valid number, not 69
+    if (targetInput.value.length === 0) {
+      targetInputDiv.style.borderColor = "red";
+      targetInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+      `
+      );
+    } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 1 || targetInput.value > 999999) {
+      targetInputDiv.style.borderColor = "red";
+      targetInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
+      `
+      );
+    } else if (targetInput.value == 69) {
+      targetInputDiv.style.borderColor = "red";
+      targetInputDiv.insertAdjacentHTML(
+        "beforeend",
+        `
+        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+      `
+      );
+    }
   });
 };
-
-addNewPot();
