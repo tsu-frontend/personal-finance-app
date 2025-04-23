@@ -145,13 +145,14 @@ function chooseCat(event){
             <div data-name="budget_heading" class="flex items-center">
               <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
               <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
-              <figure data-name="three_dots" class="text-2xl relative tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto">...
-
-              <div class='w-[134px] h-[91px] text-black bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] pt-3 pb-3 pl-5 pr-5 absolute top-12 right-0 rounded-lg text-sm'>
-              <p class='tracking-[-0.2px]'>Edit Budget</p>
+              <figure data-name="three_dots" class="text-2xl relative tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto cursor-pointer">...
+              
+              <div id='edit_delete' class='hidden w-[134px] h-[91px] text-black bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] pt-3 pb-3 pl-5 pr-5 absolute top-11 right-0 rounded-lg text-sm cursor-auto'>
+              <p class='tracking-[-0.2px] cursor-pointer'>Edit Budget</p>
               <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
-              <p class='text-[#C94736] tracking-[-0.2px]'>Delete Budget</p>
+              <p class='text-[#C94736] tracking-[-0.2px] cursor-pointer'>Delete Budget</p>
               </div>
+
               </figure>
             </div>
 
@@ -195,14 +196,6 @@ function chooseCat(event){
            parentEle.innerHTML += budgetBox
            spendingSummary.innerHTML += summaryBox
 
-          //  oneSpending.innerHTML = lastSpending
-
-    //         for(let i = 0; i < 3; i++){
-    //            oneSpending.forEach(parent =>{
-    //             parent.innerHTML += lastSpending
-    //  }
-    // )};
-
      });
      let lastSpending = `         
      <article>
@@ -219,6 +212,12 @@ function chooseCat(event){
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
     </article>`
 
+    const threeDots = document.querySelector('[data-name="three_dots"]')
+    const editOrDelete = document.getElementById('edit_delete')
+
+    threeDots.addEventListener('click', () =>{
+    editOrDelete.classList.toggle('hidden')
+    })
 
      let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]')
      oneSpending.forEach(parent => {
@@ -226,7 +225,6 @@ function chooseCat(event){
                 parent.innerHTML += lastSpending
      }
      })
-
 
   }
 

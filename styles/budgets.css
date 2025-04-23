@@ -208,6 +208,9 @@
   .top-10 {
     top: calc(var(--spacing) * 10);
   }
+  .top-11 {
+    top: calc(var(--spacing) * 11);
+  }
   .top-12 {
     top: calc(var(--spacing) * 12);
   }
@@ -571,6 +574,9 @@
   }
   .rotate-180 {
     rotate: 180deg;
+  }
+  .cursor-auto {
+    cursor: auto;
   }
   .cursor-pointer {
     cursor: pointer;
