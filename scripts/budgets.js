@@ -1,10 +1,12 @@
  const ctx = document.getElementById('doughnut');
- const themeDropdownParent = document.querySelector('#theme_dropdown')
- const catDropdownParent = document.querySelector('#category_dropdown')
- const catDropdown = document.querySelector('#cat_dropdown')
- const themeDropdown = document.querySelector('#col_dropdown')
- const addBtn = document.querySelector('#add_new')
-
+ const themeDropdownParent = document.getElementById('theme_dropdown')
+ const catDropdownParent = document.getElementById('category_dropdown')
+ const catDropdown = document.getElementById('cat_dropdown')
+ const themeDropdown = document.getElementById('col_dropdown')
+//  const addBtn = document.getElementById('add_new')
+ const showAddBudgetModal = document.getElementById('add_btn')
+ const addBudgetModal = document.getElementById('add_budget')
+ const editBudgetModal = document.getElementById('edit_budget')
 
 // cyrcle chart
  const cyrcle = new Chart(ctx, {
@@ -28,6 +30,25 @@
         responsive: true,
     }
   });
+
+// open modals
+showAddBudgetModal.addEventListener('click', () =>{
+addBudgetModal.classList.replace('hidden', 'flex')
+})
+
+// close modals
+function checkClickedEle(event){
+  let clicked = event.target 
+  if(clicked.id === 'close_img'){
+
+    if(clicked === addBudgetModal){
+      addBudgetModal.classList.replace('flex', 'hidden')
+      }
+    if(clicked === editBudgetModal){
+      editBudgetModal.classList.replace('flex', 'hidden')
+      }
+  }
+}
 
 
 // dropdowns
@@ -63,11 +84,11 @@ function chooseCat(event){
 
 
 // click on add-budget Button, adding new budget
-addBtn.addEventListener('click', (event) =>{
-event.preventDefault()
+// addBtn.addEventListener('click', (event) =>{
+// event.preventDefault()
 
 // let category = 
-})
+// })
 
 
 

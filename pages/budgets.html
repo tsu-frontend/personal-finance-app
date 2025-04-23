@@ -77,7 +77,7 @@
 <!-- heading -->
       <section class="w-full flex justify-between">
         <h2 class="text-[27px] font-semibold">Budgets</h2>
-        <button id="add_btn" class="bg-[#201F24] text-[white] text-[15px] w-40 h-14 rounded-md">+ Add New Budget</button>
+        <button id="add_btn" class="bg-[#201F24] cursor-pointer text-[white] text-[15px] w-40 h-14 rounded-md">+ Add New Budget</button>
       </section>
 
        <section class="flex mt-9 gap-6  h-auto items-start">
@@ -106,12 +106,12 @@
        </section>
 <!-- modals  -->
     
-<section class="absolute h-screen w-full bg-[#464646e9] top-0 left-0 flex justify-center items-center">
+<section id="add_budget" onclick="checkClickedEle(event, this)" class="hidden absolute h-screen w-full bg-[#464646e9] top-0 left-0 justify-center items-center">
 <!-- white modal box -->
       <div class="w-[560px] h-[490px] bg-white rounded-xl p-8 gap-5 flex flex-col">
         <aside class="flex justify-between"> 
           <h4 class="text-[32px] font-bold">Add New Budget</h4>
-          <img src="../assets/images/icon-close-modal.svg" alt="">
+          <img id="close_img" class="cursor-pointer" src="../assets/images/icon-close-modal.svg" alt="">
         </aside>
 
           <article class="text-sm text-[#696868] leading-[150%]">
@@ -208,6 +208,9 @@
 
 
     </section>
+
+
+
   </main>
   </body>
 </html>
