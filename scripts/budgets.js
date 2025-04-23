@@ -145,7 +145,14 @@ function chooseCat(event){
             <div data-name="budget_heading" class="flex items-center">
               <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
               <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
-              <figure data-name="three_dots" class="text-2xl tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto">...</figure>
+              <figure data-name="three_dots" class="text-2xl relative tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto">...
+
+              <div class='w-[134px] h-[91px] text-black bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] pt-3 pb-3 pl-5 pr-5 absolute top-12 right-0 rounded-lg text-sm'>
+              <p class='tracking-[-0.2px]'>Edit Budget</p>
+              <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
+              <p class='text-[#C94736] tracking-[-0.2px]'>Delete Budget</p>
+              </div>
+              </figure>
             </div>
 
             <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of ${maximum}.00$</div>
