@@ -404,11 +404,17 @@ const initPotEvents = () => {
        `
       );
 
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////// merge into 1 func ///////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
       // declare nameInput, targetInput, counter, and div elements
-      const nameInput = document.querySelector("#pot-name-input");
       const counter = document.querySelector("#characters-left");
-      const nameInputDiv = document.querySelector("#pot-name-div");
+
+      const nameInput = document.querySelector("#pot-name-input");
       const targetInput = document.querySelector("#pot-target-input");
+
+      const nameInputDiv = document.querySelector("#pot-name-div");
       const targetInputDiv = document.querySelector("#pot-target-div");
 
       // update character count and border color
@@ -437,6 +443,10 @@ const initPotEvents = () => {
 
       updateNameCounter();
       updateTargetBorder();
+
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       // get the corresponding color id from the colorIds map
       const themeId = colorIds[potColorName];
@@ -718,6 +728,10 @@ const addNewPot = () => {
       `
     );
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////// merge into 1 func ///////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // declare nameInput, targetInput, counter, and div elements
     const nameInput = document.querySelector("#pot-name-input");
     const counter = document.querySelector("#characters-left");
@@ -751,6 +765,10 @@ const addNewPot = () => {
 
     updateNameCounter();
     updateTargetBorder();
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const newPotModal = document.querySelector("#new-pot-modal");
     const newPotCloseBtn = document.querySelector('[data-name="new-pot-close-button"]');
@@ -868,7 +886,7 @@ const addNewPot = () => {
       });
     });
 
-    // validate inputs before submitting data
+    // validate inputs before sending data to json
     validateInputs();
   });
 };
@@ -888,70 +906,103 @@ const validateInputs = () => {
 
   // listen for click event on save button
   saveChangesBtn.addEventListener("click", () => {
-    // clear error message when user types in name input
-    nameInput.addEventListener("input", () => {
-      const redMsg = nameInputDiv.querySelector("#red-msg");
-      if (redMsg) redMsg.remove();
-    });
+    // flag to track if inputs are valid
+    let isValid = true;
+
+    // clear previous errors before validating again
+    const clearErrors = () => {
+      const nameRedMsg = nameInputDiv.querySelector("#red-msg");
+      const targetRedMsg = targetInputDiv.querySelector("#red-msg");
+      if (nameRedMsg) nameRedMsg.remove();
+      if (targetRedMsg) targetRedMsg.remove();
+      nameInputDiv.style.borderColor = "";
+      targetInputDiv.style.borderColor = "";
+    };
+    clearErrors();
 
     // validate name input: required, max 30 chars, alphanumeric
     if (nameInput.value.length === 0) {
+      isValid = false;
       nameInputDiv.style.borderColor = "red";
       nameInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+        `
       );
     } else if (nameInput.value.length > 30) {
+      isValid = false;
       nameInputDiv.style.borderColor = "red";
       nameInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+        `
       );
     } else if (!/^[a-zA-Z0-9 ]+$/.test(nameInput.value)) {
+      isValid = false;
       nameInputDiv.style.borderColor = "red";
       nameInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
+        `
       );
     }
-
-    // clear error message when user types in target input
-    targetInput.addEventListener("input", () => {
-      const redMsg = targetInputDiv.querySelector("#red-msg");
-      if (redMsg) redMsg.remove();
-    });
 
     // validate target input: required, valid number, not 69
     if (targetInput.value.length === 0) {
+      isValid = false;
       targetInputDiv.style.borderColor = "red";
       targetInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+        `
       );
     } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 1 || targetInput.value > 999999) {
+      isValid = false;
       targetInputDiv.style.borderColor = "red";
       targetInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
+        `
       );
     } else if (targetInput.value == 69) {
+      isValid = false;
       targetInputDiv.style.borderColor = "red";
       targetInputDiv.insertAdjacentHTML(
         "beforeend",
         `
-        <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
-      `
+          <p id="red-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after/w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+        `
       );
     }
+
+    // only send data if inputs are valid
+    if (isValid) {
+      // proceed with sending data if all inputs are valid
+      sendPotsData(pots);
+      console.log("valid");
+    } else {
+      console.log("invalid");
+    }
+  });
+};
+
+const sendPotsData = async (pots) => {
+  const response = await fetch("http://localhost:3000/pots", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: String(Math.floor(1 + Math.random() * 999999)).padStart(6, "0"),
+      name: document.querySelector("#pot-name-input").value,
+      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
+      total: 0.0,
+      theme: "#C94736",
+    }),
   });
 };
