@@ -39,15 +39,13 @@ addBudgetModal.classList.replace('hidden', 'flex')
 // close modals
 function checkClickedEle(event){
   let clicked = event.target 
-  if(clicked.id === 'close_img'){
 
-    if(clicked === addBudgetModal){
+    if(clicked === addBudgetModal || clicked.id === 'close_img'){
       addBudgetModal.classList.replace('flex', 'hidden')
       }
-    if(clicked === editBudgetModal){
+    if(clicked === editBudgetModal || clicked.id === 'close_img'){
       editBudgetModal.classList.replace('flex', 'hidden')
       }
-  }
 }
 
 
