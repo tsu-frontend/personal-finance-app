@@ -7,6 +7,10 @@
  const showAddBudgetModal = document.getElementById('add_btn')
  const addBudgetModal = document.getElementById('add_budget')
  const editBudgetModal = document.getElementById('edit_budget')
+ const chosenCat = document.getElementById('chosen_category')
+ const chosenCol = document.getElementById('chosen_color')
+ const chosenColBall = document.getElementById('color_ball')
+
 
 // cyrcle chart
  const cyrcle = new Chart(ctx, {
@@ -42,11 +46,14 @@ function checkClickedEle(event){
 
     if(clicked === addBudgetModal || clicked.id === 'close_img'){
       addBudgetModal.classList.replace('flex', 'hidden')
+      catDropdown.classList.add('hidden')
+      themeDropdown.classList.add('hidden')
       }
     if(clicked === editBudgetModal || clicked.id === 'close_img'){
       editBudgetModal.classList.replace('flex', 'hidden')
       }
 }
+
 
 
 // dropdowns
@@ -74,19 +81,15 @@ dropDown(themeDropdownParent, themeDropdown)
 // choose category and theme
 function chooseCat(event){
  let clickedEle = event.target
-//  console.log(clickedEle.innerText)
-//  if(clickedEle.textContent === '' ){
-//  console.log()
-//  }
+ let clickedEleText = clickedEle.innerText
+
+ if(clickedEle.classList.contains('category')){  
+  chosenCat.innerText = clickedEleText
+ }
+ if(clickedEle.classList.contains('color')){
+  chosenCol.innerText = clickedEle.innerText
+ }
 }
-
-
-// click on add-budget Button, adding new budget
-// addBtn.addEventListener('click', (event) =>{
-// event.preventDefault()
-
-// let category = 
-// })
 
 
 
@@ -96,7 +99,7 @@ function chooseCat(event){
     const data = await response.json() 
     const budgets = data.budgets 
 
-    console.log(budgets)
+
     
 
     let parentEle = document.querySelector('#budgets_parent')
@@ -116,6 +119,7 @@ function chooseCat(event){
       totalSum.textContent = `of $${SUM} limit`
 
       
+// add budget boxes dynamically
 
       let summaryBox = `
       <div id="spending_summary" class="mt-6">
@@ -210,8 +214,10 @@ function chooseCat(event){
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
     </article>`
 
-    const threeDots = document.querySelectorAll('[data-name="three_dots"]')
     
+
+// open and close small menu
+const threeDots = document.querySelectorAll('[data-name="three_dots"]')
 
     threeDots.forEach((button) =>{
     button.addEventListener('click', (e) =>{
@@ -237,6 +243,7 @@ function chooseCat(event){
      
     })
 
+// add last spendings
      let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]')
      oneSpending.forEach(parent => {
                   for(let i = 0; i < 3; i++){
