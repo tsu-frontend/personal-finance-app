@@ -24,13 +24,10 @@
     --font-weight-normal: 400;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --tracking-normal: 0em;
-    --tracking-wide: 0.025em;
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
-    --radius-2xl: 1rem;
     --radius-4xl: 2rem;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -199,20 +196,11 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .top-3 {
-    top: calc(var(--spacing) * 3);
-  }
-  .top-6 {
-    top: calc(var(--spacing) * 6);
-  }
   .top-10 {
     top: calc(var(--spacing) * 10);
   }
   .top-11 {
     top: calc(var(--spacing) * 11);
-  }
-  .top-12 {
-    top: calc(var(--spacing) * 12);
   }
   .top-\[36px\] {
     top: 36px;
@@ -223,29 +211,14 @@
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
-  .right-5 {
-    right: calc(var(--spacing) * 5);
-  }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
-  }
-  .-left-5 {
-    left: calc(var(--spacing) * -5);
-  }
-  .-left-10 {
-    left: calc(var(--spacing) * -10);
-  }
-  .-left-20 {
-    left: calc(var(--spacing) * -20);
   }
   .-left-\[1px\] {
     left: calc(1px * -1);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
-  }
-  .left-10 {
-    left: calc(var(--spacing) * 10);
   }
   .z-1 {
     z-index: 1;
@@ -366,6 +339,9 @@
   }
   .hidden {
     display: none;
+  }
+  .inline-block {
+    display: inline-block;
   }
   .table {
     display: table;
@@ -501,9 +477,6 @@
   }
   .w-\[128px\] {
     width: 128px;
-  }
-  .w-\[134\] {
-    width: 134;
   }
   .w-\[134px\] {
     width: 134px;
@@ -653,9 +626,6 @@
   .overflow-y-auto {
     overflow-y: auto;
   }
-  .rounded-2xl {
-    border-radius: var(--radius-2xl);
-  }
   .rounded-4xl {
     border-radius: var(--radius-4xl);
   }
@@ -792,9 +762,6 @@
   .bg-\[white\] {
     background-color: white;
   }
-  .bg-black {
-    background-color: var(--color-black);
-  }
   .bg-white {
     background-color: var(--color-white);
   }
@@ -840,9 +807,6 @@
   .pt-3 {
     padding-top: calc(var(--spacing) * 3);
   }
-  .pt-12 {
-    padding-top: calc(var(--spacing) * 12);
-  }
   .pt-\[4px\] {
     padding-top: 4px;
   }
@@ -866,9 +830,6 @@
   }
   .pb-\[52px\] {
     padding-bottom: 52px;
-  }
-  .pl-4 {
-    padding-left: calc(var(--spacing) * 4);
   }
   .pl-5 {
     padding-left: calc(var(--spacing) * 5);
@@ -956,41 +917,9 @@
     --tw-tracking: -0.06em;
     letter-spacing: -0.06em;
   }
-  .tracking-\[-0px\] {
-    --tw-tracking: -0px;
-    letter-spacing: -0px;
-  }
-  .tracking-\[-px\] {
-    --tw-tracking: -px;
-    letter-spacing: -px;
-  }
   .tracking-\[0\.01em\] {
     --tw-tracking: 0.01em;
     letter-spacing: 0.01em;
-  }
-  .tracking-\[0\.1px\] {
-    --tw-tracking: 0.1px;
-    letter-spacing: 0.1px;
-  }
-  .tracking-\[0\.2px\] {
-    --tw-tracking: 0.2px;
-    letter-spacing: 0.2px;
-  }
-  .tracking-\[0\.5px\] {
-    --tw-tracking: 0.5px;
-    letter-spacing: 0.5px;
-  }
-  .tracking-\[0px\] {
-    --tw-tracking: 0px;
-    letter-spacing: 0px;
-  }
-  .tracking-normal {
-    --tw-tracking: var(--tracking-normal);
-    letter-spacing: var(--tracking-normal);
-  }
-  .tracking-wide {
-    --tw-tracking: var(--tracking-wide);
-    letter-spacing: var(--tracking-wide);
   }
   .text-\[\#201F24\] {
     color: #201F24;
