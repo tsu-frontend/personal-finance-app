@@ -403,7 +403,20 @@ const initPotEvents = () => {
           </div>
        `
       );
-      validateInputs();
+
+      // declare the name and target input elements
+      const nameInput = document.querySelector("#pot-name-input");
+      const targetInput = document.querySelector("#pot-target-input");
+
+      // validate name and target inputs whenever the user types in the fields
+      nameInput.addEventListener("input", validateNameInput);
+      targetInput.addEventListener("input", validateTargetInput);
+
+      // declare te counter element
+      const counter = document.querySelector("#characters-left");
+      // update counter
+      const charsLeft = 30 - nameInput.value.length;
+      counter.textContent = `${charsLeft} characters left`;
 
       // get the corresponding color id from the colorIds map
       const themeId = colorIds[potColorName];
@@ -684,7 +697,20 @@ const addNewPot = () => {
         </div>
       `
     );
-    validateInputs();
+
+    // declare the name and target input elements
+    const nameInput = document.querySelector("#pot-name-input");
+    const targetInput = document.querySelector("#pot-target-input");
+
+    // validate name and target inputs whenever the user types in the fields
+    nameInput.addEventListener("input", validateNameInput);
+    targetInput.addEventListener("input", validateTargetInput);
+
+    // declare te counter element
+    const counter = document.querySelector("#characters-left");
+    // update counter
+    const charsLeft = 30 - nameInput.value.length;
+    counter.textContent = `${charsLeft} characters left`;
 
     const newPotModal = document.querySelector("#new-pot-modal");
     const newPotCloseBtn = document.querySelector('[data-name="new-pot-close-button"]');
@@ -799,138 +825,145 @@ const addNewPot = () => {
       });
     });
 
-    // validate inputs before sending data to json
+    // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements
     const saveChangesBtn = document.querySelector("#save-changes-button");
     saveChangesBtn.addEventListener("click", () => {
-      validateInputs();
-      // ...
+      // validate both inputs
+      validateNameInput();
+      validateTargetInput();
+
+      // get the validation result from each function, which returns the canSubmit state for the target input
+      const nameValid = validateNameInput();
+      const targetValid = validateTargetInput();
+
+      // check if both validations pass
+      if (nameValid && targetValid) {
+        console.log("yessir");
+        sendPotsData();
+      } else {
+        console.log("nope");
+      }
     });
   });
 };
 
 addNewPot();
 
-// validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements
-const validateInputs = () => {
+// validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
+const validateNameInput = () => {
   // flag to track if inputs are valid
-  let isValid = true;
+  let canSubmit = true;
 
-  // declare dom elements for pot name and target inputs
+  // declare counter, name input and its div
   const counter = document.querySelector("#characters-left");
-
   const nameInput = document.querySelector("#pot-name-input");
-  const targetInput = document.querySelector("#pot-target-input");
-
   const nameInputDiv = document.querySelector("#pot-name-div");
-  const targetInputDiv = document.querySelector("#pot-target-div");
 
-  // update character counter based on current input length
+  // calculate how many characters are left before reaching the 30 character limit
   const charsLeft = 30 - nameInput.value.length;
-  counter.textContent = `${charsLeft} characters left`;
 
-  nameInput.addEventListener("input", () => {
-    // calculate how many characters are left before reaching the 30 character limit
-    const charsLeft = 30 - nameInput.value.length;
+  // change border color to red if input too long, else keep it default
+  if (charsLeft < 0) {
+    counter.textContent = "Too long!";
+  } else {
+    counter.textContent = `${charsLeft} characters left`;
+  }
 
-    // change border color to red if input too long, else keep it default
-    if (charsLeft < 0) {
-      counter.textContent = "Too long!";
-    } else {
-      counter.textContent = `${charsLeft} characters left`;
-    }
+  // change border color to red if input too long, else keep it default
+  nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
 
-    // change border color to red if input too long, else keep it default
-    nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+  // remove previous error msg if exists to prevent duplicates
+  const nameRedMsg = nameInputDiv.querySelector("#error-msg");
+  if (nameRedMsg) nameRedMsg.remove();
 
-    // remove previous error msg if exists to prevent duplicates
-    const nameRedMsg = nameInputDiv.querySelector("#error-msg");
-    if (nameRedMsg) nameRedMsg.remove();
+  // validate name input: required, max 30 chars, alphanumeric
+  if (nameInput.value.length === 0) {
+    canSubmit = false;
+    nameInputDiv.style.borderColor = "red";
+    nameInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+      <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+    `
+    );
+  } else if (nameInput.value.length > 30) {
+    canSubmit = false;
+    nameInputDiv.style.borderColor = "red";
+    nameInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+      <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+    `
+    );
+  } else if (!/^[a-zA-Z0-9 ]+$/.test(nameInput.value)) {
+    canSubmit = false;
+    nameInputDiv.style.borderColor = "red";
+    nameInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+      <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
+    `
+    );
+  }
 
-    // validate name input: required, max 30 chars, alphanumeric
-    if (nameInput.value.length === 0) {
-      isValid = false;
-      nameInputDiv.style.borderColor = "red";
-      nameInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-        `
-      );
-    } else if (nameInput.value.length > 30) {
-      isValid = false;
-      nameInputDiv.style.borderColor = "red";
-      nameInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
-        `
-      );
-    } else if (!/^[a-zA-Z0-9 ]+$/.test(nameInput.value)) {
-      isValid = false;
-      nameInputDiv.style.borderColor = "red";
-      nameInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
-        `
-      );
-    }
-  });
-
-  // listen for click event on save button
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  targetInput.addEventListener("input", () => {
-    // reset target input border color to default before validation runs again
-    targetInputDiv.style.borderColor = "#98908B";
-
-    // remove previous error msg if exists to prevent duplicates
-    const targetRedMsg = targetInputDiv.querySelector("#error-msg");
-    if (targetRedMsg) targetRedMsg.remove();
-
-    // validate target input: required, valid number, not 69
-    if (targetInput.value.length === 0) {
-      isValid = false;
-      targetInputDiv.style.borderColor = "red";
-      targetInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-        `
-      );
-    } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 1 || targetInput.value > 999999) {
-      isValid = false;
-      targetInputDiv.style.borderColor = "red";
-      targetInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
-        `
-      );
-    } else if (targetInput.value == 69) {
-      isValid = false;
-      targetInputDiv.style.borderColor = "red";
-      targetInputDiv.insertAdjacentHTML(
-        "beforeend",
-        `
-          <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after/w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
-        `
-      );
-    }
-  });
+  // return the state of canSubmit
+  return canSubmit;
 };
 
-// only send data if inputs are valid
-// if (isValid) {
-//   // proceed with sending data if all inputs are valid
-//   sendPotsData(pots);
-//   console.log("valid");
-// } else {
-//   console.log("invalid");
-// }
+// validates the target input: checks if its required and a valid number. returns canSubmit state
+const validateTargetInput = () => {
+  // flag to track if inputs are valid
+  let canSubmit = true;
+
+  // declare target input and its div
+  const targetInput = document.querySelector("#pot-target-input");
+  const targetInputDiv = document.querySelector("#pot-target-div");
+
+  // reset target input border color to default before validation runs again
+  targetInputDiv.style.borderColor = "#98908B";
+
+  // remove previous error msg if exists to prevent duplicates
+  const targetRedMsg = targetInputDiv.querySelector("#error-msg");
+  if (targetRedMsg) targetRedMsg.remove();
+
+  // validate target input: required, valid number, not 69
+  if (targetInput.value.length === 0) {
+    canSubmit = false;
+    targetInputDiv.style.borderColor = "red";
+    targetInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+      `
+    );
+  } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 1 || targetInput.value > 999999) {
+    canSubmit = false;
+    targetInputDiv.style.borderColor = "red";
+    targetInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
+      `
+    );
+  } else if (targetInput.value == 69) {
+    canSubmit = false;
+    targetInputDiv.style.borderColor = "red";
+    targetInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after/w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+      `
+    );
+  }
+
+  // return the state of canSubmit
+  return canSubmit;
+};
+
+// sends the pot data to json: id, name, target, and theme
 const sendPotsData = async (pots) => {
+  // npm install -g json-server
+  // json-server data.json
   const response = await fetch("http://localhost:3000/pots", {
     method: "POST",
     headers: {
@@ -945,4 +978,3 @@ const sendPotsData = async (pots) => {
     }),
   });
 };
-// .
