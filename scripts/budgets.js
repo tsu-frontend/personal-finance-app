@@ -214,13 +214,22 @@ function chooseCat(event){
     
 
     threeDots.forEach((button) =>{
-    button.addEventListener('click', () =>{
-
+    button.addEventListener('click', (e) =>{
+      e.stopPropagation();
       const editOrDelete = button.querySelector('[data-name="edit_delete"]')
       if (editOrDelete) {
         editOrDelete.classList.toggle('hidden');
       }
       })
+    })
+
+    document.addEventListener('click', (e) =>{
+      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu =>{
+        if (!menu.contains(e.target) && !menu.classList.contains('hidden')){
+          menu.classList.add('hidden');
+        }
+      }))
+     
     })
 
      let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]')
