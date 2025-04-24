@@ -788,6 +788,8 @@ const addNewPot = () => {
     let selectedTheme = null;
 
     // loop through each theme option
+
+    let chosenTheme;
     Array.from(themes).forEach((theme) => {
       theme.addEventListener("click", () => {
         // ignore click if theme already used or selected
@@ -795,7 +797,7 @@ const addNewPot = () => {
 
         // get theme name from id, then get both name and hex color
         const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-        const chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+        chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
 
         // if theres a previously selected theme, remove its icon and re-enable hover cursor
         if (document.querySelector("#selectedTheme")) {
@@ -822,24 +824,29 @@ const addNewPot = () => {
           selectedTheme.classList.remove("hover:cursor-pointer");
           selectedTheme.classList.add("hover:cursor-not-allowed");
         }, 300);
+
+        // revalidate after theme selection
+        validateTheme(chosenTheme);
       });
     });
 
     // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements
     const saveChangesBtn = document.querySelector("#save-changes-button");
     saveChangesBtn.addEventListener("click", () => {
-      // validate both inputs
+      // validate all inputs
       validateNameInput();
       validateTargetInput();
+      validateTheme(chosenTheme);
 
       // get the validation result from each function, which returns the canSubmit state for the target input
       const nameValid = validateNameInput();
       const targetValid = validateTargetInput();
+      const themeValid = validateTheme(chosenTheme);
 
-      // check if both validations pass
-      if (nameValid && targetValid) {
+      // check if all validations pass
+      if (nameValid && targetValid && themeValid) {
         console.log("yessir");
-        sendPotsData();
+        // sendPotsData();
       } else {
         console.log("nope");
       }
@@ -952,6 +959,36 @@ const validateTargetInput = () => {
       "beforeend",
       `
         <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after/w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+      `
+    );
+  }
+
+  // return the state of canSubmit
+  return canSubmit;
+};
+
+// validates if a theme is selected
+const validateTheme = (chosenTheme) => {
+  // flag to track if inputs are valid
+  let canSubmit = true;
+
+  // declare theme input div
+  const themeInputDiv = document.querySelector("#theme-button");
+
+  // reset target input border color to default before validation runs again
+  themeInputDiv.style.borderColor = "#98908B";
+
+  // remove previous error msg if exists to prevent duplicates
+  const themeRedMsg = themeInputDiv.querySelector("#error-msg");
+  if (themeRedMsg) themeRedMsg.remove();
+
+  if (!chosenTheme) {
+    canSubmit = false;
+    themeInputDiv.style.borderColor = "red";
+    themeInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
       `
     );
   }
