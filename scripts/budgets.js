@@ -216,6 +216,11 @@ function chooseCat(event){
     threeDots.forEach((button) =>{
     button.addEventListener('click', (e) =>{
       e.stopPropagation();
+
+      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) =>{
+        menu.classList.add('hidden')
+      })
+
       const editOrDelete = button.querySelector('[data-name="edit_delete"]')
       if (editOrDelete) {
         editOrDelete.classList.toggle('hidden');
