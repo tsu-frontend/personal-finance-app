@@ -780,7 +780,7 @@ const addNewPot = () => {
       // check if all validations pass
       if (nameValid && targetValid && themeValid) {
         console.log("yessir");
-        // sendPotsData();
+        sendPotsData(chosenTheme);
       } else {
         console.log("nope");
       }
@@ -932,7 +932,7 @@ const validateTheme = (chosenTheme) => {
 };
 
 // sends the pot data to json: id, name, target, and theme
-const sendPotsData = async (pots) => {
+const sendPotsData = async (chosenTheme) => {
   // npm install -g json-server
   // json-server data.json
   const response = await fetch("http://localhost:3000/pots", {
@@ -945,7 +945,10 @@ const sendPotsData = async (pots) => {
       name: document.querySelector("#pot-name-input").value,
       target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
       total: 0.0,
-      theme: "#C94736",
+      theme: chosenTheme,
     }),
   });
+
+  // update the ui with the new data if the post request was successful
+  if (response.ok) renderPotsData();
 };
