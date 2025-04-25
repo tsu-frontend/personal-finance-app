@@ -81,13 +81,19 @@ dropDown(themeDropdownParent, themeDropdown)
 // choose category and theme
 function chooseCat(event){
  let clickedEle = event.target
- let clickedEleText = clickedEle.innerText
+ let listItem = clickedEle.closest('li')
 
- if(clickedEle.classList.contains('category')){  
-  chosenCat.innerText = clickedEleText
+ if(!listItem) return; 
+
+ if(listItem.classList.contains('category')){  
+  chosenCat.innerText = listItem.innerText
  }
- if(clickedEle.classList.contains('color')){
-  chosenCol.innerText = clickedEle.innerText
+ if(listItem.classList.contains('color')){
+  let colorBall = listItem.querySelector('figure')
+  let color = window.getComputedStyle(colorBall).backgroundColor
+  
+  chosenCol.innerText = listItem.innerText;
+  chosenColBall.style.backgroundColor = color;
  }
 }
 

@@ -106,7 +106,7 @@
        </section>
 <!-- modals  -->
     
-<section id="add_budget" onclick="checkClickedEle(event, this)" class="hidden absolute h-screen w-full bg-[#464646e9] top-0 left-0 justify-center items-center">
+<section id="add_budget" onclick="checkClickedEle(event)" class="hidden absolute h-screen w-full bg-[#464646e9] top-0 left-0 justify-center items-center">
 <!-- white modal box -->
       <div class="w-[560px] h-[490px] bg-white rounded-xl p-8 gap-5 flex flex-col">
         <aside class="flex justify-between"> 
@@ -158,14 +158,14 @@
         </div>
 
           <p class="text-xs font-bold text-[#696868] mb-1">Theme</p> 
-          <div id="theme_dropdown" onclick="chooseCat(event)" class="relative mb-4 h-[45px] rounded-lg border-[1px] border-[#98908B] flex items-center justify-between pl-5 pr-5">
+          <div id="theme_dropdown" class="relative mb-4 h-[45px] rounded-lg border-[1px] border-[#98908B] flex items-center justify-between pl-5 pr-5">
               <div id="theme_dropdown" class="flex items-center gap-3 cursor-pointer">
                 <figure id="color_ball" class="w-4 h-4 rounded-4xl bg-[#277C78] "></figure>
                 <p id="chosen_color" class="text-sm">Green</p>
               </div>
               <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="">
 <!-- theme dropdown -->
-              <div id="col_dropdown" class="hidden absolute top-[60px] -left-[1px] flex-col shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] gap-3 bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
+              <div id="col_dropdown" onclick="chooseCat(event)" class="hidden absolute top-[60px] -left-[1px] flex-col shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] gap-3 bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
                 <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"><div class="flex gap-3"> <figure class="w-4 h-4 rounded-4xl bg-[#277C78] "></figure> Green </div> <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
