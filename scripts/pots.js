@@ -783,6 +783,15 @@ const addNewPot = () => {
     if (nameValid && targetValid && themeValid) {
       console.log("yessir");
       sendPotsData(chosenTheme);
+
+      // close new pot modal
+      newPotModal.classList.add("animate-fade-out");
+      setTimeout(() => {
+        newPotModal.remove();
+
+        // resume page scrolling
+        document.body.classList.remove("overflow-hidden");
+      }, 200);
     } else {
       console.log("nope");
     }
@@ -891,7 +900,7 @@ const validateTargetInput = () => {
     targetInputDiv.insertAdjacentHTML(
       "beforeend",
       `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1  after:absolute after:top-0 after:left-0 after:h-[60%] after/w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
       `
     );
   }
@@ -932,8 +941,6 @@ const validateTheme = (chosenTheme) => {
 
 // sends the pot data to json: id, name, target, and theme
 const sendPotsData = async (chosenTheme) => {
-  // npm install -g json-server
-  // json-server data.json
   const response = await fetch("http://localhost:3000/pots", {
     method: "POST",
     headers: {
@@ -972,3 +979,13 @@ const deletePot = async (pot) => {
     method: "DELETE",
   });
 };
+
+// run this to globally install json-server package (only needed once):
+// npm install -g json-server
+// then run this to make POST and DELETE work with data.json:
+// json-server data.json
+
+// add these 3 lines to settings.json to prevent live reload when data.json changes:
+// "files.watcherExclude": { "**/data.json": true },
+// "liveServer.settings.ignoreFiles": ["**/data.json"],
+// "liveServer.settings.noBrowserReloadOnSave": true
