@@ -107,9 +107,6 @@ function chooseCat(event){
     const data = await response.json() 
     const budgets = data.budgets 
 
-
-    
-
     let parentEle = document.querySelector('#budgets_parent')
     let spendingSummary = document.querySelector('#spending_summary') 
     let totalSum = document.querySelector('#total_sum')
@@ -127,8 +124,9 @@ function chooseCat(event){
       totalSum.textContent = `of $${SUM} limit`
 
       
+      let procent = Math.min((15 / maximum) * 100, 100);
+      
 // add budget boxes dynamically
-
       let summaryBox = `
       <div id="spending_summary" class="mt-6">
 
@@ -167,7 +165,10 @@ function chooseCat(event){
             </div>
 
             <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of ${maximum}.00$</div>
-           <div data-name="line" class="w-[544px] h-8 bg-[#F8F4F0] rounded-sm  mb-5" ></div>
+
+           <div class="w-[544px] p-1 relative h-8 bg-[#F8F4F0] rounded-sm  mb-5" >
+           <div data-name="progress" style="width: ${procent}%;" class="h-6 bg-[#277C78] rounded-sm absolute transition-all duration-300 "></div>
+           </div>
 
           <div data-name="spent_remaining" class="flex gap-[210px]">
 
@@ -205,7 +206,6 @@ function chooseCat(event){
 
            parentEle.innerHTML += budgetBox
            spendingSummary.innerHTML += summaryBox
-
      });
      let lastSpending = `         
      <article>
@@ -260,6 +260,8 @@ const threeDots = document.querySelectorAll('[data-name="three_dots"]')
      }
      })
 
+
   }
+
 
   getData()
