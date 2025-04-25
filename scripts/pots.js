@@ -941,7 +941,7 @@ const sendPotsData = async (chosenTheme) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id: String(Math.floor(1 + Math.random() * 999999)).padStart(6, "0"),
+      id: uniqueId(),
       name: document.querySelector("#pot-name-input").value,
       target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
       total: 0.0,
@@ -951,4 +951,16 @@ const sendPotsData = async (chosenTheme) => {
 
   // update the ui with the new data if the post request was successful
   if (response.ok) renderPotsData();
+};
+
+// generates a unique 6-digit id that doesnt exist in the current pots array
+const uniqueId = () => {
+  let id;
+  const existingIds = new Set(pots.map((pot) => pot.id));
+  do {
+    id = String(Math.floor(Math.random() * 1000000)).padStart(6, "0");
+  } while (existingIds.has(id));
+
+  // return unique id
+  return id;
 };
