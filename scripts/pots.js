@@ -980,12 +980,26 @@ const deletePot = async (pot) => {
   });
 };
 
-// run this to globally install json-server package (only needed once):
-// npm install -g json-server
-// then run this to make POST and DELETE work with data.json:
-// json-server data.json
+// checks if json-server is running and shows setup instructions if not
+fetch("http://localhost:3000").catch(() => {
+  console.log(`%c⚠️%cDELETE and POST wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
 
-// add these 3 lines to settings.json to prevent live reload when data.json changes:
-// "files.watcherExclude": { "**/data.json": true },
-// "liveServer.settings.ignoreFiles": ["**/data.json"],
-// "liveServer.settings.noBrowserReloadOnSave": true
+  console.log(
+    `%cRun this to install json-server (only once):
+%cnpm install -g json-server
+
+%cThen start it with:
+%cjson-server data.json
+
+%cAlso, add these lines to settings.json to stop live reload on data.json changes:
+%c"files.watcherExclude": { "**/data.json": true }
+liveServer.settings.ignoreFiles": ["**/data.json"]
+liveServer.settings.noBrowserReloadOnSave": true`,
+    "color: initial; font-size: 24px;",
+    "color: initial; font-size: 16px;",
+    "color: initial; font-size: 24px;",
+    "color: initial; font-size: 16px;",
+    "color: initial; font-size: 24px;",
+    "color: initial; font-size: 16px;"
+  );
+});
