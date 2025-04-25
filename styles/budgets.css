@@ -781,6 +781,12 @@
   .bg-\[white\] {
     background-color: white;
   }
+  .bg-\[\{theme\}\] {
+    background-color: {theme};
+  }
+  .bg-\[\{\}\] {
+    background-color: {};
+  }
   .bg-black {
     background-color: var(--color-black);
   }
