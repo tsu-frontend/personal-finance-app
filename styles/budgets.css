@@ -340,6 +340,9 @@
   .hidden {
     display: none;
   }
+  .table {
+    display: table;
+  }
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -511,14 +514,23 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
+  }
+  .flex-grow {
+    flex-grow: 1;
   }
   .grow-0 {
     flex-grow: 0;
   }
   .basis-0 {
     flex-basis: calc(var(--spacing) * 0);
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   .translate-y-\[-10px\] {
     --tw-translate-y: -10px;
@@ -538,6 +550,9 @@
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .resize {
+    resize: both;
   }
   .list-none {
     list-style-type: none;
@@ -605,6 +620,12 @@
   .gap-\[210px\] {
     gap: 210px;
   }
+  .overflow-auto {
+    overflow: auto;
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
   .overflow-y-auto {
     overflow-y: auto;
   }
@@ -643,6 +664,10 @@
   }
   .rounded-tr-\[8px\] {
     border-top-right-radius: 8px;
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
   }
   .border-1 {
     border-style: var(--tw-border-style);
@@ -775,6 +800,9 @@
   }
   .py-\[24px\] {
     padding-block: 24px;
+  }
+  .pt-1 {
+    padding-top: calc(var(--spacing) * 1);
   }
   .pt-1\.5 {
     padding-top: calc(var(--spacing) * 1.5);
@@ -929,12 +957,19 @@
   .text-white {
     color: var(--color-white);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
   .opacity-15 {
     opacity: 15%;
   }
   .shadow-\[0px_4px_24px_0px_rgba\(0\,0\,0\,0\.25\)\] {
     --tw-shadow: 0px 4px 24px 0px var(--tw-shadow-color, rgba(0,0,0,0.25));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
   }
   .transition-all {
     transition-property: all;
@@ -1451,6 +1486,11 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
+}
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
 }
 @property --tw-duration {
   syntax: "*";

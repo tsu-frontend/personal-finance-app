@@ -38,6 +38,7 @@
 // open modals
 showAddBudgetModal.addEventListener('click', () =>{
 addBudgetModal.classList.replace('hidden', 'flex')
+document.body.style.overflow = 'hidden'
 })
 
 // close modals
@@ -228,21 +229,22 @@ const threeDots = document.querySelectorAll('[data-name="three_dots"]')
     threeDots.forEach((button) =>{
     button.addEventListener('click', (e) =>{
       e.stopPropagation();
+      const editOrDelete = button.querySelector('[data-name="edit_delete"]')
+      const isAlreadyOpen = editOrDelete && !editOrDelete.classList.contains('hidden')
 
       document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) =>{
         menu.classList.add('hidden')
       })
 
-      const editOrDelete = button.querySelector('[data-name="edit_delete"]')
-      if (editOrDelete) {
-        editOrDelete.classList.toggle('hidden');
+      if (editOrDelete && !isAlreadyOpen) {
+        editOrDelete.classList.remove('hidden');
       }
       })
     })
 
     document.addEventListener('click', (e) =>{
       document.querySelectorAll('[data-name="edit_delete"]').forEach((menu =>{
-        if (!menu.contains(e.target) && !menu.classList.contains('hidden')){
+        if (!menu.contains(e.target) || e.target === threeDots){
           menu.classList.add('hidden');
         }
       }))
