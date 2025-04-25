@@ -49,6 +49,7 @@ function checkClickedEle(event){
       addBudgetModal.classList.replace('flex', 'hidden')
       catDropdown.classList.add('hidden')
       themeDropdown.classList.add('hidden')
+      document.body.style.overflow = 'auto'
       }
     if(clicked === editBudgetModal || clicked.id === 'close_img'){
       editBudgetModal.classList.replace('flex', 'hidden')
