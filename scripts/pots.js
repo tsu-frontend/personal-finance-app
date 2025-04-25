@@ -46,9 +46,7 @@ const renderPotsData = async () => {
   renderPots(pots);
   initPotEvents();
 };
-renderPotsData().then(() => {
-  uniqueId();
-});
+renderPotsData();
 
 // render pots into container
 const renderPots = (pots) => {
