@@ -247,7 +247,7 @@ const initPotEvents = () => {
 
       // declaring pot information
       let potName = potData.name;
-      let potTarget = potData.target.toLocaleString("en-US", { minimumFractionDigits: 2 });
+      let potTarget = Number(potData.target).toFixed(2);
       let potTheme = potData.theme;
       let potColorName = colors[potData.theme];
 
@@ -256,7 +256,7 @@ const initPotEvents = () => {
         "beforeend",
         `
           <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-            <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+            <div data-id="${potId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between items-center">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Edit Pot</h1>
                 <img data-name="edit-close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
@@ -399,7 +399,7 @@ const initPotEvents = () => {
 
       const themes = document.querySelector("#theme-modal").children;
 
-      let chosenTheme;
+      let chosenTheme = potTheme;
       // loop through each theme option
       Array.from(themes).forEach((theme) => {
         theme.addEventListener("click", () => {
@@ -500,6 +500,37 @@ const initPotEvents = () => {
       // dont close theme modal if clicked inside
       themeModal.addEventListener("click", (e) => {
         e.stopPropagation();
+      });
+
+      // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
+      const saveChangesBtn = document.querySelector("#save-changes-button");
+      saveChangesBtn.addEventListener("click", () => {
+        // validate all inputs
+        validateNameInput();
+        validateTargetInput();
+        validateTheme(chosenTheme);
+
+        // get the validation result from each function, which returns the canSubmit state for the target input
+        const nameValid = validateNameInput();
+        const targetValid = validateTargetInput();
+        const themeValid = validateTheme(chosenTheme);
+
+        // check if all validations pass
+        if (nameValid && targetValid && themeValid) {
+          console.log("yessir");
+          updatePotData(chosenTheme);
+
+          // close new pot modal
+          editModal.classList.add("animate-fade-out");
+          setTimeout(() => {
+            editModal.remove();
+
+            // resume page scrolling
+            document.body.classList.remove("overflow-hidden");
+          }, 200);
+        } else {
+          console.log("nope");
+        }
       });
     });
   });
@@ -766,7 +797,7 @@ const addNewPot = () => {
     });
   });
 
-  // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements
+  // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
   const saveChangesBtn = document.querySelector("#save-changes-button");
   saveChangesBtn.addEventListener("click", () => {
     // validate all inputs
@@ -982,7 +1013,7 @@ const deletePot = async (pot) => {
 
 // checks if json-server is running and shows setup instructions if not
 fetch("http://localhost:3000").catch(() => {
-  console.log(`%c⚠️%cDELETE and POST wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
+  console.log(`%c⚠️%cDELETE, POST, and PATCH wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
 
   console.log(
     `%cRun this to install json-server (only once):
@@ -1003,3 +1034,24 @@ liveServer.settings.noBrowserReloadOnSave": true`,
     "color: initial; font-size: 16px;"
   );
 });
+
+// sends an update request to edit the pot on the server
+const updatePotData = async (chosenTheme) => {
+  const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
+
+  console.log(potId);
+
+  const response = await fetch(`http://localhost:3000/pots/${potId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: document.querySelector("#pot-name-input").value,
+      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
+      theme: chosenTheme,
+    }),
+  });
+
+  if (response.ok) renderPotsData();
+};
