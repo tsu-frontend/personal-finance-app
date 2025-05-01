@@ -498,7 +498,7 @@
     {
       "id": "004862",
       "name": "New Laptop",
-      "target": 1000,
+      "target": "1000.00",
       "total": 10,
       "theme": "#F2CDAC"
     },
