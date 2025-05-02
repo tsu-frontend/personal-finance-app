@@ -147,7 +147,6 @@ function chooseCat(event){
 
       </div>`
 
-
       
       let budgetBox = ` <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
             <div data-name="budget_heading" class="flex items-center">
