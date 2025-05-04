@@ -222,7 +222,21 @@ function chooseCat(event){
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
     </article>`
 
+// transactions data 
+   let transactionsByCat = {}
+   
+   transactions.forEach(transaction =>{
+     const date = transaction.date
+     const cat = transaction.category
+     
+     if(!transactionsByCat[cat]){
+       transactionsByCat[cat] = 0
+     }
+     transactionsByCat[cat] += transaction.amount
+   //  console.log(transactionsByCat);
+    console.log(transaction)
     
+   })
 
 // open and close small menu
     const threeDots = document.querySelectorAll('[data-name="three_dots"]')
