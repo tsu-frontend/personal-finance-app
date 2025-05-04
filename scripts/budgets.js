@@ -1,4 +1,4 @@
- const ctx = document.getElementById('doughnut');
+const ctx = document.getElementById('doughnut');
  const themeDropdownParent = document.getElementById('theme_dropdown')
  const catDropdownParent = document.getElementById('category_dropdown')
  const catDropdown = document.getElementById('cat_dropdown')

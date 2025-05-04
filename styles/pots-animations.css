@@ -25,3 +25,138 @@
 .animate-close {
   animation: animate-close 0.3s forwards;
 }
+
+@keyframes animate-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: animate-fade-in 0.3s ease;
+}
+
+@keyframes animate-fade-out {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-fade-out {
+  animation: animate-fade-out 0.6s ease;
+}
+
+@keyframes animate-pop-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) brightness(1) contrast(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+    filter: blur(5px) brightness(1.5) contrast(1.5);
+  }
+}
+.animate-pop-out {
+  animation: animate-pop-out 2s ease;
+}
+
+@keyframes animate-theme-open {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-theme-open {
+  animation: animate-theme-open 0.3s ease forwards;
+}
+
+@keyframes animate-theme-close {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.animate-theme-close {
+  animation: animate-theme-close 0.3s ease forwards;
+}
+
+@keyframes animate-color {
+  0% {
+    background: #277c78;
+  }
+  6.67% {
+    background: #f2cdac;
+  }
+  13.33% {
+    background: #82c9d7;
+  }
+  20% {
+    background: #626070;
+  }
+  26.67% {
+    background: #c94736;
+  }
+  33.33% {
+    background: #826cb0;
+  }
+  40% {
+    background: #597c7c;
+  }
+  46.67% {
+    background: #93674f;
+  }
+  53.33% {
+    background: #934f6f;
+  }
+  60% {
+    background: #3f82b2;
+  }
+  66.67% {
+    background: #97a0ac;
+  }
+  73.33% {
+    background: #7f9161;
+  }
+  80% {
+    background: #f72d93;
+  }
+  86.67% {
+    background: #cab361;
+  }
+  93.33% {
+    background: #be6c49;
+  }
+  100% {
+    background: #277c78;
+  }
+}
+
+.animate-color {
+  animation: animate-color 10s linear infinite;
+}
+
+* {
+  /* border: 1px solid red; */
+  /* box-shadow: 0 0 1px red; */
+}
+
+input {
+  /* background-color: blue; */
+}

@@ -14,8 +14,10 @@
     transform: translateY(0);
   }
 }
-.animate-left {
-  animation: animate-Left 0.5s ease;
+@media (width >= 1280px) {
+  .animate-left {
+    animation: animate-Left 0.5s ease;
+  }
 }
 
 @keyframes animate-top {
