@@ -106,6 +106,7 @@ function chooseCat(event){
     const response = await fetch('../data.json')
     const data = await response.json() 
     const budgets = data.budgets 
+    const transactions = data.transactions
 
     let parentEle = document.querySelector('#budgets_parent')
     let spendingSummary = document.querySelector('#spending_summary') 
@@ -154,7 +155,7 @@ function chooseCat(event){
               <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
               <figure data-name="three_dots" class="text-2xl relative tracking-[-0.06em] text-[#B3B3B3] pb-2 ml-auto cursor-pointer">...
               
-              <div data-name="edit_delete" class='hidden w-[134px] h-[91px] text-black bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] pt-3 pb-3 pl-5 pr-5 absolute top-11 right-0 rounded-lg text-sm cursor-auto'>
+              <div data-name="edit_delete" class='hidden w-[134px] h-[91px] text-black bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] pt-3 pb-3 pl-5 pr-5 absolute z-20 top-11 right-0 rounded-lg text-sm cursor-auto'>
               <p class='tracking-[-0.2px] cursor-pointer'>Edit Budget</p>
               <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
               <p class='text-[#C94736] tracking-[-0.2px] cursor-pointer'>Delete Budget</p>
@@ -194,7 +195,7 @@ function chooseCat(event){
 
           <div class="flex justify-between">
             <h6 class="font-semibold">Latest Spending</h6>
-            <div class="flex gap-3">
+            <div data-name='see_all' class="flex gap-3 cursor-pointer">
               <div class="text-[#696868] text-[16px]">See All</div>
               <img src="../assets/images/icon-caret-right.svg" alt="">
             </div>
@@ -224,7 +225,7 @@ function chooseCat(event){
     
 
 // open and close small menu
-const threeDots = document.querySelectorAll('[data-name="three_dots"]')
+    const threeDots = document.querySelectorAll('[data-name="three_dots"]')
 
     threeDots.forEach((button) =>{
     button.addEventListener('click', (e) =>{
@@ -259,8 +260,15 @@ const threeDots = document.querySelectorAll('[data-name="three_dots"]')
      }
      })
 
-
+// see all - redirect to transactions page
+     const seeAllBtns = document.querySelectorAll('[data-name="see_all"]')
+     
+     seeAllBtns.forEach(button =>{
+      button.addEventListener('click', () =>{
+        window.location.href ="transactions.html"
+      })
+     })
+  
   }
-
 
   getData()
