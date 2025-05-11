@@ -11,6 +11,12 @@ const ctx = document.getElementById('doughnut');
  const chosenCol = document.getElementById('chosen_color')
  const chosenColBall = document.getElementById('color_ball')
 
+// const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
+// const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
+
+// const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
+// console.log(client)
+
 
 // cyrcle chart
  const cyrcle = new Chart(ctx, {
@@ -114,8 +120,28 @@ function chooseCat(event){
     let spentSum = document.querySelector('#spent_sum')
 
 
+
+    // managing transactions data 
+   let transactionsByCat = {}
+   
+   transactions.forEach(transaction =>{
+     const date = transaction.date
+     const cat = transaction.category
+     const amount = transaction.amount
+     
+    if(amount < 0){
+      if(!transactionsByCat[cat]){
+        transactionsByCat[cat] = 0 //if there is not category in transactionsByCat, this line creates it 
+      }      
+      transactionsByCat[cat] += amount
+    }
+   })
+   console.log(transactionsByCat)
+
+    
      budgets.forEach(object => {
       const {category, maximum, theme} = object
+      const spent = Math.abs(transactionsByCat[category] || 0)
 
       let SUM = 0
       for(let i = 0; i < budgets.length; i++){
@@ -125,11 +151,13 @@ function chooseCat(event){
       totalSum.textContent = `of $${SUM} limit`
 
       
-      let procent = Math.min((35 / maximum) * 100, 100);
+      let procent = Math.min((spent / maximum) * 100, 100);
+      
+
       
 // add budget boxes dynamically
       let summaryBox = `
-      <div id="spending_summary" class="mt-6">
+      <div id="spending_summary" class="mt-2">
 
             <article class="flex flex-col w-[364px]">
             <div data-name="container" class="flex justify-between">
@@ -138,7 +166,7 @@ function chooseCat(event){
               <h4 class="text-[#696868]">${category}</h4>
             </div>
               <div class='flex'>
-              <p class="mr-2 text-sm font-bold">$15.00</p>
+              <p class="mr-2 text-sm font-bold">$${spent}</p>
               <p class="text-[#696868] text-[12px]">of $<span>${maximum}.00</span></p>
             </div>
             </div>
@@ -176,7 +204,7 @@ function chooseCat(event){
               <figure class="w-[5px] h-[43px] mr-4 bg-[${theme}] rounded-lg"></figure>
               <div data-name="spent">
                 <span class="text-[#696868]">Spent</span>
-                <p class="font-semibold pt-1.5">$15.00</p>
+                <p class="font-semibold pt-1.5">$${spent}</p>
               </div>
             </div>
 
@@ -222,21 +250,7 @@ function chooseCat(event){
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
     </article>`
 
-// transactions data 
-   let transactionsByCat = {}
-   
-   transactions.forEach(transaction =>{
-     const date = transaction.date
-     const cat = transaction.category
-     
-     if(!transactionsByCat[cat]){
-       transactionsByCat[cat] = 0
-     }
-     transactionsByCat[cat] += transaction.amount
-   //  console.log(transactionsByCat);
-    console.log(transaction)
-    
-   })
+
 
 // open and close small menu
     const threeDots = document.querySelectorAll('[data-name="three_dots"]')
