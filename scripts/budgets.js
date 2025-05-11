@@ -152,7 +152,7 @@ function chooseCat(event){
 
       
       let procent = Math.min((spent / maximum) * 100, 100);
-      
+      let remaining = (maximum - spent) < 0 ? 0 : (maximum - spent);
 
       
 // add budget boxes dynamically
@@ -212,7 +212,7 @@ function chooseCat(event){
               <figure class="w-[5px] h-[43px] bg-[#F8F4F0] rounded-lg mr-4"></figure>
               <div data-name="remain" class="flex flex-col">
                 <span class="text-[#696868]">Remaining</span>
-                <p class="font-semibold pt-1.5">$35.00</p>
+                <p class="font-semibold pt-1.5">$${remaining}</p>
               </div>
             </div>
 
