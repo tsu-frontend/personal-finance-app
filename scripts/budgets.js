@@ -136,7 +136,7 @@ function chooseCat(event){
       transactionsByCat[cat] += amount
     }
    })
-   console.log(transactionsByCat)
+  //  console.log(transactionsByCat)
 
     
      budgets.forEach(object => {
