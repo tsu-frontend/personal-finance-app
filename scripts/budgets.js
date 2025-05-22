@@ -1,133 +1,120 @@
-const ctx = document.getElementById('doughnut');
- const themeDropdownParent = document.getElementById('theme_dropdown')
- const catDropdownParent = document.getElementById('category_dropdown')
- const catDropdown = document.getElementById('cat_dropdown')
- const themeDropdown = document.getElementById('col_dropdown')
+const ctx = document.getElementById("doughnut");
+const themeDropdownParent = document.getElementById("theme_dropdown");
+const catDropdownParent = document.getElementById("category_dropdown");
+const catDropdown = document.getElementById("cat_dropdown");
+const themeDropdown = document.getElementById("col_dropdown");
 //  const addBtn = document.getElementById('add_new')
- const showAddBudgetModal = document.getElementById('add_btn')
- const addBudgetModal = document.getElementById('add_budget')
- const editBudgetModal = document.getElementById('edit_budget')
- const chosenCat = document.getElementById('chosen_category')
- const chosenCol = document.getElementById('chosen_color')
- const chosenColBall = document.getElementById('color_ball')
-
+const showAddBudgetModal = document.getElementById("add_btn");
+const addBudgetModal = document.getElementById("add_budget");
+const editBudgetModal = document.getElementById("edit_budget");
+const chosenCat = document.getElementById("chosen_category");
+const chosenCol = document.getElementById("chosen_color");
+const chosenColBall = document.getElementById("color_ball");
 
 // cyrcle chart
- const cyrcle = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      datasets: [{
-        label: '# of Votes',
+const cyrcle = new Chart(ctx, {
+  type: "doughnut",
+  data: {
+    datasets: [
+      {
+        label: "# of Votes",
         data: [15, 150, 133, 40],
         borderWidth: 0,
-        backgroundColor: [
-           '#277C78',
-           '#82C9D7',
-           '#F2CDAC',
-           '#626070',
-
-        ]
-      }]
-    },
-    options: {
-        cutout: '68%', 
-        responsive: true,
-    }
-  });
+        backgroundColor: ["#277C78", "#82C9D7", "#F2CDAC", "#626070"],
+      },
+    ],
+  },
+  options: {
+    cutout: "68%",
+    responsive: true,
+  },
+});
 
 // open modals
-showAddBudgetModal.addEventListener('click', () =>{
-addBudgetModal.classList.replace('hidden', 'flex')
-document.body.style.overflow = 'hidden'
-})
+showAddBudgetModal.addEventListener("click", () => {
+  addBudgetModal.classList.replace("hidden", "flex");
+  document.body.style.overflow = "hidden";
+});
 
 // close modals
-function checkClickedEle(event){
-  let clicked = event.target 
+function checkClickedEle(event) {
+  let clicked = event.target;
 
-    if(clicked === addBudgetModal || clicked.id === 'close_img'){
-      addBudgetModal.classList.replace('flex', 'hidden')
-      catDropdown.classList.add('hidden')
-      themeDropdown.classList.add('hidden')
-      document.body.style.overflow = 'auto'
-      }
-    if(clicked === editBudgetModal || clicked.id === 'close_img'){
-      editBudgetModal.classList.replace('flex', 'hidden')
-      }
+  if (clicked === addBudgetModal || clicked.id === "close_img") {
+    addBudgetModal.classList.replace("flex", "hidden");
+    catDropdown.classList.add("hidden");
+    themeDropdown.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  }
+  if (clicked === editBudgetModal || clicked.id === "close_img") {
+    editBudgetModal.classList.replace("flex", "hidden");
+  }
 }
-
-
 
 // dropdowns
-function dropDown(parent, child){
-  parent.addEventListener('click', () =>{
-    parent.classList.toggle('border-[#98908B]')
+function dropDown(parent, child) {
+  parent.addEventListener("click", () => {
+    parent.classList.toggle("border-[#98908B]");
 
-    if(child.classList.contains('hidden')){
-
-      child.classList.replace('hidden', 'flex')
-    }else{
-      child.classList.replace('flex', 'hidden')
+    if (child.classList.contains("hidden")) {
+      child.classList.replace("hidden", "flex");
+    } else {
+      child.classList.replace("flex", "hidden");
     }
 
-    if(parent === catDropdownParent){
-      themeDropdown.classList.replace('flex', 'hidden')
+    if (parent === catDropdownParent) {
+      themeDropdown.classList.replace("flex", "hidden");
     }
-  })
+  });
 }
 
-dropDown(catDropdownParent, catDropdown)
-dropDown(themeDropdownParent, themeDropdown)
-
+dropDown(catDropdownParent, catDropdown);
+dropDown(themeDropdownParent, themeDropdown);
 
 // choose category and theme
-function chooseCat(event){
- let clickedEle = event.target
- let listItem = clickedEle.closest('li')
+function chooseCat(event) {
+  let clickedEle = event.target;
+  let listItem = clickedEle.closest("li");
 
- if(!listItem) return; 
+  if (!listItem) return;
 
- if(listItem.classList.contains('category')){  
-  chosenCat.innerText = listItem.innerText
- }
- if(listItem.classList.contains('color')){
-  let colorBall = listItem.querySelector('figure')
-  let color = window.getComputedStyle(colorBall).backgroundColor
-  
-  chosenCol.innerText = listItem.innerText;
-  chosenColBall.style.backgroundColor = color;
- }
+  if (listItem.classList.contains("category")) {
+    chosenCat.innerText = listItem.innerText;
+  }
+  if (listItem.classList.contains("color")) {
+    let colorBall = listItem.querySelector("figure");
+    let color = window.getComputedStyle(colorBall).backgroundColor;
+
+    chosenCol.innerText = listItem.innerText;
+    chosenColBall.style.backgroundColor = color;
+  }
 }
 
-
-
 // managing budget json data
-  const getData = async () =>{
-    const response = await fetch('../data.json')
-    const data = await response.json() 
-    const budgets = data.budgets 
+const getData = async () => {
+  const response = await fetch("../data.json");
+  const data = await response.json();
+  const budgets = data.budgets;
 
-    let parentEle = document.querySelector('#budgets_parent')
-    let spendingSummary = document.querySelector('#spending_summary') 
-    let totalSum = document.querySelector('#total_sum')
-    let spentSum = document.querySelector('#spent_sum')
+  let parentEle = document.querySelector("#budgets_parent");
+  let spendingSummary = document.querySelector("#spending_summary");
+  let totalSum = document.querySelector("#total_sum");
+  let spentSum = document.querySelector("#spent_sum");
 
+  budgets.forEach((object) => {
+    const { category, maximum, theme } = object;
 
-     budgets.forEach(object => {
-      const {category, maximum, theme} = object
+    let SUM = 0;
+    for (let i = 0; i < budgets.length; i++) {
+      SUM += budgets[i].maximum;
+    }
 
-      let SUM = 0
-      for(let i = 0; i < budgets.length; i++){
-          SUM += budgets[i].maximum
-      }
+    totalSum.textContent = `of $${SUM} limit`;
 
-      totalSum.textContent = `of $${SUM} limit`
+    let procent = Math.min((35 / maximum) * 100, 100);
 
-      
-      let procent = Math.min((35 / maximum) * 100, 100);
-      
-// add budget boxes dynamically
-      let summaryBox = `
+    // add budget boxes dynamically
+    let summaryBox = `
       <div id="spending_summary" class="mt-6">
 
             <article class="flex flex-col w-[364px]">
@@ -145,10 +132,9 @@ function chooseCat(event){
             </article>
 
 
-      </div>`
+      </div>`;
 
-      
-      let budgetBox = ` <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
+    let budgetBox = ` <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
             <div data-name="budget_heading" class="flex items-center">
               <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
               <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
@@ -201,12 +187,12 @@ function chooseCat(event){
           </div>
 
            </section>
-           </article>`
+           </article>`;
 
-           parentEle.innerHTML += budgetBox
-           spendingSummary.innerHTML += summaryBox
-     });
-     let lastSpending = `         
+    parentEle.innerHTML += budgetBox;
+    spendingSummary.innerHTML += summaryBox;
+  });
+  let lastSpending = `         
      <article>
             <div class="flex justify-between">
               <div class="flex items-center">
@@ -219,48 +205,42 @@ function chooseCat(event){
               </aside>
             </div>
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
-    </article>`
+    </article>`;
 
-    
+  // open and close small menu
+  const threeDots = document.querySelectorAll('[data-name="three_dots"]');
 
-// open and close small menu
-const threeDots = document.querySelectorAll('[data-name="three_dots"]')
-
-    threeDots.forEach((button) =>{
-    button.addEventListener('click', (e) =>{
+  threeDots.forEach((button) => {
+    button.addEventListener("click", (e) => {
       e.stopPropagation();
-      const editOrDelete = button.querySelector('[data-name="edit_delete"]')
-      const isAlreadyOpen = editOrDelete && !editOrDelete.classList.contains('hidden')
+      const editOrDelete = button.querySelector('[data-name="edit_delete"]');
+      const isAlreadyOpen = editOrDelete && !editOrDelete.classList.contains("hidden");
 
-      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) =>{
-        menu.classList.add('hidden')
-      })
+      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) => {
+        menu.classList.add("hidden");
+      });
 
       if (editOrDelete && !isAlreadyOpen) {
-        editOrDelete.classList.remove('hidden');
+        editOrDelete.classList.remove("hidden");
       }
-      })
-    })
+    });
+  });
 
-    document.addEventListener('click', (e) =>{
-      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu =>{
-        if (!menu.contains(e.target) || e.target === threeDots){
-          menu.classList.add('hidden');
-        }
-      }))
-     
-    })
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) => {
+      if (!menu.contains(e.target) || e.target === threeDots) {
+        menu.classList.add("hidden");
+      }
+    });
+  });
 
-// add last spendings
-     let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]')
-     oneSpending.forEach(parent => {
-                  for(let i = 0; i < 3; i++){
-                parent.innerHTML += lastSpending
-     }
-     })
+  // add last spendings
+  let oneSpending = document.querySelectorAll('[data-name="parent_spendings"]');
+  oneSpending.forEach((parent) => {
+    for (let i = 0; i < 3; i++) {
+      parent.innerHTML += lastSpending;
+    }
+  });
+};
 
-
-  }
-
-
-  getData()
+getData();
