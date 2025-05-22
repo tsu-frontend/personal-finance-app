@@ -1,4 +1,4 @@
-import { appendModal, validateInput2 } from "../modals/modal1.js";
+import { appendModal, validateInput2, closeModal1 } from "../modals/modal1.js";
 
 let pots = [];
 
@@ -265,7 +265,7 @@ const initPotEvents = () => {
                   <div class="w-full flex flex-col gap-[4px]">
                     <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
                     <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-                     <input id="input-1" type="text" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalData.modalName}" />
+                     <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalData.modalName}" />
                     </div>
                     <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
                   </div>
@@ -278,7 +278,10 @@ const initPotEvents = () => {
 
       // validate name and target inputs whenever the user types in the fields
       // input1.addEventListener("input", validateInput1);
-      input2.addEventListener("input", () => validateInput2(input2));
+      input2.addEventListener("input", () => validateInput2());
+
+      const closeButton = document.querySelector('[data-name="close-button"]');
+      closeButton.addEventListener("click", () => closeModal1());
 
       // declare te counter element
       const counter = document.querySelector("#characters-left");
@@ -297,11 +300,11 @@ const initPotEvents = () => {
         selectedTheme.classList.add("hover:cursor-not-allowed");
       }
 
-      const themes = document.querySelector("#theme-modal").children;
+      const input3 = document.querySelector("#input-3").children;
 
       let chosenTheme = potTheme;
       // loop through each theme option
-      Array.from(themes).forEach((theme) => {
+      Array.from(input3).forEach((theme) => {
         theme.addEventListener("click", () => {
           // ignore click if theme already used or selected
           if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
@@ -354,21 +357,6 @@ const initPotEvents = () => {
       ////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////
-
-      // const editModal = pot.querySelector("#edit-modal");
-      // const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
-
-      // // edit close button
-      // editCloseBtn.addEventListener("click", () => {
-      //   // animation
-      //   editModal.classList.add("animate-fade-out");
-      //   setTimeout(() => {
-      //     editModal.remove();
-
-      //     // resume page scrolling
-      //     document.body.classList.remove("overflow-hidden");
-      //   }, 200);
-      // });
 
       // const themeButton = editModal.querySelector("#theme-button");
       // const themeModal = editModal.querySelector("#theme-modal-wrapper");

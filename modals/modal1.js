@@ -1,30 +1,23 @@
 // title subTitle modal buttonText input-2-div input-2 input-2-text input2
 
 function appendModal(modal, modalData, firstInput) {
-  console.log("working");
-
   // temp variables
+  // const modalType = "edit";
+  const modalType = "new";
   const title = "Edit Pot";
   const subTitle = "If your saving targets change, feel free to update your pots.";
   const field2Title = "Target";
   const buttonText = "Save Changes";
 
-  let colorAnimation;
-  if (typeof modalData.modalTheme === "undefined" || typeof modalData.modalColorName === "undefined") {
-    console.log("no theme");
+  let colorAnimation = "";
+  if (modalType === "new") {
+    modalData.modalName = "";
+    modalData.input2Value = "";
     modalData.modalColorName = "Pick a theme";
     let modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
     colorAnimation = "animate-color";
-  } else {
-    console.log("theme already chosen");
   }
 
-  if (typeof input2Value === "undefined") {
-    modalData.input2Value = "";
-    console.log("no value");
-  } else {
-    console.log("value = " + input2Value);
-  }
   modal.insertAdjacentHTML(
     "beforeend",
     `
@@ -142,23 +135,40 @@ function appendModal(modal, modalData, firstInput) {
   // declare input fields and their divs
   // const input1 = document.querySelector("#input-1");
   // const input3 = document.querySelector("#input-3");
-  const input2 = document.querySelector("#input-2");
 
   // const input1Div = document.querySelector("#input-1-div");
   // const input3Div = document.querySelector("#input-3-div");
 
   // return the ...idfk yet
-  return input2;
+  return;
 }
 
-function validateInput2(input2) {
+function closeModal1() {
+  // declaring modal1m and the close button
+  const modal1 = document.querySelector("#modal");
+  const closeButton = document.querySelector('[data-name="close-button"]');
+
+  closeButton.addEventListener("click", () => {
+    // animation
+    modal1.classList.add("animate-fade-out");
+    setTimeout(() => {
+      modal1.remove();
+
+      // resume page scrolling
+      document.body.classList.remove("overflow-hidden");
+    }, 200);
+  });
+}
+
+function validateInput2() {
   // flag to track if inputs are valid
   let canSubmit = true;
 
   // declare input 2 and its div
+  const input2 = document.querySelector("#input-2");
   const input2Div = document.querySelector("#input-2-div");
 
-  // reset second input border color to default before validation runs again
+  // reset input 2 div border color to default before validation runs again
   input2Div.style.borderColor = "#98908B";
 
   // remove previous error msg if exists to prevent duplicates
@@ -199,4 +209,4 @@ function validateInput2(input2) {
   return canSubmit;
 }
 
-export { appendModal, validateInput2 };
+export { appendModal, validateInput2, closeModal1 };
