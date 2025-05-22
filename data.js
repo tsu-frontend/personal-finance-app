@@ -462,7 +462,7 @@ const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 
 // GET REQUEST
 
-// fetch(`${SUPABASE_URL}/rest/v1/budgets`,
+// fetch(`${SUPABASE_URL}/rest/v1/budgets?user_id={current_user_id}`,
 //   {
 //     method: 'GET',
 //     headers: {
@@ -517,7 +517,6 @@ async function postToSupabase(tableName, tableData) {
   }
 }
 
-
 function updateDatabase() {
   const array = [balance, transactions, budgets, pots]
   const arrayStr = ['balance', 'transactions', 'budgets', 'pots']
@@ -537,4 +536,3 @@ function updateDatabase() {
     }
   })
 }
-updateDatabase()

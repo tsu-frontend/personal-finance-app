@@ -38,11 +38,33 @@ const colorIds = {
   Orange: "orange",
 };
 
+const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
+const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
+
+// const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
+
+// GET REQUEST
+
+fetch(`${SUPABASE_URL}/rest/v1/pots`,
+  {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': PUBLIC_KEY,
+      'Authorization': `Bearer ${PUBLIC_KEY}`,
+      'Prefer': 'return=representation'
+    }
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err))
+
 const renderPotsData = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
   pots = data.pots;
 
+  console.log(pots)
   renderPots(pots);
   initPotEvents();
 };
