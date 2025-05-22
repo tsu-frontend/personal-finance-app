@@ -1,4 +1,4 @@
-import { appendModal } from "../modals/modal1.js";
+import { appendModal, validateInput2 } from "../modals/modal1.js";
 
 let pots = [];
 
@@ -259,7 +259,7 @@ const initPotEvents = () => {
       const input2Value = potTarget;
       const modalTheme = potTheme;
       const modalColorName = potColorName;
-      const modalData = { modalId, modalName, input2Value, modalTheme, modalColorName };
+      const modalData = { modalId, modalName, modalTheme, modalColorName };
 
       const firstInput = `
                   <div class="w-full flex flex-col gap-[4px]">
@@ -273,17 +273,17 @@ const initPotEvents = () => {
       appendModal(pot, modalData, firstInput);
 
       // declare the name and target input elements
-      const nameInput = document.querySelector("#pot-name-input");
-      const targetInput = document.querySelector("#pot-target-input");
+      const input1 = document.querySelector("#input-1");
+      const input2 = document.querySelector("#input-2");
 
       // validate name and target inputs whenever the user types in the fields
-      nameInput.addEventListener("input", validateNameInput);
-      targetInput.addEventListener("input", validateTargetInput);
+      // input1.addEventListener("input", validateInput1);
+      input2.addEventListener("input", () => validateInput2(input2));
 
       // declare te counter element
       const counter = document.querySelector("#characters-left");
       // update counter
-      const charsLeft = 30 - nameInput.value.length;
+      const charsLeft = 30 - input1.value.length;
       counter.textContent = `${charsLeft} characters left`;
 
       // get the corresponding color id from the colorIds map
@@ -351,56 +351,64 @@ const initPotEvents = () => {
         }
       });
 
-      const editModal = pot.querySelector("#edit-modal");
-      const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
 
-      // edit close button
-      editCloseBtn.addEventListener("click", () => {
-        // animation
-        editModal.classList.add("animate-fade-out");
-        setTimeout(() => {
-          editModal.remove();
+      // const editModal = pot.querySelector("#edit-modal");
+      // const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
 
-          // resume page scrolling
-          document.body.classList.remove("overflow-hidden");
-        }, 200);
-      });
+      // // edit close button
+      // editCloseBtn.addEventListener("click", () => {
+      //   // animation
+      //   editModal.classList.add("animate-fade-out");
+      //   setTimeout(() => {
+      //     editModal.remove();
 
-      const themeButton = editModal.querySelector("#theme-button");
-      const themeModal = editModal.querySelector("#theme-modal-wrapper");
+      //     // resume page scrolling
+      //     document.body.classList.remove("overflow-hidden");
+      //   }, 200);
+      // });
 
-      // toggle theme modal
-      themeButton.addEventListener("click", () => {
-        if (!themeModal.classList.contains("hidden")) {
-          // animation
-          themeModal.classList.add("animate-theme-close");
-          setTimeout(() => {
-            themeModal.classList.add("hidden");
-            themeModal.classList.remove("animate-theme-close");
-          }, 300);
-        } else {
-          themeModal.classList.remove("hidden");
-        }
-      });
+      // const themeButton = editModal.querySelector("#theme-button");
+      // const themeModal = editModal.querySelector("#theme-modal-wrapper");
 
-      // close theme modal on outside click
-      document.addEventListener("click", (e) => {
-        if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
-          if (!themeModal.classList.contains("hidden")) {
-            // animation
-            themeModal.classList.add("animate-theme-close");
-            setTimeout(() => {
-              themeModal.classList.add("hidden");
-              themeModal.classList.remove("animate-theme-close");
-            }, 300);
-          }
-        }
-      });
+      // // toggle theme modal
+      // themeButton.addEventListener("click", () => {
+      //   if (!themeModal.classList.contains("hidden")) {
+      //     // animation
+      //     themeModal.classList.add("animate-theme-close");
+      //     setTimeout(() => {
+      //       themeModal.classList.add("hidden");
+      //       themeModal.classList.remove("animate-theme-close");
+      //     }, 300);
+      //   } else {
+      //     themeModal.classList.remove("hidden");
+      //   }
+      // });
 
-      // dont close theme modal if clicked inside
-      themeModal.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
+      // // close theme modal on outside click
+      // document.addEventListener("click", (e) => {
+      //   if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
+      //     if (!themeModal.classList.contains("hidden")) {
+      //       // animation
+      //       themeModal.classList.add("animate-theme-close");
+      //       setTimeout(() => {
+      //         themeModal.classList.add("hidden");
+      //         themeModal.classList.remove("animate-theme-close");
+      //       }, 300);
+      //     }
+      //   }
+      // });
+
+      // // dont close theme modal if clicked inside
+      // themeModal.addEventListener("click", (e) => {
+      //   e.stopPropagation();
+      // });
+
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
 
       // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
       const saveChangesBtn = document.querySelector("#save-changes-button");

@@ -1,7 +1,30 @@
-// title subTitle modal buttonText input-div-2 input-2 input-2-text input2Value
+// title subTitle modal buttonText input-2-div input-2 input-2-text input2
 
 function appendModal(modal, modalData, firstInput) {
   console.log("working");
+
+  // temp variables
+  const title = "Edit Pot";
+  const subTitle = "If your saving targets change, feel free to update your pots.";
+  const field2Title = "Target";
+  const buttonText = "Save Changes";
+
+  let colorAnimation;
+  if (typeof modalData.modalTheme === "undefined" || typeof modalData.modalColorName === "undefined") {
+    console.log("no theme");
+    modalData.modalColorName = "Pick a theme";
+    let modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
+    colorAnimation = "animate-color";
+  } else {
+    console.log("theme already chosen");
+  }
+
+  if (typeof input2Value === "undefined") {
+    modalData.input2Value = "";
+    console.log("no value");
+  } else {
+    console.log("value = " + input2Value);
+  }
   modal.insertAdjacentHTML(
     "beforeend",
     `
@@ -15,16 +38,16 @@ function appendModal(modal, modalData, firstInput) {
               <div class="w-full flex flex-col gap-[16px]">
               ${firstInput}
                 <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${sum - label - text}</p>
-                  <div id="input-div-2" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
+                  <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input id="input-2" type="text" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${modalData.input2Value}" />
+                    <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${modalData.input2Value}" />
                   </div>
                 </div>
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-                  <div id="theme-button" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                    <span class="w-[16px] h-[16px] rounded-full" style="background-color: ${modalData.modalTheme}"></span>
+                  <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                    <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalData.modalTheme}"></span>
                     <p class="text-[#201F24] text-[14px] font-normal">${modalData.modalColorName}</p>
                     <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
                     <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
@@ -115,6 +138,65 @@ function appendModal(modal, modalData, firstInput) {
           </div>
        `
   );
+
+  // declare input fields and their divs
+  // const input1 = document.querySelector("#input-1");
+  // const input3 = document.querySelector("#input-3");
+  const input2 = document.querySelector("#input-2");
+
+  // const input1Div = document.querySelector("#input-1-div");
+  // const input3Div = document.querySelector("#input-3-div");
+
+  // return the ...idfk yet
+  return input2;
 }
 
-export { appendModal };
+function validateInput2(input2) {
+  // flag to track if inputs are valid
+  let canSubmit = true;
+
+  // declare input 2 and its div
+  const input2Div = document.querySelector("#input-2-div");
+
+  // reset second input border color to default before validation runs again
+  input2Div.style.borderColor = "#98908B";
+
+  // remove previous error msg if exists to prevent duplicates
+  const redMsg = input2Div.querySelector("#error-msg");
+  if (redMsg) redMsg.remove();
+
+  // validate second input: required, valid number, not 69
+  if (input2.value.length === 0) {
+    canSubmit = false;
+    input2Div.style.borderColor = "red";
+    input2Div.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+      `
+    );
+  } else if (!/^\d+(\.\d{1,2})?$/.test(input2.value) || input2.value < 1 || input2.value > 999999) {
+    canSubmit = false;
+    input2Div.style.borderColor = "red";
+    input2Div.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
+      `
+    );
+  } else if (input2.value == 69) {
+    canSubmit = false;
+    input2Div.style.borderColor = "red";
+    input2Div.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
+      `
+    );
+  }
+
+  // return the state of canSubmit
+  return canSubmit;
+}
+
+export { appendModal, validateInput2 };
