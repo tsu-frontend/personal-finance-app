@@ -1,47 +1,90 @@
 // title subTitle modal buttonText input-2-div input-2 input-2-text input2
 
-function appendModal(modal, modalData, firstInput) {
+// declaring pot theme colors
+const colors = {
+  "#277C78": "Green",
+  "#F2CDAC": "Yellow",
+  "#82C9D7": "Cyan",
+  "#626070": "Navy",
+  "#C94736": "Red",
+  "#826CB0": "Purple",
+  "#597C7C": "Turquoise",
+  "#93674F": "Brown",
+  "#934F6F": "Magenta",
+  "#3F82B2": "Blue",
+  "#97A0AC": "Navy Grey",
+  "#7F9161": "Army Green",
+  "#f72d93": "Pink",
+  "#CAB361": "Gold",
+  "#BE6C49": "Orange",
+};
+
+// mapping color names to their respective dom element ids
+const colorIds = {
+  Green: "green",
+  Yellow: "yellow",
+  Cyan: "cyan",
+  Navy: "navy",
+  Red: "red",
+  Purple: "purple",
+  Turquoise: "turquoise",
+  Brown: "brown",
+  Magenta: "magenta",
+  Blue: "blue",
+  "Navy Grey": "navyGrey",
+  "Army Green": "armyGreen",
+  Pink: "pink",
+  Gold: "gold",
+  Orange: "orange",
+};
+
+function appendModal(modalData, modalId, firstInput, pots, modalInfo) {
+  // stop page scrolling in the background
+  document.body.classList.add("overflow-hidden");
+
+  // declaring modal information
+  let modalName = modalData.name;
+  let input2Value = Number(modalData.target).toFixed(2);
+  let modalTheme = modalData.theme;
+  let modalColorName = colors[modalData.theme];
+
   // temp variables
   // const modalType = "edit";
-  const modalType = "new";
-  const title = "Edit Pot";
-  const subTitle = "If your saving targets change, feel free to update your pots.";
-  const field2Title = "Target";
-  const buttonText = "Save Changes";
+  // const modalType = "new";
 
   let colorAnimation = "";
-  if (modalType === "new") {
-    modalData.modalName = "";
-    modalData.input2Value = "";
-    modalData.modalColorName = "Pick a theme";
+  if (modalInfo.modalType === "new") {
+    modalName = "";
+    input2Value = "";
+    modalColorName = "Pick a theme";
     let modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
     colorAnimation = "animate-color";
   }
 
-  modal.insertAdjacentHTML(
+  document.body.insertAdjacentHTML(
     "beforeend",
     `
-          <div id="modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-            <div data-id="${modalData.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+          <div id="modal1" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+            <div data-id="${modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between items-center">
-                <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>
+                <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
                 <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
               </div>
-              <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${subTitle}</p>
+              <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${modalInfo.subTitle}</p>
               <div class="w-full flex flex-col gap-[16px]">
               ${firstInput}
                 <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
+                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${modalInfo.field2Title}</p>
                   <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                     <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${modalData.input2Value}" />
+                    <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
                   </div>
                 </div>
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
                   <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                    <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalData.modalTheme}"></span>
-                    <p class="text-[#201F24] text-[14px] font-normal">${modalData.modalColorName}</p>
+                    <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
+                    <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
                     <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
                     <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                     <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
@@ -125,39 +168,148 @@ function appendModal(modal, modalData, firstInput) {
                 </div>
               </div>
               <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-                <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
+                <p class="font-bold text-[#FFF] text-[14px]">${modalInfo.buttonText}</p>
               </button>
             </div>
           </div>
        `
   );
 
-  // declare input fields and their divs
-  // const input1 = document.querySelector("#input-1");
-  // const input3 = document.querySelector("#input-3");
+  //////////////////////////////////////////////////////////////////
 
-  // const input1Div = document.querySelector("#input-1-div");
-  // const input3Div = document.querySelector("#input-3-div");
+  const input1 = document.querySelector("#input-1");
+  const input2 = document.querySelector("#input-2");
 
-  // return the ...idfk yet
-  return;
+  // declare te counter element
+  const counter = document.querySelector("#characters-left");
+  // update counter
+  const charsLeft = 30 - input1.value.length;
+  counter.textContent = `${charsLeft} characters left`;
+
+  // validate inputs whenever the user types in the fields
+  // input1.addEventListener("input", validateInput1);
+  input2.addEventListener("input", () => validateInput2());
+
+  const closeButton = document.querySelector('[data-name="close-button"]');
+  closeButton.addEventListener("click", () => closeModal1());
+
+  //////////////////////////////////////////////////////////////////
+
+  const themeButton = modal1.querySelector("#input-3");
+  const themeModal = modal1.querySelector("#theme-modal-wrapper");
+
+  // toggle theme modal
+  themeButton.addEventListener("click", () => {
+    if (!themeModal.classList.contains("hidden")) {
+      // animation
+      themeModal.classList.add("animate-theme-close");
+      setTimeout(() => {
+        themeModal.classList.add("hidden");
+        themeModal.classList.remove("animate-theme-close");
+      }, 300);
+    } else {
+      themeModal.classList.remove("hidden");
+    }
+  });
+
+  // close theme modal on outside click
+  document.addEventListener("click", (e) => {
+    if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
+      if (!themeModal.classList.contains("hidden")) {
+        // animation
+        themeModal.classList.add("animate-theme-close");
+        setTimeout(() => {
+          themeModal.classList.add("hidden");
+          themeModal.classList.remove("animate-theme-close");
+        }, 300);
+      }
+    }
+  });
+
+  // dont close theme modal if clicked inside
+  themeModal.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // get the corresponding color id from the colorIds map
+  const themeId = colorIds[modalColorName];
+  let selectedTheme = document.getElementById(themeId);
+
+  // append the selected theme icon to the corresponding pot theme
+  if (selectedTheme) {
+    selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+    selectedTheme.classList.remove("hover:cursor-pointer");
+    selectedTheme.classList.add("hover:cursor-not-allowed");
+  }
+
+  const input3 = document.querySelector("#input-3").children;
+
+  let chosenTheme = modalTheme;
+  // loop through each theme option
+  Array.from(input3).forEach((theme) => {
+    theme.addEventListener("click", () => {
+      // ignore click if theme already used or selected
+      if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
+
+      // get theme name from id, then get both name and hex color
+      const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
+      chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+
+      // remove previously selected theme's icon and re-enable hover cursor
+      document.querySelector("#selectedTheme").remove();
+      selectedTheme.classList.add("hover:cursor-pointer");
+      selectedTheme.classList.remove("hover:cursor-not-allowed");
+      // mark new selected theme
+      selectedTheme = theme;
+      selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+      // update theme color and label text
+      themeButton.querySelector("span").style.backgroundColor = chosenTheme;
+      themeButton.querySelector("p").textContent = chosenThemeName;
+
+      // close theme modal after theme is selected
+      themeModal.classList.add("animate-theme-close");
+      setTimeout(() => {
+        themeModal.classList.add("hidden");
+        themeModal.classList.remove("animate-theme-close");
+
+        // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
+        selectedTheme.classList.remove("hover:cursor-pointer");
+        selectedTheme.classList.add("hover:cursor-not-allowed");
+      }, 300);
+    });
+  });
+
+  // loop through each pot to check if its theme is already used
+  pots.forEach((pot) => {
+    // get the used theme name and corresponding dom element id
+    const usedTheme = colors[pot.theme];
+    const usedThemeElementId = colorIds[usedTheme];
+    const usedThemeElement = document.getElementById(usedThemeElementId);
+
+    // check if the used theme element id doesnt match the current themeId
+    if (usedThemeElementId !== themeId) {
+      // add already used message to the theme element
+      usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+      usedThemeElement.classList.remove("hover:cursor-pointer");
+      usedThemeElement.classList.add("hover:cursor-not-allowed");
+    }
+  });
 }
 
 function closeModal1() {
   // declaring modal1m and the close button
-  const modal1 = document.querySelector("#modal");
+  const modal1 = document.querySelector("#modal1");
   const closeButton = document.querySelector('[data-name="close-button"]');
 
-  closeButton.addEventListener("click", () => {
-    // animation
-    modal1.classList.add("animate-fade-out");
-    setTimeout(() => {
-      modal1.remove();
+  // animation
+  modal1.classList.add("animate-fade-out");
+  setTimeout(() => {
+    modal1.remove();
 
-      // resume page scrolling
-      document.body.classList.remove("overflow-hidden");
-    }, 200);
-  });
+    // resume page scrolling
+    document.body.classList.remove("overflow-hidden");
+  }, 200);
 }
 
 function validateInput2() {

@@ -2,44 +2,6 @@ import { appendModal, validateInput2, closeModal1 } from "../modals/modal1.js";
 
 let pots = [];
 
-// declaring pot theme colors
-const colors = {
-  "#277C78": "Green",
-  "#F2CDAC": "Yellow",
-  "#82C9D7": "Cyan",
-  "#626070": "Navy",
-  "#C94736": "Red",
-  "#826CB0": "Purple",
-  "#597C7C": "Turquoise",
-  "#93674F": "Brown",
-  "#934F6F": "Magenta",
-  "#3F82B2": "Blue",
-  "#97A0AC": "Navy Grey",
-  "#7F9161": "Army Green",
-  "#f72d93": "Pink",
-  "#CAB361": "Gold",
-  "#BE6C49": "Orange",
-};
-
-// mapping color names to their respective dom element ids
-const colorIds = {
-  Green: "green",
-  Yellow: "yellow",
-  Cyan: "cyan",
-  Navy: "navy",
-  Red: "red",
-  Purple: "purple",
-  Turquoise: "turquoise",
-  Brown: "brown",
-  Magenta: "magenta",
-  Blue: "blue",
-  "Navy Grey": "navyGrey",
-  "Army Green": "armyGreen",
-  Pink: "pink",
-  Gold: "gold",
-  Orange: "orange",
-};
-
 const renderPotsData = async () => {
   const response = await fetch("../data.json");
   const data = await response.json();
@@ -119,6 +81,8 @@ const initPotEvents = () => {
     // get pot name and find the corresponding data from the pots array
     let potId = pot.getAttribute("data-id");
     const potData = pots.find((item) => item.id === potId);
+
+    // here
 
     potOptions.addEventListener("click", () => {
       // toggle options modal
@@ -232,6 +196,10 @@ const initPotEvents = () => {
       });
     });
 
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
     // toggle edit modal
     const editButton = pot.querySelector('[data-name="edit-pot-button"]');
     editButton.addEventListener("click", () => {
@@ -244,155 +212,29 @@ const initPotEvents = () => {
         }, 100);
       }
 
-      // stop page scrolling in the background
-      document.body.classList.add("overflow-hidden");
-
-      // declaring pot information
-      let potName = potData.name;
-      let potTarget = Number(potData.target).toFixed(2);
-      let potTheme = potData.theme;
-      let potColorName = colors[potData.theme];
-
-      // append edit modal
-      const modalId = potId;
-      const modalName = potName;
-      const input2Value = potTarget;
-      const modalTheme = potTheme;
-      const modalColorName = potColorName;
-      const modalData = { modalId, modalName, modalTheme, modalColorName };
-
+      // define modalName for first input
+      let modalName = potData.name;
+      // declare firstInput to be used in the appendModal func
       const firstInput = `
-                  <div class="w-full flex flex-col gap-[4px]">
-                    <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                    <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-                     <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalData.modalName}" />
-                    </div>
-                    <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-                  </div>
-                `;
-      appendModal(pot, modalData, firstInput);
+        <div class="w-full flex flex-col gap-[4px]">
+          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalName}" />
+          </div>
+          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+        </div>
+      `;
 
-      // declare the name and target input elements
-      const input1 = document.querySelector("#input-1");
-      const input2 = document.querySelector("#input-2");
-
-      // validate name and target inputs whenever the user types in the fields
-      // input1.addEventListener("input", validateInput1);
-      input2.addEventListener("input", () => validateInput2());
-
-      const closeButton = document.querySelector('[data-name="close-button"]');
-      closeButton.addEventListener("click", () => closeModal1());
-
-      // declare te counter element
-      const counter = document.querySelector("#characters-left");
-      // update counter
-      const charsLeft = 30 - input1.value.length;
-      counter.textContent = `${charsLeft} characters left`;
-
-      // get the corresponding color id from the colorIds map
-      const themeId = colorIds[potColorName];
-      let selectedTheme = document.getElementById(themeId);
-
-      // append the selected theme icon to the corresponding pot theme
-      if (selectedTheme) {
-        selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-        selectedTheme.classList.remove("hover:cursor-pointer");
-        selectedTheme.classList.add("hover:cursor-not-allowed");
-      }
-
-      const input3 = document.querySelector("#input-3").children;
-
-      let chosenTheme = potTheme;
-      // loop through each theme option
-      Array.from(input3).forEach((theme) => {
-        theme.addEventListener("click", () => {
-          // ignore click if theme already used or selected
-          if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
-
-          // get theme name from id, then get both name and hex color
-          const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-          chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
-
-          // remove previously selected theme's icon and re-enable hover cursor
-          document.querySelector("#selectedTheme").remove();
-          selectedTheme.classList.add("hover:cursor-pointer");
-          selectedTheme.classList.remove("hover:cursor-not-allowed");
-          // mark new selected theme
-          selectedTheme = theme;
-          selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-
-          // update theme color and label text
-          themeButton.querySelector("span").style.backgroundColor = chosenTheme;
-          themeButton.querySelector("p").textContent = chosenThemeName;
-
-          // close theme modal after theme is selected
-          themeModal.classList.add("animate-theme-close");
-          setTimeout(() => {
-            themeModal.classList.add("hidden");
-            themeModal.classList.remove("animate-theme-close");
-
-            // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
-            selectedTheme.classList.remove("hover:cursor-pointer");
-            selectedTheme.classList.add("hover:cursor-not-allowed");
-          }, 300);
-        });
-      });
-
-      // loop through each pot to check if its theme is already used
-      pots.forEach((pot) => {
-        // get the used theme name and corresponding dom element id
-        const usedTheme = colors[pot.theme];
-        const usedThemeElementId = colorIds[usedTheme];
-        const usedThemeElement = document.getElementById(usedThemeElementId);
-
-        // check if the used theme element id doesnt match the current themeId
-        if (usedThemeElementId !== themeId) {
-          // add already used message to the theme element
-          usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-          usedThemeElement.classList.remove("hover:cursor-pointer");
-          usedThemeElement.classList.add("hover:cursor-not-allowed");
-        }
-      });
+      const modalInfo = {
+        title: "Edit Pot",
+        subTitle: "If your saving targets change, feel free to update your pots.",
+        field2Title: "Target",
+        buttonText: "Save Changes",
+        modalType: "new",
+      };
+      appendModal(potData, potId, firstInput, pots, modalInfo);
 
       ////////////////////////////////////////////////////////////////////////////////////////////
-      ////////////////////////////////////////////////////////////////////////////////////////////
-      ////////////////////////////////////////////////////////////////////////////////////////////
-
-      // const themeButton = editModal.querySelector("#theme-button");
-      // const themeModal = editModal.querySelector("#theme-modal-wrapper");
-
-      // // toggle theme modal
-      // themeButton.addEventListener("click", () => {
-      //   if (!themeModal.classList.contains("hidden")) {
-      //     // animation
-      //     themeModal.classList.add("animate-theme-close");
-      //     setTimeout(() => {
-      //       themeModal.classList.add("hidden");
-      //       themeModal.classList.remove("animate-theme-close");
-      //     }, 300);
-      //   } else {
-      //     themeModal.classList.remove("hidden");
-      //   }
-      // });
-
-      // // close theme modal on outside click
-      // document.addEventListener("click", (e) => {
-      //   if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
-      //     if (!themeModal.classList.contains("hidden")) {
-      //       // animation
-      //       themeModal.classList.add("animate-theme-close");
-      //       setTimeout(() => {
-      //         themeModal.classList.add("hidden");
-      //         themeModal.classList.remove("animate-theme-close");
-      //       }, 300);
-      //     }
-      //   }
-      // });
-
-      // // dont close theme modal if clicked inside
-      // themeModal.addEventListener("click", (e) => {
-      //   e.stopPropagation();
-      // });
 
       ////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////
