@@ -92,7 +92,7 @@ function appendModal(modalInfo) {
                     <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Green</p>
                   </div>
                   <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  
+
                   <div id="yellow" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
                     <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
                     <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Yellow</p>
@@ -381,3 +381,134 @@ const validateInput3 = (chosenTheme) => {
 };
 
 export { appendModal, validateInput2, validateInput3, closeModal1 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// save changes code:
+
+// // create an array of dom elements based on the color theme of each pot
+// const usedThemeElements = pots.map((pot) => {
+//   const usedTheme = colors[pot.theme];
+//   const usedThemeElementId = colorIds[usedTheme];
+
+//   // get the dom element associated with the theme id and return it as an object
+//   const usedThemeElement = document.getElementById(usedThemeElementId);
+//   return { usedThemeElement };
+// });
+
+// // color
+// usedThemeElements.forEach((item) => {
+//   // access the dom element inside the object
+//   const el = item.usedThemeElement;
+
+//   // add already used message to the theme element
+//   el.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+//   el.classList.remove("hover:cursor-pointer");
+//   el.classList.add("hover:cursor-not-allowed");
+// });
+
+// // get all theme options inside the theme modal & init selected theme as null (nothing selected yet)
+// const themes = document.querySelector("#theme-modal").children;
+// let selectedTheme = null;
+
+// let chosenTheme;
+// // loop through each theme option
+// Array.from(themes).forEach((theme) => {
+//   theme.addEventListener("click", () => {
+//     // ignore click if theme already used or selected
+//     if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
+
+//     // get theme name from id, then get both name and hex color
+//     const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
+//     chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+
+//     // if theres a previously selected theme, remove its icon and re-enable hover cursor
+//     if (document.querySelector("#selectedTheme")) {
+//       document.querySelector("#selectedTheme").remove();
+//       selectedTheme.classList.add("hover:cursor-pointer");
+//       selectedTheme.classList.remove("hover:cursor-not-allowed");
+//     }
+//     // mark new selected theme
+//     selectedTheme = theme;
+//     selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
+//     // update theme color and label text
+//     themeButton.querySelector("span").classList.remove("animate-color");
+//     themeButton.querySelector("span").style.background = chosenTheme;
+//     themeButton.querySelector("p").textContent = chosenThemeName;
+
+//     // close theme modal after theme is selected
+//     themeModal.classList.add("animate-theme-close");
+//     setTimeout(() => {
+//       themeModal.classList.add("hidden");
+//       themeModal.classList.remove("animate-theme-close");
+
+//       // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
+//       selectedTheme.classList.remove("hover:cursor-pointer");
+//       selectedTheme.classList.add("hover:cursor-not-allowed");
+//     }, 300);
+
+//     // revalidate after theme selection
+//     validateInput3(chosenTheme);
+//   });
+// });
+
+// // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
+// const saveChangesBtn = document.querySelector("#save-changes-button");
+// saveChangesBtn.addEventListener("click", () => {
+//   // validate all inputs
+//   validateInput2();
+//   validateInput1();
+//   validateInput3(chosenTheme);
+
+//   // get the validation result from each function, which returns the canSubmit state for the target input
+//   const nameValid = validateInput2();
+//   const targetValid = validateInput1();
+//   const themeValid = validateInput3(chosenTheme);
+
+//   // check if all validations pass
+//   if (nameValid && targetValid && themeValid) {
+//     console.log("yessir");
+//     sendPotsData(chosenTheme);
+
+//     // close new pot modal
+//     newPotModal.classList.add("animate-fade-out");
+//     setTimeout(() => {
+//       newPotModal.remove();
+
+//       // resume page scrolling
+//       document.body.classList.remove("overflow-hidden");
+//     }, 200);
+//   } else {
+//     console.log("nope");
+//   }
+// });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// second save changes code:
+
+// // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
+// const saveChangesBtn = document.querySelector("#save-changes-button");
+// saveChangesBtn.addEventListener("click", () => {
+//   // validate all inputs
+//   validateInput2();
+//   validateInput1();
+
+//   // get the validation result from each function, which returns the canSubmit state for the target input
+//   const input1Valid = validateInput2();
+//   const input2Valid = validateInput1();
+
+//   const modal1 = document.querySelector("#modal1");
+//   // check if all validations pass
+//   if (input1Valid && input2Valid) {
+//     // updatePotData(chosenTheme);
+
+//     // close new pot modal
+//     modal1.classList.add("animate-fade-out");
+//     setTimeout(() => {
+//       modal1.remove();
+
+//       // resume page scrolling
+//       document.body.classList.remove("overflow-hidden");
+//     }, 200);
+//   }
+// });
