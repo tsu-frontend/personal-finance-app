@@ -1,4 +1,4 @@
-import { appendModal, validateInput2, closeModal1 } from "../modals/modal1.js";
+import { appendModal, validateInput2, validateInput3, closeModal1 } from "../modals/modal1.js";
 
 let pots = [];
 
@@ -82,8 +82,6 @@ const initPotEvents = () => {
     let potId = pot.getAttribute("data-id");
     const potData = pots.find((item) => item.id === potId);
 
-    // here
-
     potOptions.addEventListener("click", () => {
       // toggle options modal
       optionsModal.classList.add("animate-close");
@@ -152,7 +150,7 @@ const initPotEvents = () => {
         `
       );
 
-      // delete close buttons
+      // delete modal close buttons
       pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
         btn.addEventListener("click", () => {
           const deleteModal = pot.querySelector("#delete-modal");
@@ -167,7 +165,7 @@ const initPotEvents = () => {
         });
       });
 
-      // delete pot confirm
+      // delete pot confirm button
       const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
       delConfirmBtn.addEventListener("click", () => {
         const deleteModal = pot.querySelector("#delete-modal");
@@ -253,18 +251,17 @@ const initPotEvents = () => {
       const saveChangesBtn = document.querySelector("#save-changes-button");
       saveChangesBtn.addEventListener("click", () => {
         // validate all inputs
-        validateNameInput();
+        validateInput2();
         validateInput1();
-        validateTheme(chosenTheme);
+        validateInput3(chosenTheme);
 
         // get the validation result from each function, which returns the canSubmit state for the target input
-        const nameValid = validateNameInput();
+        const nameValid = validateInput2();
         const targetValid = validateInput1();
-        const themeValid = validateTheme(chosenTheme);
+        const themeValid = validateInput3(chosenTheme);
 
         // check if all validations pass
         if (nameValid && targetValid && themeValid) {
-          console.log("yessir");
           updatePotData(chosenTheme);
 
           // close new pot modal
@@ -275,14 +272,13 @@ const initPotEvents = () => {
             // resume page scrolling
             document.body.classList.remove("overflow-hidden");
           }, 200);
-        } else {
-          console.log("nope");
         }
       });
     });
   });
 };
 
+// append add new pot modal
 const newPotButton = document.querySelector("#new-pot-button");
 newPotButton.addEventListener("click", () => {
   addNewPot();
@@ -291,8 +287,6 @@ newPotButton.addEventListener("click", () => {
 const addNewPot = () => {
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
-
-  // append add new pot modal
 
   // declare firstInput for it to be used in the appendModal func
   const firstInput = `
@@ -326,7 +320,7 @@ const addNewPot = () => {
   const targetInput = document.querySelector("#pot-target-input");
 
   // validate name and target inputs whenever the user types in the fields
-  nameInput.addEventListener("input", validateNameInput);
+  nameInput.addEventListener("input", validateInput2);
   targetInput.addEventListener("input", validateInput1);
 
   // declare te counter element
@@ -396,6 +390,7 @@ const addNewPot = () => {
     return { usedThemeElement };
   });
 
+  // color
   usedThemeElements.forEach((item) => {
     // access the dom element inside the object
     const el = item.usedThemeElement;
@@ -448,7 +443,7 @@ const addNewPot = () => {
       }, 300);
 
       // revalidate after theme selection
-      validateTheme(chosenTheme);
+      validateInput3(chosenTheme);
     });
   });
 
@@ -456,14 +451,14 @@ const addNewPot = () => {
   const saveChangesBtn = document.querySelector("#save-changes-button");
   saveChangesBtn.addEventListener("click", () => {
     // validate all inputs
-    validateNameInput();
+    validateInput2();
     validateInput1();
-    validateTheme(chosenTheme);
+    validateInput3(chosenTheme);
 
     // get the validation result from each function, which returns the canSubmit state for the target input
-    const nameValid = validateNameInput();
+    const nameValid = validateInput2();
     const targetValid = validateInput1();
-    const themeValid = validateTheme(chosenTheme);
+    const themeValid = validateInput3(chosenTheme);
 
     // check if all validations pass
     if (nameValid && targetValid && themeValid) {
