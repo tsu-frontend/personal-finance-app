@@ -1,5 +1,3 @@
-// title subTitle modal buttonText input-2-div input-2 input-2-text input2
-
 // declaring pot theme colors
 const colors = {
   "#277C78": "Green",
@@ -38,26 +36,26 @@ const colorIds = {
   Orange: "orange",
 };
 
-function appendModal(modalData, modalId, firstInput, pots, modalInfo) {
+function appendModal(modalInfo) {
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
 
   // declaring modal information
-  let modalName = modalData.name;
-  let input2Value = Number(modalData.target).toFixed(2);
-  let modalTheme = modalData.theme;
-  let modalColorName = colors[modalData.theme];
+  let modalName, input2Value, modalTheme, modalColorName, colorAnimation;
+  
+  if (modalInfo.modalType === "edit") {
+    modalName = modalInfo.modalData.name;
+    input2Value = Number(modalInfo.modalData.target).toFixed(2);
+    modalTheme = modalInfo.modalData.theme;
+    modalColorName = colors[modalInfo.modalData.theme];
+    colorAnimation = "";
+  }
 
-  // temp variables
-  // const modalType = "edit";
-  // const modalType = "new";
-
-  let colorAnimation = "";
   if (modalInfo.modalType === "new") {
     modalName = "";
     input2Value = "";
+    modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
     modalColorName = "Pick a theme";
-    let modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
     colorAnimation = "animate-color";
   }
 
@@ -65,14 +63,14 @@ function appendModal(modalData, modalId, firstInput, pots, modalInfo) {
     "beforeend",
     `
           <div id="modal1" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-            <div data-id="${modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+            <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
               <div class="w-full flex justify-between items-center">
                 <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
                 <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
               </div>
               <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${modalInfo.subTitle}</p>
               <div class="w-full flex flex-col gap-[16px]">
-              ${firstInput}
+              ${modalInfo.firstInput}
                 <div class="w-full flex flex-col gap-[4px]">
                   <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${modalInfo.field2Title}</p>
                   <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
@@ -177,17 +175,8 @@ function appendModal(modalData, modalId, firstInput, pots, modalInfo) {
 
   //////////////////////////////////////////////////////////////////
 
-  const input1 = document.querySelector("#input-1");
   const input2 = document.querySelector("#input-2");
 
-  // declare te counter element
-  const counter = document.querySelector("#characters-left");
-  // update counter
-  const charsLeft = 30 - input1.value.length;
-  counter.textContent = `${charsLeft} characters left`;
-
-  // validate inputs whenever the user types in the fields
-  // input1.addEventListener("input", validateInput1);
   input2.addEventListener("input", () => validateInput2());
 
   const closeButton = document.querySelector('[data-name="close-button"]');
@@ -281,7 +270,7 @@ function appendModal(modalData, modalId, firstInput, pots, modalInfo) {
   });
 
   // loop through each pot to check if its theme is already used
-  pots.forEach((pot) => {
+  modalInfo.item.forEach((pot) => {
     // get the used theme name and corresponding dom element id
     const usedTheme = colors[pot.theme];
     const usedThemeElementId = colorIds[usedTheme];
@@ -312,6 +301,7 @@ function closeModal1() {
   }, 200);
 }
 
+// validates the second input: checks if its required and a valid number. returns canSubmit state
 function validateInput2() {
   // flag to track if inputs are valid
   let canSubmit = true;
@@ -320,10 +310,8 @@ function validateInput2() {
   const input2 = document.querySelector("#input-2");
   const input2Div = document.querySelector("#input-2-div");
 
-  // reset input 2 div border color to default before validation runs again
+  // reset input2Div border color and error msg to default before validation runs again
   input2Div.style.borderColor = "#98908B";
-
-  // remove previous error msg if exists to prevent duplicates
   const redMsg = input2Div.querySelector("#error-msg");
   if (redMsg) redMsg.remove();
 
@@ -360,5 +348,35 @@ function validateInput2() {
   // return the state of canSubmit
   return canSubmit;
 }
+
+// validates if a theme is selected
+const validateInput3 = (chosenTheme) => {
+  // flag to track if inputs are valid
+  let canSubmit = true;
+
+  // declare theme input div
+  const themeInputDiv = document.querySelector("#theme-button");
+
+  // reset target input border color to default before validation runs again
+  themeInputDiv.style.borderColor = "#98908B";
+
+  // remove previous error msg if exists to prevent duplicates
+  const themeRedMsg = themeInputDiv.querySelector("#error-msg");
+  if (themeRedMsg) themeRedMsg.remove();
+
+  if (!chosenTheme) {
+    canSubmit = false;
+    themeInputDiv.style.borderColor = "red";
+    themeInputDiv.insertAdjacentHTML(
+      "beforeend",
+      `
+        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+      `
+    );
+  }
+
+  // return the state of canSubmit
+  return canSubmit;
+};
 
 export { appendModal, validateInput2, closeModal1 };

@@ -212,29 +212,38 @@ const initPotEvents = () => {
         }, 100);
       }
 
-      // define modalName for first input
-      let modalName = potData.name;
-      // declare firstInput to be used in the appendModal func
+      // declare firstInput for it to be used in the appendModal func
       const firstInput = `
         <div class="w-full flex flex-col gap-[4px]">
           <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
           <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalName}" />
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
           </div>
           <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
         </div>
       `;
 
       const modalInfo = {
+        modalData: potData,
+        modalId: potId,
+        item: pots,
+        firstInput,
         title: "Edit Pot",
         subTitle: "If your saving targets change, feel free to update your pots.",
         field2Title: "Target",
         buttonText: "Save Changes",
-        modalType: "new",
+        modalType: "edit",
       };
-      appendModal(potData, potId, firstInput, pots, modalInfo);
+      // append edit pot modal
+      appendModal(modalInfo);
 
-      ////////////////////////////////////////////////////////////////////////////////////////////
+      // input 1 logic, updates counter
+      const input1 = document.querySelector("#input-1");
+      const charsLeft = 30 - input1.value.length;
+      const counter = document.querySelector("#characters-left");
+      counter.textContent = `${charsLeft} characters left`;
+
+      input1.addEventListener("input", () => validateInput1());
 
       ////////////////////////////////////////////////////////////////////////////////////////////
       ////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,12 +254,12 @@ const initPotEvents = () => {
       saveChangesBtn.addEventListener("click", () => {
         // validate all inputs
         validateNameInput();
-        validateTargetInput();
+        validateInput1();
         validateTheme(chosenTheme);
 
         // get the validation result from each function, which returns the canSubmit state for the target input
         const nameValid = validateNameInput();
-        const targetValid = validateTargetInput();
+        const targetValid = validateInput1();
         const themeValid = validateTheme(chosenTheme);
 
         // check if all validations pass
@@ -284,125 +293,33 @@ const addNewPot = () => {
   document.body.classList.add("overflow-hidden");
 
   // append add new pot modal
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `
-        <div id="new-pot-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-          <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-            <div class="w-full flex justify-between items-center">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Add New Pot</h1>
-              <img data-name="new-pot-close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-            </div>
-            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Create a pot to set savings targets. These can help keep you on track as you save for special purchases.</p>
-            <div class="w-full flex flex-col gap-[16px]">
-              <div class="w-full flex flex-col gap-[4px]">
-                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                <div id="pot-name-div" class="w-full px-[20px] py-[12px] h-[48px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-                 <input id="pot-name-input" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
-                </div>
-                <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-              </div>
-              <div class="w-full flex flex-col gap-[4px]">
-                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                <div id="pot-target-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-                  <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                  <input id="pot-target-input" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
-                </div>
-              </div>
-              <div class="w-full flex flex-col gap-[4px]">
-                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-                <div id="theme-button" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                    <span class="animate-color w-[16px] h-[16px] rounded-full" style="background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)"></span>
-                    <p class="text-[#201F24] text-[14px] font-normal">Pick a theme</p>
-                  <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-                  <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-                  <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
-                    <div id="green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#277C78] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Green</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="yellow" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Yellow</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="cyan" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#82C9D7] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Cyan</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="navy" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#626070] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="red" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#C94736] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Red</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="purple" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Purple</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="turquoise" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#597C7C] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Turquoise</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="brown" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#93674F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Brown</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="magenta" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#934F6F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Magenta</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="blue" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#3F82B2] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Blue</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="navyGrey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy Grey</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="armyGreen" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Army Green</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="pink" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#f72d93] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Pink</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="gold" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#CAB361] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Gold</p>
-                    </div>
-                    <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                    <div id="orange" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                      <span class="w-[16px] h-[16px] rounded-full bg-[#BE6C49] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                      <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Orange</p>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-              <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
-            </button>
+
+  // declare firstInput for it to be used in the appendModal func
+  const firstInput = `
+        <div class="w-full flex flex-col gap-[4px]">
+          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
           </div>
+          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
         </div>
-      `
-  );
+      `;
+
+  const modalInfo = {
+    modalData: potData,
+    modalId: potId,
+    item: pots,
+    firstInput,
+    title: "Add New Pot",
+    subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+    field2Title: "Target",
+    buttonText: "Add pot",
+    modalType: "new",
+  };
+  // append edit pot modal
+  appendModal(modalInfo);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   // declare the name and target input elements
   const nameInput = document.querySelector("#pot-name-input");
@@ -410,7 +327,7 @@ const addNewPot = () => {
 
   // validate name and target inputs whenever the user types in the fields
   nameInput.addEventListener("input", validateNameInput);
-  targetInput.addEventListener("input", validateTargetInput);
+  targetInput.addEventListener("input", validateInput1);
 
   // declare te counter element
   const counter = document.querySelector("#characters-left");
@@ -540,12 +457,12 @@ const addNewPot = () => {
   saveChangesBtn.addEventListener("click", () => {
     // validate all inputs
     validateNameInput();
-    validateTargetInput();
+    validateInput1();
     validateTheme(chosenTheme);
 
     // get the validation result from each function, which returns the canSubmit state for the target input
     const nameValid = validateNameInput();
-    const targetValid = validateTargetInput();
+    const targetValid = validateInput1();
     const themeValid = validateTheme(chosenTheme);
 
     // check if all validations pass
@@ -568,17 +485,17 @@ const addNewPot = () => {
 };
 
 // validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
-const validateNameInput = () => {
+const validateInput1 = () => {
   // flag to track if inputs are valid
   let canSubmit = true;
 
   // declare counter, name input and its div
   const counter = document.querySelector("#characters-left");
-  const nameInput = document.querySelector("#pot-name-input");
-  const nameInputDiv = document.querySelector("#pot-name-div");
+  const input1 = document.querySelector("#input-1");
+  const input1Div = document.querySelector("#input-div-1");
 
   // calculate how many characters are left before reaching the 30 character limit
-  const charsLeft = 30 - nameInput.value.length;
+  const charsLeft = 30 - input1.value.length;
 
   // change border color to red if input too long, else keep it default
   if (charsLeft < 0) {
@@ -588,119 +505,39 @@ const validateNameInput = () => {
   }
 
   // change border color to red if input too long, else keep it default
-  nameInputDiv.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+  input1Div.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
 
   // remove previous error msg if exists to prevent duplicates
-  const nameRedMsg = nameInputDiv.querySelector("#error-msg");
+  const nameRedMsg = input1Div.querySelector("#error-msg");
   if (nameRedMsg) nameRedMsg.remove();
 
   // validate name input: required, max 30 chars, alphanumeric
-  if (nameInput.value.length === 0) {
+  if (input1.value.length === 0) {
     canSubmit = false;
-    nameInputDiv.style.borderColor = "red";
-    nameInputDiv.insertAdjacentHTML(
+    input1Div.style.borderColor = "red";
+    input1Div.insertAdjacentHTML(
       "beforeend",
       `
       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
     `
     );
-  } else if (nameInput.value.length > 30) {
+  } else if (input1.value.length > 30) {
     canSubmit = false;
-    nameInputDiv.style.borderColor = "red";
-    nameInputDiv.insertAdjacentHTML(
+    input1Div.style.borderColor = "red";
+    input1Div.insertAdjacentHTML(
       "beforeend",
       `
       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
     `
     );
-  } else if (!/^[a-zA-Z0-9 ]+$/.test(nameInput.value)) {
+  } else if (!/^[a-zA-Z0-9 ]+$/.test(input1.value)) {
     canSubmit = false;
-    nameInputDiv.style.borderColor = "red";
-    nameInputDiv.insertAdjacentHTML(
+    input1Div.style.borderColor = "red";
+    input1Div.insertAdjacentHTML(
       "beforeend",
       `
       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
     `
-    );
-  }
-
-  // return the state of canSubmit
-  return canSubmit;
-};
-
-// validates the target input: checks if its required and a valid number. returns canSubmit state
-const validateTargetInput = () => {
-  // flag to track if inputs are valid
-  let canSubmit = true;
-
-  // declare target input and its div
-  const targetInput = document.querySelector("#pot-target-input");
-  const targetInputDiv = document.querySelector("#pot-target-div");
-
-  // reset target input border color to default before validation runs again
-  targetInputDiv.style.borderColor = "#98908B";
-
-  // remove previous error msg if exists to prevent duplicates
-  const targetRedMsg = targetInputDiv.querySelector("#error-msg");
-  if (targetRedMsg) targetRedMsg.remove();
-
-  // validate target input: required, valid number, not 69
-  if (targetInput.value.length === 0) {
-    canSubmit = false;
-    targetInputDiv.style.borderColor = "red";
-    targetInputDiv.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
-    );
-  } else if (!/^\d+(\.\d{1,2})?$/.test(targetInput.value) || targetInput.value < 1 || targetInput.value > 999999) {
-    canSubmit = false;
-    targetInputDiv.style.borderColor = "red";
-    targetInputDiv.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
-      `
-    );
-  } else if (targetInput.value == 69) {
-    canSubmit = false;
-    targetInputDiv.style.borderColor = "red";
-    targetInputDiv.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
-      `
-    );
-  }
-
-  // return the state of canSubmit
-  return canSubmit;
-};
-
-// validates if a theme is selected
-const validateTheme = (chosenTheme) => {
-  // flag to track if inputs are valid
-  let canSubmit = true;
-
-  // declare theme input div
-  const themeInputDiv = document.querySelector("#theme-button");
-
-  // reset target input border color to default before validation runs again
-  themeInputDiv.style.borderColor = "#98908B";
-
-  // remove previous error msg if exists to prevent duplicates
-  const themeRedMsg = themeInputDiv.querySelector("#error-msg");
-  if (themeRedMsg) themeRedMsg.remove();
-
-  if (!chosenTheme) {
-    canSubmit = false;
-    themeInputDiv.style.borderColor = "red";
-    themeInputDiv.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
     );
   }
 
