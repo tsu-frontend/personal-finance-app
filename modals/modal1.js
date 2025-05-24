@@ -1,40 +1,21 @@
 // declaring pot theme colors
-const colors = {
-  "#277C78": "Green",
-  "#F2CDAC": "Yellow",
-  "#82C9D7": "Cyan",
-  "#626070": "Navy",
-  "#C94736": "Red",
-  "#826CB0": "Purple",
-  "#597C7C": "Turquoise",
-  "#93674F": "Brown",
-  "#934F6F": "Magenta",
-  "#3F82B2": "Blue",
-  "#97A0AC": "Navy Grey",
-  "#7F9161": "Army Green",
-  "#f72d93": "Pink",
-  "#CAB361": "Gold",
-  "#BE6C49": "Orange",
-};
-
-// mapping color names to their respective dom element ids
-const colorIds = {
-  Green: "green",
-  Yellow: "yellow",
-  Cyan: "cyan",
-  Navy: "navy",
-  Red: "red",
-  Purple: "purple",
-  Turquoise: "turquoise",
-  Brown: "brown",
-  Magenta: "magenta",
-  Blue: "blue",
-  "Navy Grey": "navyGrey",
-  "Army Green": "armyGreen",
-  Pink: "pink",
-  Gold: "gold",
-  Orange: "orange",
-};
+const colors = [
+  { colorId: "orange", colorValue: "#BE6C49", colorName: "Orange" },
+  { colorId: "blue", colorValue: "#3F82B2", colorName: "Blue" },
+  { colorId: "navyGrey", colorValue: "#97A0AC", colorName: "Navy Grey" },
+  { colorId: "armyGreen", colorValue: "#7F9161", colorName: "Army Green" },
+  { colorId: "pink", colorValue: "#F72D93", colorName: "Pink" },
+  { colorId: "gold", colorValue: "#CAB361", colorName: "Gold" },
+  { colorId: "magenta", colorValue: "#934F6F", colorName: "Magenta" },
+  { colorId: "turquoise", colorValue: "#597C7C", colorName: "Turquoise" },
+  { colorId: "purple", colorValue: "#826CB0", colorName: "Purple" },
+  { colorId: "red", colorValue: "#C94736", colorName: "Red" },
+  { colorId: "navy", colorValue: "#626070", colorName: "Navy" },
+  { colorId: "cyan", colorValue: "#82C9D7", colorName: "Cyan" },
+  { colorId: "green", colorValue: "#277C78", colorName: "Green" },
+  { colorId: "yellow", colorValue: "#F2CDAC", colorName: "Yellow" },
+  { colorId: "brown", colorValue: "#93674F", colorName: "Brown" },
+];
 
 function appendModal(modalInfo) {
   // stop page scrolling in the background
@@ -47,7 +28,9 @@ function appendModal(modalInfo) {
     modalName = modalInfo.modalData.name;
     input2Value = Number(modalInfo.modalData.target).toFixed(2);
     modalTheme = modalInfo.modalData.theme;
-    modalColorName = colors[modalInfo.modalData.theme];
+
+    const colorObj = colors.find((color) => color.colorValue === modalInfo.modalData.theme);
+    modalColorName = colorObj.colorName;
     colorAnimation = "";
   }
 
@@ -63,7 +46,9 @@ function appendModal(modalInfo) {
     "beforeend",
     `
       <div id="modal1" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-        <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+        <div data-id="${
+          modalInfo.modalId
+        }" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
           <div class="w-full flex justify-between items-center">
             <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
             <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
@@ -87,81 +72,18 @@ function appendModal(modalInfo) {
                 <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
                 <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
 
-                  <div id="green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#277C78] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Green</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  
-                  <div id="yellow" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Yellow</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="cyan" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#82C9D7] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Cyan</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="navy" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#626070] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="red" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#C94736] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Red</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="purple" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Purple</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="turquoise" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#597C7C] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Turquoise</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="brown" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#93674F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Brown</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="magenta" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#934F6F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Magenta</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="blue" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#3F82B2] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Blue</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="navyGrey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy Grey</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="armyGreen" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Army Green</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="pink" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#f72d93] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Pink</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="gold" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#CAB361] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Gold</p>
-                  </div>
-                  <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                  <div id="orange" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                    <span class="w-[16px] h-[16px] rounded-full bg-[#BE6C49] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                    <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Orange</p>
-                  </div>
+
+                ${colors
+                  .map(
+                    (
+                      color
+                    ) => `<div id=${color.colorId} class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+                                  <span class="w-[16px] h-[16px] rounded-full bg-[${color.colorValue}] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+                                  <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">${color.colorName}</p>
+                                </div>
+                                <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>`
+                  )
+                  .join("")}
                   
                 </div>
                 </div>
@@ -222,8 +144,11 @@ function appendModal(modalInfo) {
     e.stopPropagation();
   });
 
-  // get the corresponding color id from the colorIds map
-  const themeId = colorIds[modalColorName];
+  // get the corresponding color id from the colors map
+
+  const colorObj = colors.find((color) => color.colorName === modalColorName);
+
+  const themeId = colorObj.colorId;
   let selectedTheme = document.getElementById(themeId);
 
   // append the selected theme icon to the corresponding pot theme
@@ -233,7 +158,7 @@ function appendModal(modalInfo) {
     selectedTheme.classList.add("hover:cursor-not-allowed");
   }
 
-  const input3 = document.querySelector("#input-3").children;
+  const input3 = document.querySelectorAll("#theme-modal > div");
 
   let chosenTheme = modalTheme;
   // loop through each theme option
@@ -243,8 +168,10 @@ function appendModal(modalInfo) {
       if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
 
       // get theme name from id, then get both name and hex color
-      const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-      chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+      const colorObj = colors.find((color) => color.colorId === theme.id);
+
+      const chosenThemeName = colorObj.colorName;
+      chosenTheme = colorObj.colorValue;
 
       // remove previously selected theme's icon and re-enable hover cursor
       document.querySelector("#selectedTheme").remove();
@@ -274,8 +201,8 @@ function appendModal(modalInfo) {
   // loop through each pot to check if its theme is already used
   modalInfo.item.forEach((pot) => {
     // get the used theme name and corresponding dom element id
-    const usedTheme = colors[pot.theme];
-    const usedThemeElementId = colorIds[usedTheme];
+    const colorObj = colors.find((color) => color.colorValue == pot.theme);
+    const usedThemeElementId = colorObj.colorId;
     const usedThemeElement = document.getElementById(usedThemeElementId);
 
     // check if the used theme element id doesnt match the current themeId
