@@ -261,8 +261,6 @@ newPotButton.addEventListener("click", () => {
       `;
 
   const modalInfo = {
-    modalData: potData,
-    modalId: potId,
     item: pots,
     firstInput,
     title: "Add New Pot",
