@@ -71,8 +71,236 @@
       </div>
     </nav>
 
-    <main class="w-full h-full bg-amber-500">
-      <!-- ####################### დაიწყე კოდის წერა აქ! ####################### -->
+    <main class="flex-1 flex flex-col gap-[32px] py-[24px] px-[16px] md:py-[32px] md:px-[40px]">
+      <header class="w-full h-[56px] flex items-center">
+        <h1 class="text-[#201F24] text-[32px] font-bold leading-[120%]">Overview</h1>
+      </header>
+
+      <section class="w-full h-[119px] flex flex-col md:flex-row gap-[12px] md:gap-[24px]">
+        <div class="flex-1 h-full p-[24px] gap-[12px] bg-[#201F24] rounded-[12px] flex flex-col">
+          <h3 class="text-[#FFF] text-[14px] leading[150%]">Current Balance</h3>
+          <p id="current-balance-amount" class="text-[#FFF] text-[32px] leading[150%] font-[700]">$4,836.00</p>
+        </div>
+        <div class="flex-1 h-full p-[24px] gap-[12px] bg-[#FFF] rounded-[12px] flex flex-col">
+          <h3 class="text-[#696868] text-[14px] leading[150%]">Income</h3>
+          <p id="income-amount" class="text-[#201F24] text-[32px] leading[150%] font-[700]">$3,814.25</p>
+        </div>
+        <div class="flex-1 h-full p-[24px] gap-[12px] bg-[#FFF] rounded-[12px] flex flex-col">
+          <h3 class="text-[#696868] text-[14px] leading[150%]">Expenses</h3>
+          <p id="expense-amount" class="text-[#201F24] text-[32px] leading[150%] font-[700]">$1,700.50</p>
+        </div>
+      </section>
+
+      <section id="pots" class="card">
+        <div class="pots-content">
+          <h3>Pots</h3>
+          <p id="total-saved-pots"></p>
+        </div>
+        <div id="pots-grid" class="grid grid-cols-2 gap-4"></div>
+      </section>
+
+      <section id="budget" class="card">
+        <div class="budgets-content">
+          <div class="budget-chart">
+            <div class="budget-chart-inner">
+              <p id="budget-current-amount"></p>
+              <p id="budget-limit-amount"></p>
+            </div>
+          </div>
+          <div id="budget-categories-grid" class="flex flex-col gap-2"></div>
+        </div>
+      </section>
+
+      <section id="transactions" class="transaction-list">
+        <h3 class="p-4">Recent Transactions</h3>
+        <div id="transactions-list"></div>
+      </section>
+
+      <section id="bills" class="card">
+        <div class="recurring-bills-content">
+          <div>
+            <h3>Paid Bills</h3>
+            <p id="paid-bills-amount"></p>
+          </div>
+          <div>
+            <h3>Upcoming Bills</h3>
+            <p id="total-upcoming-bills-amount"></p>
+          </div>
+          <div>
+            <h3>Due Soon</h3>
+            <p id="due-soon-bills-amount"></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="flex min-h-screen">
+        <aside class="w-64 bg-white shadow-md flex flex-col">
+          <div class="p-6 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-indigo-600">Finance</h1>
+          </div>
+
+          <nav class="flex-1 p-4 space-y-2">
+            <a href="#home-section" id="nav-home" class="block px-4 py-2 rounded bg-indigo-100 text-indigo-700 font-semibold">Home</a>
+            <a href="#transactions-section" id="nav-transactions" class="block px-4 py-2 rounded hover:bg-indigo-50">Transactions</a>
+            <a href="#budgets-section" id="nav-budgets" class="block px-4 py-2 rounded hover:bg-indigo-50">Budgets</a>
+            <a href="#pots-section" id="nav-pots" class="block px-4 py-2 rounded hover:bg-indigo-50">Pots</a>
+            <a href="#recurring-bills-section" id="nav-recurring-bills" class="block px-4 py-2 rounded hover:bg-indigo-50">Recurring Bills</a>
+          </nav>
+
+          <div id="minimize-menu-btn" class="p-4 border-t border-gray-200 text-center text-sm text-gray-500 cursor-pointer hover:bg-gray-100">Minimize Menu</div>
+        </aside>
+      </div>
+
+      <section id="home-section" class="mb-10">
+        <h2 class="text-xl font-semibold mb-6">Home</h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow h-full flex flex-col justify-between">
+              <h3 class="text-sm font-medium text-gray-500 mb-1">Current Balance</h3>
+              <p class="text-2xl font-bold text-gray-900">$4,836.00</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow h-full flex flex-col justify-between">
+              <h3 class="text-sm font-medium text-gray-500 mb-1">Income</h3>
+              <p class="text-2xl font-bold text-green-600">$3,814.25</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow h-full flex flex-col justify-between">
+              <h3 class="text-sm font-medium text-gray-500 mb-1">Expenses</h3>
+              <p class="text-2xl font-bold text-red-600">$1,700.50</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pots-section" class="mb-10">
+        <h2 class="text-xl font-semibold mb-6">Pots</h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex justify-between items-center mb-4 text-sm text-gray-600">
+              <p>Total Saved</p>
+              <p id="total-saved-pots" class="font-semibold text-gray-900">$850</p>
+            </div>
+            <div id="pots-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+              <div class="bg-indigo-50 rounded-xl text-center py-4 px-2">
+                <p class="text-sm font-medium text-indigo-600">Savings</p>
+                <p class="text-base font-bold text-indigo-700">$159</p>
+              </div>
+              <div class="bg-indigo-50 rounded-xl text-center py-4 px-2">
+                <p class="text-sm font-medium text-indigo-600">Gift</p>
+                <p class="text-base font-bold text-indigo-700">$40</p>
+              </div>
+              <div class="bg-indigo-50 rounded-xl text-center py-4 px-2">
+                <p class="text-sm font-medium text-indigo-600">Concert Ticket</p>
+                <p class="text-base font-bold text-indigo-700">$110</p>
+              </div>
+              <div class="bg-indigo-50 rounded-xl text-center py-4 px-2">
+                <p class="text-sm font-medium text-indigo-600">New Laptop</p>
+                <p class="text-base font-bold text-indigo-700">$10</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <button class="text-indigo-600 hover:underline font-medium text-sm">See Details</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="budgets-section" class="mb-10">
+        <h2 class="text-xl font-semibold mb-6">Budgets</h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="mb-6">
+              <div class="relative bg-gray-200 rounded-full h-4 overflow-hidden">
+                <div id="budget-progress-bar" class="absolute top-0 left-0 h-4 bg-indigo-600 rounded-full" style="width: 35.6%"></div>
+              </div>
+              <div class="mt-2 text-sm text-gray-600 flex justify-between">
+                <p id="budget-current-amount">$338</p>
+                <p id="budget-limit-amount">of $975 limit</p>
+              </div>
+            </div>
+
+            <div id="budget-categories-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+              <div class="bg-gray-50 rounded-lg p-3 text-center">
+                <p class="text-sm text-gray-600">Entertainment</p>
+                <p class="font-semibold text-gray-800">$50.00</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-3 text-center">
+                <p class="text-sm text-gray-600">Bills</p>
+                <p class="font-semibold text-gray-800">$750.00</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-3 text-center">
+                <p class="text-sm text-gray-600">Dining Out</p>
+                <p class="font-semibold text-gray-800">$75.00</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-3 text-center">
+                <p class="text-sm text-gray-600">Personal Care</p>
+                <p class="font-semibold text-gray-800">$100.00</p>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <button class="text-indigo-600 hover:underline font-medium text-sm">See Details</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="transactions-section" class="mb-10">
+        <h2 class="text-xl font-semibold mb-6">Transactions</h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div id="transactions-list" class="space-y-4 mb-6">
+              <div class="flex items-center justify-between bg-gray-50 rounded-lg p-4">
+                <div class="text-gray-900 font-medium">Emma Richardson</div>
+                <div class="text-green-600 font-semibold">+ $75.50</div>
+                <div class="text-sm text-gray-500">Aug 2024</div>
+              </div>
+              <div class="flex items-center justify-between bg-gray-50 rounded-lg p-4">
+                <div class="text-gray-900 font-medium">Savory Bites Bistro</div>
+                <div class="text-red-600 font-semibold">- $55.50</div>
+                <div class="text-sm text-gray-500">19 Aug 2024</div>
+              </div>
+              <div class="flex items-center justify-between bg-gray-50 rounded-lg p-4">
+                <div class="text-gray-900 font-medium">Daniel Carter</div>
+                <div class="text-red-600 font-semibold">- $42.30</div>
+                <div class="text-sm text-gray-500">18 Aug 2024</div>
+              </div>
+              <div class="flex items-center justify-between bg-gray-50 rounded-lg p-4">
+                <div class="text-gray-900 font-medium">Urban Service Hub</div>
+                <div class="text-red-600 font-semibold">- $65.00</div>
+                <div class="text-sm text-gray-500">17 Aug 2024</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <button class="text-indigo-600 hover:underline font-medium text-sm">View All</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="recurring-bills-section" class="mb-10">
+        <h2 class="text-xl font-semibold mb-6">Recurring Bills</h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div class="bg-gray-50 rounded-lg p-4 text-center">
+                <p class="text-sm text-gray-500">Paid Bills</p>
+                <p id="paid-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$190.00</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-4 text-center">
+                <p class="text-sm text-gray-500">Total Upcoming</p>
+                <p id="total-upcoming-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$194.98</p>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-4 text-center">
+                <p class="text-sm text-gray-500">Due Soon</p>
+                <p id="due-soon-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$59.98</p>
+              </div>
+            </div>
+            <div class="mt-4 text-right">
+              <button class="text-indigo-600 hover:underline font-medium text-sm">See Details</button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </body>
 </html>
