@@ -1,4 +1,5 @@
-const balance = {
+const balance =
+{
   current: 4836.0,
   income: 3814.25,
   expenses: 1700.5,
@@ -451,3 +452,33 @@ const pots = [
     theme: "#826CB0",
   },
 ];
+
+
+
+const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
+const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
+
+
+
+async function postToSupabase(tableName, tableData) {
+  try {
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': PUBLIC_KEY,
+          'Authorization': `Bearer ${PUBLIC_KEY}`,
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(tableData)
+      })
+    const data = await response.json()
+    // console.log(data)
+  }
+  catch (error) {
+    // console.log(error)
+  }
+}
+
