@@ -740,6 +740,12 @@
       margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .gap-x-\[16px\] {
+    column-gap: 16px;
+  }
+  .gap-y-\[20px\] {
+    row-gap: 20px;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -1446,6 +1452,11 @@
   .md\:h-\[204px\] {
     @media (width >= 48rem) {
       height: 204px;
+    }
+  }
+  .md\:w-1\/2 {
+    @media (width >= 48rem) {
+      width: calc(1/2 * 100%);
     }
   }
   .md\:w-\[104px\] {
