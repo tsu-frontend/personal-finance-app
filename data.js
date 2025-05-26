@@ -458,41 +458,6 @@ const pots = [
 const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
 const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
 
-// const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
-
-// GET REQUEST
-
-// fetch(`${SUPABASE_URL}/rest/v1/budgets`,
-//   {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'apikey': PUBLIC_KEY,
-//       'Authorization': `Bearer ${PUBLIC_KEY}`,
-//       'Prefer': 'return=representation'
-//     }
-//   })
-//   .then(response => console.log(response))
-//   .catch(err => console.error(err))
-
-
-// POST REQUEST
-
-// fetch(`${SUPABASE_URL}/rest/v1/budgets`,
-//   {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'apikey': PUBLIC_KEY,
-//       'Authorization': `Bearer ${PUBLIC_KEY}`,
-//       'Prefer': 'return=representation'
-//     },
-//     body: JSON.stringify(budget)
-//   })
-//   .then(response => console.log(response))
-//   .then()
-//   .catch(err => console.error(`our error:`, err))
-
 
 
 async function postToSupabase(tableName, tableData) {
@@ -510,31 +475,10 @@ async function postToSupabase(tableName, tableData) {
         body: JSON.stringify(tableData)
       })
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
   }
   catch (error) {
-    console.log(error)
+    // console.log(error)
   }
 }
 
-
-function updateDatabase() {
-  const array = [balance, transactions, budgets, pots]
-  const arrayStr = ['balance', 'transactions', 'budgets', 'pots']
-
-  array.forEach((data, index) => {
-    if (Array.isArray(data)) {
-      data.forEach((obj) => {
-        console.log(arrayStr[index]);
-
-        postToSupabase(arrayStr[index], obj)
-      })
-    } else if (typeof data === 'object') {
-
-      postToSupabase(arrayStr[index], data)
-    } else {
-      console.error('wrong data type')
-    }
-  })
-}
-updateDatabase()
