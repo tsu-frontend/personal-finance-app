@@ -151,10 +151,10 @@ const getData = async () => {
   budgetsData.forEach(object => {
     const { category, maximum, theme } = object
     const spent = Math.abs(transactionsByCat[category] || 0)
-    
+
     spentArr.push(spent)
     colorsArr.push(theme)
-    
+
     let SUM = 0
     for (let i = 0; i < budgetsData.length; i++) {
       SUM += budgetsData[i].maximum
@@ -262,25 +262,25 @@ const getData = async () => {
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-0"></figure>
     </article>`
 
-    
-      // chart
-    const cyrcle = new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        datasets: [
-          {
-            label: "# of Votes",
-            data: spentArr,
-            borderWidth: 0,
-            backgroundColor: colorsArr,
-          },
-        ],
-      },
-      options: {
-        cutout: "68%",
-        responsive: true,
-      },
-    });
+
+  // chart
+  const cyrcle = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      datasets: [
+        {
+          label: "# of Votes",
+          data: spentArr,
+          borderWidth: 0,
+          backgroundColor: colorsArr,
+        },
+      ],
+    },
+    options: {
+      cutout: "68%",
+      responsive: true,
+    },
+  });
 
   // open and close small menu
   const threeDots = document.querySelectorAll('[data-name="three_dots"]')
