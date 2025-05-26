@@ -1,42 +1,6 @@
+import { appendModal, validateInput2, closeModal1 } from "../modals/modal1.js";
+
 let pots = [];
-
-// declaring pot theme colors
-const colors = {
-  "#277C78": "Green",
-  "#F2CDAC": "Yellow",
-  "#82C9D7": "Cyan",
-  "#626070": "Navy",
-  "#C94736": "Red",
-  "#826CB0": "Purple",
-  "#597C7C": "Turquoise",
-  "#93674F": "Brown",
-  "#934F6F": "Magenta",
-  "#3F82B2": "Blue",
-  "#97A0AC": "Navy Grey",
-  "#7F9161": "Army Green",
-  "#f72d93": "Pink",
-  "#CAB361": "Gold",
-  "#BE6C49": "Orange",
-};
-
-// mapping color names to their respective dom element ids
-const colorIds = {
-  Green: "green",
-  Yellow: "yellow",
-  Cyan: "cyan",
-  Navy: "navy",
-  Red: "red",
-  Purple: "purple",
-  Turquoise: "turquoise",
-  Brown: "brown",
-  Magenta: "magenta",
-  Blue: "blue",
-  "Navy Grey": "navyGrey",
-  "Army Green": "armyGreen",
-  Pink: "pink",
-  Gold: "gold",
-  Orange: "orange",
-};
 
 const renderPotsData = async () => {
   const response = await fetch("../data.json");
@@ -117,6 +81,8 @@ const initPotEvents = () => {
     // get pot name and find the corresponding data from the pots array
     let potId = pot.getAttribute("data-id");
     const potData = pots.find((item) => item.id === potId);
+
+    // here
 
     potOptions.addEventListener("click", () => {
       // toggle options modal
@@ -230,6 +196,10 @@ const initPotEvents = () => {
       });
     });
 
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
     // toggle edit modal
     const editButton = pot.querySelector('[data-name="edit-pot-button"]');
     editButton.addEventListener("click", () => {
@@ -242,265 +212,33 @@ const initPotEvents = () => {
         }, 100);
       }
 
-      // stop page scrolling in the background
-      document.body.classList.add("overflow-hidden");
-
-      // declaring pot information
-      let potName = potData.name;
-      let potTarget = Number(potData.target).toFixed(2);
-      let potTheme = potData.theme;
-      let potColorName = colors[potData.theme];
-
-      // append edit modal
-      pot.insertAdjacentHTML(
-        "beforeend",
-        `
-          <div id="edit-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-            <div data-id="${potId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-              <div class="w-full flex justify-between items-center">
-                <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Edit Pot</h1>
-                <img data-name="edit-close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-              </div>
-              <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">If your saving targets change, feel free to update your pots.</p>
-              <div class="w-full flex flex-col gap-[16px]">
-                <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-                  <div id="pot-name-div" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-                   <input id="pot-name-input" type="text" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potName}" />
-                  </div>
-                  <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-                </div>
-                <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Target</p>
-                  <div id="pot-target-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-                    <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                    <input id="pot-target-input" type="text" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${potTarget}" />
-                  </div>
-                </div>
-                <div class="w-full flex flex-col gap-[4px]">
-                  <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-                  <div id="theme-button" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                    <span class="w-[16px] h-[16px] rounded-full" style="background-color: ${potTheme}"></span>
-                    <p class="text-[#201F24] text-[14px] font-normal">${potColorName}</p>
-                    <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-                    <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-                    <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
-                      <div id="green" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#277C78] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Green</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="yellow" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#F2CDAC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Yellow</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="cyan" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#82C9D7] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Cyan</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="navy" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#626070] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="red" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#C94736] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Red</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="purple" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#826CB0] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Purple</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="turquoise" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#597C7C] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Turquoise</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="brown" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#93674F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Brown</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="magenta" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#934F6F] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Magenta</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="blue" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#3F82B2] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Blue</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="navyGrey" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#97A0AC] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Navy Grey</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="armyGreen" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#7F9161] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Army Green</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="pink" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#f72d93] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Pink</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="gold" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#CAB361] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Gold</p>
-                      </div>
-                      <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-                      <div id="orange" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-                        <span class="w-[16px] h-[16px] rounded-full bg-[#BE6C49] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-                        <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">Orange</p>
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-                <p class="font-bold text-[#FFF] text-[14px]">Save Changes</p>
-              </button>
-            </div>
+      // define modalName for first input
+      let modalName = potData.name;
+      // declare firstInput to be used in the appendModal func
+      const firstInput = `
+        <div class="w-full flex flex-col gap-[4px]">
+          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${modalName}" />
           </div>
-       `
-      );
+          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+        </div>
+      `;
 
-      // declare the name and target input elements
-      const nameInput = document.querySelector("#pot-name-input");
-      const targetInput = document.querySelector("#pot-target-input");
+      const modalInfo = {
+        title: "Edit Pot",
+        subTitle: "If your saving targets change, feel free to update your pots.",
+        field2Title: "Target",
+        buttonText: "Save Changes",
+        modalType: "new",
+      };
+      appendModal(potData, potId, firstInput, pots, modalInfo);
 
-      // validate name and target inputs whenever the user types in the fields
-      nameInput.addEventListener("input", validateNameInput);
-      targetInput.addEventListener("input", validateTargetInput);
+      ////////////////////////////////////////////////////////////////////////////////////////////
 
-      // declare te counter element
-      const counter = document.querySelector("#characters-left");
-      // update counter
-      const charsLeft = 30 - nameInput.value.length;
-      counter.textContent = `${charsLeft} characters left`;
-
-      // get the corresponding color id from the colorIds map
-      const themeId = colorIds[potColorName];
-      let selectedTheme = document.getElementById(themeId);
-
-      // append the selected theme icon to the corresponding pot theme
-      if (selectedTheme) {
-        selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-        selectedTheme.classList.remove("hover:cursor-pointer");
-        selectedTheme.classList.add("hover:cursor-not-allowed");
-      }
-
-      const themes = document.querySelector("#theme-modal").children;
-
-      let chosenTheme = potTheme;
-      // loop through each theme option
-      Array.from(themes).forEach((theme) => {
-        theme.addEventListener("click", () => {
-          // ignore click if theme already used or selected
-          if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
-
-          // get theme name from id, then get both name and hex color
-          const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-          chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
-
-          // remove previously selected theme's icon and re-enable hover cursor
-          document.querySelector("#selectedTheme").remove();
-          selectedTheme.classList.add("hover:cursor-pointer");
-          selectedTheme.classList.remove("hover:cursor-not-allowed");
-          // mark new selected theme
-          selectedTheme = theme;
-          selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-
-          // update theme color and label text
-          themeButton.querySelector("span").style.backgroundColor = chosenTheme;
-          themeButton.querySelector("p").textContent = chosenThemeName;
-
-          // close theme modal after theme is selected
-          themeModal.classList.add("animate-theme-close");
-          setTimeout(() => {
-            themeModal.classList.add("hidden");
-            themeModal.classList.remove("animate-theme-close");
-
-            // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
-            selectedTheme.classList.remove("hover:cursor-pointer");
-            selectedTheme.classList.add("hover:cursor-not-allowed");
-          }, 300);
-        });
-      });
-
-      // loop through each pot to check if its theme is already used
-      pots.forEach((pot) => {
-        // get the used theme name and corresponding dom element id
-        const usedTheme = colors[pot.theme];
-        const usedThemeElementId = colorIds[usedTheme];
-        const usedThemeElement = document.getElementById(usedThemeElementId);
-
-        // check if the used theme element id doesnt match the current themeId
-        if (usedThemeElementId !== themeId) {
-          // add already used message to the theme element
-          usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-          usedThemeElement.classList.remove("hover:cursor-pointer");
-          usedThemeElement.classList.add("hover:cursor-not-allowed");
-        }
-      });
-
-      const editModal = pot.querySelector("#edit-modal");
-      const editCloseBtn = pot.querySelector('[data-name="edit-close-button"]');
-
-      // edit close button
-      editCloseBtn.addEventListener("click", () => {
-        // animation
-        editModal.classList.add("animate-fade-out");
-        setTimeout(() => {
-          editModal.remove();
-
-          // resume page scrolling
-          document.body.classList.remove("overflow-hidden");
-        }, 200);
-      });
-
-      const themeButton = editModal.querySelector("#theme-button");
-      const themeModal = editModal.querySelector("#theme-modal-wrapper");
-
-      // toggle theme modal
-      themeButton.addEventListener("click", () => {
-        if (!themeModal.classList.contains("hidden")) {
-          // animation
-          themeModal.classList.add("animate-theme-close");
-          setTimeout(() => {
-            themeModal.classList.add("hidden");
-            themeModal.classList.remove("animate-theme-close");
-          }, 300);
-        } else {
-          themeModal.classList.remove("hidden");
-        }
-      });
-
-      // close theme modal on outside click
-      document.addEventListener("click", (e) => {
-        if (!themeButton.contains(e.target) && !themeModal.contains(e.target)) {
-          if (!themeModal.classList.contains("hidden")) {
-            // animation
-            themeModal.classList.add("animate-theme-close");
-            setTimeout(() => {
-              themeModal.classList.add("hidden");
-              themeModal.classList.remove("animate-theme-close");
-            }, 300);
-          }
-        }
-      });
-
-      // dont close theme modal if clicked inside
-      themeModal.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////////
 
       // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
       const saveChangesBtn = document.querySelector("#save-changes-button");
@@ -1012,28 +750,28 @@ const deletePot = async (pot) => {
 };
 
 // checks if json-server is running and shows setup instructions if not
-fetch("http://localhost:3000").catch(() => {
-  console.log(`%c⚠️%cDELETE, POST, and PATCH wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
+// fetch("http://localhost:3000").catch(() => {
+//   console.log(`%c⚠️%cDELETE, POST, and PATCH wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
 
-  console.log(
-    `%cRun this to install json-server (only once):
-%cnpm install -g json-server
+//   console.log(
+//     `%cRun this to install json-server (only once):
+// %cnpm install -g json-server
 
-%cThen start it with:
-%cjson-server data.json
+// %cThen start it with:
+// %cjson-server data.json
 
-%cAlso, add these lines to settings.json to stop live reload on data.json changes:
-%c"files.watcherExclude": { "**/data.json": true }
-liveServer.settings.ignoreFiles": ["**/data.json"]
-liveServer.settings.noBrowserReloadOnSave": true`,
-    "color: initial; font-size: 24px;",
-    "color: initial; font-size: 16px;",
-    "color: initial; font-size: 24px;",
-    "color: initial; font-size: 16px;",
-    "color: initial; font-size: 24px;",
-    "color: initial; font-size: 16px;"
-  );
-});
+// %cAlso, add these lines to settings.json to stop live reload on data.json changes:
+// %c"files.watcherExclude": { "**/data.json": true }
+// liveServer.settings.ignoreFiles": ["**/data.json"]
+// liveServer.settings.noBrowserReloadOnSave": true`,
+//     "color: initial; font-size: 24px;",
+//     "color: initial; font-size: 16px;",
+//     "color: initial; font-size: 24px;",
+//     "color: initial; font-size: 16px;",
+//     "color: initial; font-size: 24px;",
+//     "color: initial; font-size: 16px;"
+//   );
+// });
 
 // sends an update request to edit the pot on the server
 const updatePotData = async (chosenTheme) => {
