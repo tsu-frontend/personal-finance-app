@@ -18,18 +18,32 @@ const themes = {
   "#BE6C49": "Orange",
 };
 
-const colorBlocks = Object.entries(themes)
-  .map(
-    ([hex, name]) =>
-      `
-      <div id="${hex}" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+// generates html for theme color blocks: already used and selected themes
+function getThemeOptionsHtml({ themes, usedThemes = [], selectedTheme = null }) {
+  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+  const usedTheme = `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+  return Object.entries(themes)
+    .map(([hex, name]) => {
+      let extra = "";
+      let cursorClass = "hover:cursor-pointer";
+      if (hex === selectedTheme) {
+        extra = selectedThemeIcon;
+        cursorClass = "hover:cursor-not-allowed";
+      } else if (usedThemes.includes(hex)) {
+        extra = usedTheme;
+        cursorClass = "hover:cursor-not-allowed";
+      }
+      return `
+      <div id="${hex}" class="group shrink-0 ${cursorClass} hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
         <span style="background-color: ${hex}" class="w-[16px] h-[16px] rounded-full group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
         <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">${name}</p>
+        ${extra}
       </div>
       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-    `
-  )
-  .join("");
+      `;
+    })
+    .join("");
+}
 
 function appendModal(modalInfo) {
   // stop page scrolling in the background
@@ -53,6 +67,19 @@ function appendModal(modalInfo) {
     modalColorName = "Pick a theme";
     colorAnimation = "animate-color";
   }
+
+  // get used themes, except current selected theme
+  let usedThemes = [];
+  if (Array.isArray(modalInfo.item)) {
+    usedThemes = modalInfo.item.map(({ theme }) => theme).filter((theme) => theme !== modalTheme);
+  }
+
+  // generate color blocks with corresponding state
+  const colorBlocks = getThemeOptionsHtml({
+    themes,
+    usedThemes,
+    selectedTheme: modalTheme,
+  });
 
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -102,39 +129,16 @@ function appendModal(modalInfo) {
   input2.addEventListener("input", () => validateInput2());
 
   toggleThemeModal();
+  themeSelectHandler({ themes, modalTheme });
+}
 
-  // ==========================================================================================================================================
-
-  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-  const usedTheme = `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-
-  let selectedTheme = document.getElementById(modalTheme);
-
-  if (selectedTheme) {
-    selectedTheme.innerHTML += selectedThemeIcon;
-    selectedTheme.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
-  }
-
+// theme picker event logic
+function themeSelectHandler({ themes, modalTheme }) {
   const themeModal = document.querySelector("#theme-modal");
+  let selectedTheme = document.querySelector("#theme-modal .hover:cursor-not-allowed");
   let chosenTheme = modalTheme;
+  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
 
-  // mark already used themes except the currently selected one
-  if (Array.isArray(modalInfo.item)) {
-    modalInfo.item.forEach(({ theme }) => {
-      // skip marking the current selected theme as already used
-      if (theme !== modalTheme) {
-        const el = document.getElementById(theme);
-
-        // only add already used if not already present
-        if (el && !el.querySelector('[data-id="alreadyUsed"]')) {
-          el.innerHTML += `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-          el.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
-        }
-      }
-    });
-  }
-
-  // add click event listeners to each theme option for selection
   Array.from(themeModal.children).forEach((theme) => {
     // only add event listener to divs and not spans
     if (theme.tagName === "DIV") {
@@ -177,6 +181,7 @@ function appendModal(modalInfo) {
   });
 }
 
+// self explanatory
 function closeModal1() {
   // declaring modal1 and the close button
   const modal1 = document.querySelector("#modal1");
