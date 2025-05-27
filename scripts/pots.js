@@ -248,7 +248,7 @@ const performDeletePot = (pot, potData, potId) => {
           pot.remove();
         }, 2000);
       }, 200);
-      deletePot(pot);
+      deletePot(potId);
     });
   });
 };
@@ -351,9 +351,7 @@ const uniqueId = () => {
 };
 
 // sends a delete request to remove a pot from the server using its data-id attribute
-const deletePot = async (pot) => {
-  const potId = pot.getAttribute("data-id");
-
+const deletePot = async (potId) => {
   await fetch(`http://localhost:3000/pots/${potId}`, {
     method: "DELETE",
   });
