@@ -245,7 +245,7 @@ function validateInput2() {
 }
 
 // validates if a theme is selected
-const validateInput3 = (chosenTheme) => {
+function validateInput3(chosenTheme) {
   // flag to track if inputs are valid
   let canSubmit = true;
 

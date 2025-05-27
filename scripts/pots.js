@@ -47,7 +47,7 @@ function openNewPotModal() {
 }
 
 // render pots into container
-const renderPots = (pots) => {
+function renderPots(pots) {
   const potsContainer = document.querySelector("#pots-container");
 
   // clear container to avoid duplicates in case of re-rendering pots
@@ -103,10 +103,9 @@ const renderPots = (pots) => {
     `;
     });
   }
-};
+}
 
-// options modal logic for each pot
-const optionsModalLogic = () => {
+function optionsModalLogic() {
   document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
     const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
@@ -136,10 +135,9 @@ const optionsModalLogic = () => {
     performDeletePot(pot, potData, potId);
     performEditPot(pot, potData, potId);
   });
-};
+}
 
-// edit pot logic
-const performEditPot = (pot, potData, potId) => {
+function performEditPot(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
   const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
   const editButton = pot.querySelector('[data-name="edit-pot-button"]');
@@ -181,10 +179,9 @@ const performEditPot = (pot, potData, potId) => {
     counter.textContent = `${charsLeft} characters left`;
     input1.addEventListener("input", () => validateInput1());
   });
-};
+}
 
-// delete pot logic ()
-const performDeletePot = (pot, potData, potId) => {
+function performDeletePot(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
   const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
   const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
@@ -251,10 +248,9 @@ const performDeletePot = (pot, potData, potId) => {
       deletePot(potId);
     });
   });
-};
+}
 
-// validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
-const validateInput1 = () => {
+function validateInput1() {
   // flag to track if inputs are valid
   let canSubmit = true;
 
@@ -312,14 +308,9 @@ const validateInput1 = () => {
 
   // return the state of canSubmit
   return canSubmit;
-};
+}
 
-//////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////// move to modal1.js:
-
-// sends the pot data to json: id, name, target, and theme
-const sendPotsData = async (chosenTheme) => {
+async function sendPotsData(chosenTheme) {
   const response = await fetch("http://localhost:3000/pots", {
     method: "POST",
     headers: {
@@ -336,10 +327,9 @@ const sendPotsData = async (chosenTheme) => {
 
   // update the ui with the new data if the post request was successful
   if (response.ok) renderPotsData();
-};
+}
 
-// generates a unique 6-digit id that doesnt exist in the current pots array
-const uniqueId = () => {
+function uniqueId() {
   let id;
   const existingIds = new Set(pots.map((pot) => pot.id));
   do {
@@ -348,17 +338,15 @@ const uniqueId = () => {
 
   // return unique id
   return id;
-};
+}
 
-// sends a delete request to remove a pot from the server using its data-id attribute
-const deletePot = async (potId) => {
+async function deletePot(potId) {
   await fetch(`http://localhost:3000/pots/${potId}`, {
     method: "DELETE",
   });
-};
+}
 
-// sends an update request to edit the pot on the server
-const updatePotData = async (chosenTheme) => {
+async function updatePotData(chosenTheme) {
   const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
 
   console.log(potId);
@@ -376,7 +364,7 @@ const updatePotData = async (chosenTheme) => {
   });
 
   if (response.ok) renderPotsData();
-};
+}
 
 // checks if json-server is running and shows setup instructions if not
 // fetch("http://localhost:3000").catch(() => {
