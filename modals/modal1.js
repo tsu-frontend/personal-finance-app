@@ -1,4 +1,5 @@
 // :)
+
 const themes = {
   "#277C78": "Green",
   "#F2CDAC": "Yellow",
@@ -35,16 +36,16 @@ function appendModal(modalInfo) {
   document.body.classList.add("overflow-hidden");
 
   // declaring modal information
-  let modalName = modalData.name;
-  let input2Value = Number(modalData.target).toFixed(2);
-  let modalTheme = modalData.theme;
-  let modalColorName = colors[modalData.theme];
+  let modalName, input2Value, modalTheme, modalColorName, colorAnimation;
 
-  // temp variables
-  // const modalType = "edit";
-  // const modalType = "new";
+  if (modalInfo.modalType === "edit") {
+    modalName = modalInfo.modalData.name;
+    input2Value = Number(modalInfo.modalData.target).toFixed(2);
+    modalTheme = modalInfo.modalData.theme;
+    modalColorName = themes[modalInfo.modalData.theme];
+    colorAnimation = "";
+  }
 
-  let colorAnimation = "";
   if (modalInfo.modalType === "new") {
     modalName = "";
     input2Value = "";
@@ -114,57 +115,64 @@ function appendModal(modalInfo) {
     selectedTheme.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
   }
 
-  const input3 = document.querySelector("#input-3").children;
-
+  const themeModal = document.querySelector("#theme-modal");
   let chosenTheme = modalTheme;
-  // loop through each theme option
-  Array.from(input3).forEach((theme) => {
-    theme.addEventListener("click", () => {
-      // ignore click if theme already used or selected
-      if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
 
-      // get theme name from id, then get both name and hex color
-      const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-      chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
+  // mark already used themes except the currently selected one
+  if (Array.isArray(modalInfo.item)) {
+    modalInfo.item.forEach(({ theme }) => {
+      // skip marking the current selected theme as already used
+      if (theme !== modalTheme) {
+        const el = document.getElementById(theme);
 
-      // remove previously selected theme's icon and re-enable hover cursor
-      document.querySelector("#selectedTheme").remove();
-      selectedTheme.classList.add("hover:cursor-pointer");
-      selectedTheme.classList.remove("hover:cursor-not-allowed");
-      // mark new selected theme
-      selectedTheme = theme;
-      selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-
-      // update theme color and label text
-      themeButton.querySelector("span").style.backgroundColor = chosenTheme;
-      themeButton.querySelector("p").textContent = chosenThemeName;
-
-      // close theme modal after theme is selected
-      themeModal.classList.add("animate-theme-close");
-      setTimeout(() => {
-        themeModal.classList.add("hidden");
-        themeModal.classList.remove("animate-theme-close");
-
-        // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
-        selectedTheme.classList.remove("hover:cursor-pointer");
-        selectedTheme.classList.add("hover:cursor-not-allowed");
-      }, 300);
+        // only add already used if not already present
+        if (el && !el.querySelector('[data-id="alreadyUsed"]')) {
+          el.innerHTML += `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+          el.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
+        }
+      }
     });
-  });
+  }
 
-  // loop through each pot to check if its theme is already used
-  pots.forEach((pot) => {
-    // get the used theme name and corresponding dom element id
-    const usedTheme = colors[pot.theme];
-    const usedThemeElementId = colorIds[usedTheme];
-    const usedThemeElement = document.getElementById(usedThemeElementId);
+  // add click event listeners to each theme option for selection
+  Array.from(themeModal.children).forEach((theme) => {
+    // only add event listener to divs and not spans
+    if (theme.tagName === "DIV") {
+      theme.addEventListener("click", () => {
+        // prevent selecting a theme its already used or currently selected
+        if (theme.querySelector('[data-id="alreadyUsed"]') || theme.querySelector("#selectedTheme")) return;
 
-    // check if the used theme element id doesnt match the current themeId
-    if (usedThemeElementId !== themeId) {
-      // add already used message to the theme element
-      usedThemeElement.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-      usedThemeElement.classList.remove("hover:cursor-pointer");
-      usedThemeElement.classList.add("hover:cursor-not-allowed");
+        // set the chosen theme and get its name
+        chosenTheme = theme.id;
+        const chosenThemeName = themes[chosenTheme];
+
+        // remove previous selection icon if any
+        document.querySelector("#selectedTheme")?.remove();
+
+        // restore pointer cursor for previously selected theme
+        selectedTheme?.classList.replace("hover:cursor-not-allowed", "hover:cursor-pointer");
+
+        // mark the new selected theme
+        selectedTheme = theme;
+        selectedTheme.innerHTML += selectedThemeIcon;
+
+        // update the theme button color and label
+        const themeButton = document.querySelector("#input-3");
+        const span = themeButton.querySelector("span");
+        span.classList.remove("animate-color");
+        span.style.background = chosenTheme;
+        themeButton.querySelector("p").textContent = chosenThemeName;
+
+        // close the theme modal with animation
+        const themeModalWrapper = document.querySelector("#theme-modal-wrapper");
+        themeModalWrapper.classList.add("animate-theme-close");
+        setTimeout(() => {
+          themeModalWrapper.classList.add("hidden");
+          themeModalWrapper.classList.remove("animate-theme-close");
+          // disable pointer cursor on the selected theme
+          selectedTheme.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
+        }, 300);
+      });
     }
   });
 }
@@ -298,134 +306,3 @@ function toggleThemeModal() {
 }
 
 export { appendModal, validateInput2, validateInput3, closeModal1 };
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-// save changes code:
-
-// // create an array of dom elements based on the color theme of each pot
-// const usedThemeElements = pots.map((pot) => {
-//   const usedTheme = colors[pot.theme];
-//   const usedThemeElementId = colorIds[usedTheme];
-
-//   // get the dom element associated with the theme id and return it as an object
-//   const usedThemeElement = document.getElementById(usedThemeElementId);
-//   return { usedThemeElement };
-// });
-
-// // color
-// usedThemeElements.forEach((item) => {
-//   // access the dom element inside the object
-//   const el = item.usedThemeElement;
-
-//   // add already used message to the theme element
-//   el.innerHTML += `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-//   el.classList.remove("hover:cursor-pointer");
-//   el.classList.add("hover:cursor-not-allowed");
-// });
-
-// // get all theme options inside the theme modal & init selected theme as null (nothing selected yet)
-// const themes = document.querySelector("#theme-modal").children;
-// let selectedTheme = null;
-
-// let chosenTheme;
-// // loop through each theme option
-// Array.from(themes).forEach((theme) => {
-//   theme.addEventListener("click", () => {
-//     // ignore click if theme already used or selected
-//     if (theme.querySelector("#alreadyUsed") || theme.querySelector("#selectedTheme")) return;
-
-//     // get theme name from id, then get both name and hex color
-//     const chosenThemeName = Object.entries(colorIds).find(([k, v]) => v === theme.id)?.[0];
-//     chosenTheme = Object.keys(colors).find((hex) => colors[hex] === chosenThemeName);
-
-//     // if theres a previously selected theme, remove its icon and re-enable hover cursor
-//     if (document.querySelector("#selectedTheme")) {
-//       document.querySelector("#selectedTheme").remove();
-//       selectedTheme.classList.add("hover:cursor-pointer");
-//       selectedTheme.classList.remove("hover:cursor-not-allowed");
-//     }
-//     // mark new selected theme
-//     selectedTheme = theme;
-//     selectedTheme.innerHTML += `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-
-//     // update theme color and label text
-//     themeButton.querySelector("span").classList.remove("animate-color");
-//     themeButton.querySelector("span").style.background = chosenTheme;
-//     themeButton.querySelector("p").textContent = chosenThemeName;
-
-//     // close theme modal after theme is selected
-//     themeModal.classList.add("animate-theme-close");
-//     setTimeout(() => {
-//       themeModal.classList.add("hidden");
-//       themeModal.classList.remove("animate-theme-close");
-
-//       // disable pointer cursor on selected theme to indicate its not clickable when theme modal closes
-//       selectedTheme.classList.remove("hover:cursor-pointer");
-//       selectedTheme.classList.add("hover:cursor-not-allowed");
-//     }, 300);
-
-//     // revalidate after theme selection
-//     validateInput3(chosenTheme);
-//   });
-// });
-
-// // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
-// const saveChangesBtn = document.querySelector("#save-changes-button");
-// saveChangesBtn.addEventListener("click", () => {
-//   // validate all inputs
-//   validateInput2();
-//   validateInput1();
-//   validateInput3(chosenTheme);
-
-//   // get the validation result from each function, which returns the canSubmit state for the target input
-//   const nameValid = validateInput2();
-//   const targetValid = validateInput1();
-//   const themeValid = validateInput3(chosenTheme);
-
-//   // check if all validations pass
-//   if (nameValid && targetValid && themeValid) {
-//     console.log("yessir");
-//     sendPotsData(chosenTheme);
-
-//     // close new pot modal
-//     newPotModal.classList.add("animate-fade-out");
-//     setTimeout(() => {
-//       newPotModal.remove();
-
-//       // resume page scrolling
-//       document.body.classList.remove("overflow-hidden");
-//     }, 200);
-//   } else {
-//     console.log("nope");
-//   }
-// });
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-// second save changes code:
-
-// // validates the inputs when the save button is clicked, checking for empty fields, character limits, and format requirements before saving pot
-// const saveChangesBtn = document.querySelector("#save-changes-button");
-// saveChangesBtn.addEventListener("click", () => {
-//   // validate all inputs
-//   validateInput2();
-//   validateInput1();
-
-//   // get the validation result from each function, which returns the canSubmit state for the target input
-//   const input1Valid = validateInput2();
-//   const input2Valid = validateInput1();
-
-//   const modal1 = document.querySelector("#modal1");
-//   // check if all validations pass
-//   if (input1Valid && input2Valid) {
-//     // updatePotData(chosenTheme);
-
-//     // close new pot modal
-//     modal1.classList.add("animate-fade-out");
-//     setTimeout(() => {
-//       modal1.remove();
-
-//       // resume page scrolling
-//       document.body.classList.remove("overflow-hidden");
-//     }, 200);
-//   }
-// });
