@@ -178,7 +178,7 @@ function appendModal(modalInfo) {
 }
 
 function closeModal1() {
-  // declaring modal1m and the close button
+  // declaring modal1 and the close button
   const modal1 = document.querySelector("#modal1");
 
   // animation
@@ -305,4 +305,4 @@ function toggleThemeModal() {
   });
 }
 
-export { appendModal, validateInput2, validateInput3, closeModal1 };
+export { appendModal };

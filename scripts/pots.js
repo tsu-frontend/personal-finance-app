@@ -1,4 +1,4 @@
-import { appendModal, validateInput2, validateInput3, closeModal1 } from "../modals/modal1.js";
+import { appendModal } from "../modals/modal1.js";
 
 let pots = [];
 
@@ -8,9 +8,43 @@ const renderPotsData = async () => {
   pots = data.pots;
 
   renderPots(pots);
-  initPotEvents();
+  openNewPotModal();
+  optionsModalLogic();
 };
 renderPotsData();
+
+// open the modal for adding a new pot
+function openNewPotModal() {
+  const newPotButton = document.querySelector("#new-pot-button");
+  newPotButton.addEventListener("click", () => {
+    const firstInput = `
+        <div class="w-full flex flex-col gap-[4px]">
+          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
+          </div>
+          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+        </div>
+      `;
+    const modalInfo = {
+      item: pots,
+      firstInput,
+      title: "Add New Pot",
+      subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+      field2Title: "Target",
+      buttonText: "Add pot",
+      modalType: "new",
+    };
+    appendModal(modalInfo);
+
+    // input1 logic
+    const input1 = document.querySelector("#input-1");
+    const charsLeft = 30 - input1.value.length;
+    const counter = document.querySelector("#characters-left");
+    counter.textContent = `${charsLeft} characters left`;
+    input1.addEventListener("input", () => validateInput1());
+  });
+}
 
 // render pots into container
 const renderPots = (pots) => {
@@ -71,19 +105,15 @@ const renderPots = (pots) => {
   }
 };
 
-// initialize event listeners for pot actions (e.g. edit, delete)
-const initPotEvents = () => {
-  // loop through all pots
+// options modal logic for each pot
+const optionsModalLogic = () => {
   document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
     const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
-
-    // get pot name and find the corresponding data from the pots array
     let potId = pot.getAttribute("data-id");
     const potData = pots.find((item) => item.id === potId);
 
     potOptions.addEventListener("click", () => {
-      // toggle options modal
       optionsModal.classList.add("animate-close");
       setTimeout(() => {
         optionsModal.classList.toggle("hidden");
@@ -91,8 +121,6 @@ const initPotEvents = () => {
         optionsModal.classList.remove("animate-close");
       }, 100);
     });
-
-    // close options modal on outside click
     document.addEventListener("click", () => {
       if (optionsModal.classList.contains("flex")) {
         optionsModal.classList.add("animate-close");
@@ -102,34 +130,78 @@ const initPotEvents = () => {
         }, 100);
       }
     });
-
-    // dont close options modal if clicked inside
     optionsModal.addEventListener("click", (e) => {
       e.stopPropagation();
     });
+    performDeletePot(pot, potData, potId);
+    performEditPot(pot, potData, potId);
+  });
+};
 
-    // toggle delete modal
-    const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
-    deleteButton.addEventListener("click", () => {
-      if (!optionsModal.classList.contains("hidden")) {
-        // animation
-        optionsModal.classList.add("animate-close");
-        setTimeout(() => {
-          optionsModal.classList.add("hidden");
-          optionsModal.classList.remove("flex", "animate-close");
-        }, 100);
-      }
+// edit pot logic
+const performEditPot = (pot, potData, potId) => {
+  const potOptions = pot.querySelector('[data-name="pot-options"]');
+  const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
+  const editButton = pot.querySelector('[data-name="edit-pot-button"]');
 
-      // stop page scrolling in the background
-      document.body.classList.add("overflow-hidden");
+  editButton.addEventListener("click", () => {
+    if (!optionsModal.classList.contains("hidden")) {
+      optionsModal.classList.add("animate-close");
+      setTimeout(() => {
+        optionsModal.classList.add("hidden");
+        optionsModal.classList.remove("flex", "animate-close");
+      }, 100);
+    }
+    const firstInput = `
+        <div class="w-full flex flex-col gap-[4px]">
+          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
+          </div>
+          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+        </div>
+      `;
+    const modalInfo = {
+      modalData: potData,
+      modalId: potId,
+      item: pots,
+      firstInput,
+      title: "Edit Pot",
+      subTitle: "If your saving targets change, feel free to update your pots.",
+      field2Title: "Target",
+      buttonText: "Save Changes",
+      modalType: "edit",
+    };
+    appendModal(modalInfo);
 
-      // declaring pot name
-      let potName = potData.name;
+    // input1 logic
+    const input1 = document.querySelector("#input-1");
+    const charsLeft = 30 - input1.value.length;
+    const counter = document.querySelector("#characters-left");
+    counter.textContent = `${charsLeft} characters left`;
+    input1.addEventListener("input", () => validateInput1());
+  });
+};
 
-      // append delete modal
-      pot.insertAdjacentHTML(
-        "beforeend",
-        `
+// delete pot logic ()
+const performDeletePot = (pot, potData, potId) => {
+  const potOptions = pot.querySelector('[data-name="pot-options"]');
+  const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
+  const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
+
+  deleteButton.addEventListener("click", () => {
+    if (!optionsModal.classList.contains("hidden")) {
+      optionsModal.classList.add("animate-close");
+      setTimeout(() => {
+        optionsModal.classList.add("hidden");
+        optionsModal.classList.remove("flex", "animate-close");
+      }, 100);
+    }
+    document.body.classList.add("overflow-hidden");
+    let potName = potData.name;
+    pot.insertAdjacentHTML(
+      "beforeend",
+      `
          <div id="delete-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
            <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
              <div class="w-full flex justify-between">
@@ -148,142 +220,38 @@ const initPotEvents = () => {
            </div>
          </div>
         `
-      );
-
-      // delete modal close buttons
-      pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const deleteModal = pot.querySelector("#delete-modal");
-          // animation
-          deleteModal.classList.add("animate-fade-out");
-          setTimeout(() => {
-            deleteModal.remove();
-
-            // resume page scrolling
-            document.body.classList.remove("overflow-hidden");
-          }, 200);
-        });
-      });
-
-      // delete pot confirm button
-      const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
-      delConfirmBtn.addEventListener("click", () => {
+    );
+    pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
+      btn.addEventListener("click", () => {
         const deleteModal = pot.querySelector("#delete-modal");
-        // animation
         deleteModal.classList.add("animate-fade-out");
         setTimeout(() => {
           deleteModal.remove();
-
-          // resume page scrolling
           document.body.classList.remove("overflow-hidden");
-
-          // capture pot position and size, position it absolutely
-          const rect = pot.getBoundingClientRect();
-          pot.style.position = "fixed";
-          pot.style.left = `${rect.left}px`;
-          pot.style.top = `${rect.top}px`;
-          pot.style.width = `${rect.width}px`;
-
-          // pop animation
-          pot.classList.add("animate-pop-out");
-          setTimeout(() => {
-            pot.remove();
-          }, 2000);
         }, 200);
-        deletePot(pot);
       });
     });
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // editttttttttttttttttttttttttttttttttt
-    const editButton = pot.querySelector('[data-name="edit-pot-button"]');
-    editButton.addEventListener("click", () => {
-      if (!optionsModal.classList.contains("hidden")) {
-        // animation
-        optionsModal.classList.add("animate-close");
+    const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
+    delConfirmBtn.addEventListener("click", () => {
+      const deleteModal = pot.querySelector("#delete-modal");
+      deleteModal.classList.add("animate-fade-out");
+      setTimeout(() => {
+        deleteModal.remove();
+        document.body.classList.remove("overflow-hidden");
+        const rect = pot.getBoundingClientRect();
+        pot.style.position = "fixed";
+        pot.style.left = `${rect.left}px`;
+        pot.style.top = `${rect.top}px`;
+        pot.style.width = `${rect.width}px`;
+        pot.classList.add("animate-pop-out");
         setTimeout(() => {
-          optionsModal.classList.add("hidden");
-          optionsModal.classList.remove("flex", "animate-close");
-        }, 100);
-      }
-
-      // declare firstInput for it to be used in the appendModal func
-      const firstInput = `
-        <div class="w-full flex flex-col gap-[4px]">
-          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
-          </div>
-          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-        </div>
-      `;
-
-      const modalInfo = {
-        modalData: potData,
-        modalId: potId,
-        item: pots,
-        firstInput,
-        title: "Edit Pot",
-        subTitle: "If your saving targets change, feel free to update your pots.",
-        field2Title: "Target",
-        buttonText: "Save Changes",
-        modalType: "edit",
-      };
-      // append edit pot modal
-      appendModal(modalInfo);
-
-      // input 1 logic, updates counter
-      const input1 = document.querySelector("#input-1");
-      const charsLeft = 30 - input1.value.length;
-      const counter = document.querySelector("#characters-left");
-      counter.textContent = `${charsLeft} characters left`;
-
-      input1.addEventListener("input", () => validateInput1());
+          pot.remove();
+        }, 2000);
+      }, 200);
+      deletePot(pot);
     });
   });
 };
-
-// newwwwwwww
-const newPotButton = document.querySelector("#new-pot-button");
-newPotButton.addEventListener("click", () => {
-  // stop page scrolling in the background
-  document.body.classList.add("overflow-hidden");
-
-  // declare firstInput for it to be used in the appendModal func
-  const firstInput = `
-        <div class="w-full flex flex-col gap-[4px]">
-          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
-          </div>
-          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-        </div>
-      `;
-
-  const modalInfo = {
-    item: pots,
-    firstInput,
-    title: "Add New Pot",
-    subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
-    field2Title: "Target",
-    buttonText: "Add pot",
-    modalType: "new",
-  };
-  // append edit pot modal
-  appendModal(modalInfo);
-
-  // input 1 logic, updates counter
-  const input1 = document.querySelector("#input-1");
-  const charsLeft = 30 - input1.value.length;
-  const counter = document.querySelector("#characters-left");
-  counter.textContent = `${charsLeft} characters left`;
-
-  input1.addEventListener("input", () => validateInput1());
-});
-
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////// end of work part
 
 // validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
 const validateInput1 = () => {
@@ -346,6 +314,10 @@ const validateInput1 = () => {
   return canSubmit;
 };
 
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////// move to modal1.js:
+
 // sends the pot data to json: id, name, target, and theme
 const sendPotsData = async (chosenTheme) => {
   const response = await fetch("http://localhost:3000/pots", {
@@ -387,6 +359,27 @@ const deletePot = async (pot) => {
   });
 };
 
+// sends an update request to edit the pot on the server
+const updatePotData = async (chosenTheme) => {
+  const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
+
+  console.log(potId);
+
+  const response = await fetch(`http://localhost:3000/pots/${potId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: document.querySelector("#pot-name-input").value,
+      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
+      theme: chosenTheme,
+    }),
+  });
+
+  if (response.ok) renderPotsData();
+};
+
 // checks if json-server is running and shows setup instructions if not
 // fetch("http://localhost:3000").catch(() => {
 //   console.log(`%c⚠️%cDELETE, POST, and PATCH wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
@@ -410,24 +403,3 @@ const deletePot = async (pot) => {
 //     "color: initial; font-size: 16px;"
 //   );
 // });
-
-// sends an update request to edit the pot on the server
-const updatePotData = async (chosenTheme) => {
-  const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
-
-  console.log(potId);
-
-  const response = await fetch(`http://localhost:3000/pots/${potId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: document.querySelector("#pot-name-input").value,
-      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
-      theme: chosenTheme,
-    }),
-  });
-
-  if (response.ok) renderPotsData();
-};
