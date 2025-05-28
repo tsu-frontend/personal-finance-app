@@ -1,5 +1,5 @@
-import { appendModal1 } from "../modals/modal1.js";
-import { appendModal2 } from "../modals/modal2.js";
+import { openOptionsModal } from "./modals/options-modal.js";
+import { openEditAddModal } from "./modals/edit-add-modal.js";
 
 let pots = [];
 
@@ -19,54 +19,15 @@ const renderData = async () => {
     const data = await response.json();
     pots = data;
 
-    console.log(data);
     renderPots(pots);
     openNewPotModal();
-    appendModal1(pots, performDeletePot, performEditPot);
+    // openOptionsModal(pots, appendDeleteModal, appendEditModal);
+    openOptionsModal();
   } catch (err) {
     console.error(err);
   }
 };
 renderData();
-
-// open the modal for adding a new pot
-function openNewPotModal() {
-  const newPotButton = document.querySelector("#new-pot-button");
-  newPotButton.addEventListener("click", () => {
-    const firstInput = `
-        <div class="w-full flex flex-col gap-[4px]">
-          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
-          </div>
-          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-        </div>
-      `;
-    const modalInfo = {
-      tableName: "pots",
-      item: pots,
-      firstInput,
-      title: "Add New Pot",
-      subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
-      field2Title: "Target",
-      buttonText: "Add pot",
-      modalType: "new",
-    };
-    const fetchInfo = {
-      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
-      fetchValue2: "target",
-      fetchValue3: { key: "total", value: () => 0 },
-    };
-    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
-
-    // input1 logic
-    const input1 = document.querySelector("#input-1");
-    const charsLeft = 30 - input1.value.length;
-    const counter = document.querySelector("#characters-left");
-    counter.textContent = `${charsLeft} characters left`;
-    input1.addEventListener("input", () => validateInput1());
-  });
-}
 
 // render pots into container
 function renderPots(pots) {
@@ -91,13 +52,8 @@ function renderPots(pots) {
         <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
           <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-full" style="background-color: ${pot.theme}"></div>
           <p data-name="pot-name" class="text-[#201F24] font-[Public Sans] text-[20px] font-bold leading-[120%]">${pot.name}</p>
-          <div data-name="pot-options" class="ml-auto hover:cursor-pointer relative">
+          <div data-name="options-button" class="ml-auto hover:cursor-pointer relative">
             <img src="../assets/images/icon-ellipsis.svg" class="w-[16px] h-[16px]" />
-            <div data-name="pot-options-modal" class="animate-open hover:cursor-default hidden absolute right-0 top-[36px] w-[114px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-              <button data-name="edit-pot-button" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%]">Edit Pot</button>
-              <div class="w-full h-[1px] bg-[#F2F2F2]"></div>
-              <button data-name="delete-pot-button" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%]">Delete Pot</button>
-            </div>
           </div>
         </div>
         <div data-name="pot-savings-summary" class="w-full h-[114px] flex flex-col justify-around gap-[16px] flex-1">
@@ -127,47 +83,35 @@ function renderPots(pots) {
   }
 }
 
-// edit pot logic
-function performEditPot(pot, potData, potId) {
-  const potOptions = pot.querySelector('[data-name="pot-options"]');
-  const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
-  const editButton = pot.querySelector('[data-name="edit-pot-button"]');
-
-  editButton.addEventListener("click", () => {
-    if (!optionsModal.classList.contains("hidden")) {
-      optionsModal.classList.add("animate-close");
-      setTimeout(() => {
-        optionsModal.classList.add("hidden");
-        optionsModal.classList.remove("flex", "animate-close");
-      }, 100);
-    }
+// open the modal for adding a new pot
+function openNewPotModal() {
+  const newPotButton = document.querySelector("#new-pot-button");
+  newPotButton.addEventListener("click", () => {
     const firstInput = `
         <div class="w-full flex flex-col gap-[4px]">
           <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
           <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
+            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
           </div>
           <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
         </div>
       `;
     const modalInfo = {
       tableName: "pots",
-      modalData: potData,
-      modalId: potId,
       item: pots,
       firstInput,
-      title: "Edit Pot",
-      subTitle: "If your saving targets change, feel free to update your pots.",
+      title: "Add New Pot",
+      subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
       field2Title: "Target",
-      buttonText: "Save Changes",
-      modalType: "edit",
+      buttonText: "Add pot",
+      modalType: "new",
     };
     const fetchInfo = {
       fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
       fetchValue2: "target",
       fetchValue3: { key: "total", value: () => 0 },
     };
-    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
+    openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -179,7 +123,7 @@ function performEditPot(pot, potData, potId) {
 }
 
 // delete pot logic
-function performDeletePot(pot, potData, potId) {
+function appendDeleteModal(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
   const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
   const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
