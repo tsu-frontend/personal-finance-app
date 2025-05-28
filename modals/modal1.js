@@ -1,33 +1,53 @@
-function appendModal1(pots, performDeletePot, performEditPot) {
-  document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
-    const optionsButton = pot.querySelector('[data-name="pot-options"]');
-    const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
-    let potId = pot.getAttribute("data-id");
-    const potData = pots.find((item) => item.id === potId);
+import { clickOutClose } from "../functions/clickOutClose.js";
 
-    optionsButton.addEventListener("click", () => {
-      optionsModal.classList.add("animate-close");
-      setTimeout(() => {
-        optionsModal.classList.toggle("hidden");
-        optionsModal.classList.toggle("flex");
-        optionsModal.classList.remove("animate-close");
-      }, 100);
-    });
-    document.addEventListener("click", () => {
-      if (optionsModal.classList.contains("flex")) {
-        optionsModal.classList.add("animate-close");
+function appendModal1() {
+  const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
+  modalOptionsButton.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // remove any existing modal first (with out animation)
+      const existingModal = document.getElementById("options-modal");
+      if (existingModal) {
+        existingModal.classList.add("animate-close");
         setTimeout(() => {
-          optionsModal.classList.add("hidden");
-          optionsModal.classList.remove("flex", "animate-close");
+          if (existingModal && existingModal.parentNode) {
+            existingModal.parentNode.removeChild(existingModal);
+          }
         }, 100);
       }
+      // insert modal
+      btn.insertAdjacentHTML(
+        "beforeend",
+        `
+          <div id="options-modal" class="animate-open hover:cursor-default flex absolute right-0 top-[36px] w-[114px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+            <button id="edit-button" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%]">Edit Pot</button>
+            <div class="w-full h-[1px] bg-[#F2F2F2]"></div>
+            <button id="delete-button" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%]">Delete Pot</button>
+          </div>
+        `
+      );
+      const modal = btn.querySelector("#options-modal");
+
+      modal.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+      // edit button
+      const editBtn = modal.querySelector("#edit-button");
+      editBtn.addEventListener("click", () => {
+        // appendEditModal();
+      });
+
+      // delete button
+      const deleteBtn = modal.querySelector("#delete-button");
+      deleteBtn.addEventListener("click", () => {
+        // appendDeleteModal();
+      });
+
+      // remove modal with out animation when clicking outside
+      clickOutClose(modal, "animate-close", 100);
     });
-    optionsModal.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-    performDeletePot(pot, potData, potId);
-    performEditPot(pot, potData, potId);
   });
 }
+appendModal1();
 
 export { appendModal1 };
