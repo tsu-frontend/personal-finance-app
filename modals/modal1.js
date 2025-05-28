@@ -18,25 +18,41 @@ const themes = {
   "#BE6C49": "Orange",
 };
 
-const colorBlocks = Object.entries(themes)
-  .map(
-    ([hex, name]) =>
-      `
-      <div id="${hex}" class="group shrink-0 hover:cursor-pointer hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+// generates html for theme color blocks: already used and selected themes
+function getThemeOptionsHtml({ themes, usedThemes = [], selectedTheme = null }) {
+  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+  const usedTheme = `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+  return Object.entries(themes)
+    .map(([hex, name]) => {
+      let extra = "";
+      let cursorClass = "hover:cursor-pointer";
+      if (hex === selectedTheme) {
+        extra = selectedThemeIcon;
+        cursorClass = "hover:cursor-not-allowed";
+      } else if (usedThemes.includes(hex)) {
+        extra = usedTheme;
+        cursorClass = "hover:cursor-not-allowed";
+      }
+      return `
+      <div id="${hex}" class="group shrink-0 ${cursorClass} hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
         <span style="background-color: ${hex}" class="w-[16px] h-[16px] rounded-full group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
         <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">${name}</p>
+        ${extra}
       </div>
       <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-    `
-  )
-  .join("");
+      `;
+    })
+    .join("");
+}
 
-function appendModal(modalInfo) {
+// self explanatory
+function appendModal(modalInfo, validateInput1, renderData) {
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
 
   // declaring modal information
-  let modalName, input2Value, modalTheme, modalColorName, colorAnimation;
+  let modalName, input2Value, modalTheme, modalColorName, colorAnimation, themeStatus;
+  let tableName = modalInfo.tableName;
 
   if (modalInfo.modalType === "edit") {
     modalName = modalInfo.modalData.name;
@@ -44,6 +60,7 @@ function appendModal(modalInfo) {
     modalTheme = modalInfo.modalData.theme;
     modalColorName = themes[modalInfo.modalData.theme];
     colorAnimation = "";
+    themeStatus = true;
   }
 
   if (modalInfo.modalType === "new") {
@@ -52,7 +69,21 @@ function appendModal(modalInfo) {
     modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
     modalColorName = "Pick a theme";
     colorAnimation = "animate-color";
+    themeStatus = false;
   }
+
+  // get used themes, except current selected theme
+  let usedThemes = [];
+  if (Array.isArray(modalInfo.item)) {
+    usedThemes = modalInfo.item.map(({ theme }) => theme).filter((theme) => theme !== modalTheme);
+  }
+
+  // generate color blocks with corresponding state
+  const colorBlocks = getThemeOptionsHtml({
+    themes,
+    usedThemes,
+    selectedTheme: modalTheme,
+  });
 
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -87,7 +118,7 @@ function appendModal(modalInfo) {
               </div>
             </div>
           </div>
-          <button id="save-changes-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
             <p class="font-bold text-[#FFF] text-[14px]">${modalInfo.buttonText}</p>
           </button>
         </div>
@@ -101,40 +132,40 @@ function appendModal(modalInfo) {
   const input2 = document.querySelector("#input-2");
   input2.addEventListener("input", () => validateInput2());
 
-  toggleThemeModal();
-
-  // ==========================================================================================================================================
-
-  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-  const usedTheme = `<p id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-
-  let selectedTheme = document.getElementById(modalTheme);
-
-  if (selectedTheme) {
-    selectedTheme.innerHTML += selectedThemeIcon;
-    selectedTheme.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
-  }
-
-  const themeModal = document.querySelector("#theme-modal");
   let chosenTheme = modalTheme;
 
-  // mark already used themes except the currently selected one
-  if (Array.isArray(modalInfo.item)) {
-    modalInfo.item.forEach(({ theme }) => {
-      // skip marking the current selected theme as already used
-      if (theme !== modalTheme) {
-        const el = document.getElementById(theme);
+  toggleThemeModal();
+  themeSelectHandler({
+    themes,
+    modalTheme,
+    setThemeStatus: (val) => {
+      themeStatus = val;
+    },
+    setChosenTheme: (val) => {
+      chosenTheme = val;
+    },
+  });
 
-        // only add already used if not already present
-        if (el && !el.querySelector('[data-id="alreadyUsed"]')) {
-          el.innerHTML += `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-          el.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
-        }
-      }
-    });
-  }
+  const submitButton = document.querySelector("#submit-button");
+  submitButton.addEventListener("click", () => {
+    const valid1 = validateInput1();
+    const valid2 = validateInput2();
+    const valid3 = validateInput3(themeStatus);
+    const canSubmit = valid1 && valid2 && valid3;
+    if (canSubmit) {
+      addNewModal(chosenTheme, renderData, tableName);
+      closeModal1();
+    }
+  });
+}
 
-  // add click event listeners to each theme option for selection
+// theme picker event logic
+function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme }) {
+  const themeModal = document.querySelector("#theme-modal");
+  let selectedTheme = document.querySelector("#theme-modal");
+  let chosenTheme = modalTheme;
+  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+
   Array.from(themeModal.children).forEach((theme) => {
     // only add event listener to divs and not spans
     if (theme.tagName === "DIV") {
@@ -144,6 +175,9 @@ function appendModal(modalInfo) {
 
         // set the chosen theme and get its name
         chosenTheme = theme.id;
+        if (setThemeStatus) setThemeStatus(true);
+        if (setChosenTheme) setChosenTheme(chosenTheme);
+        validateInput3(true);
         const chosenThemeName = themes[chosenTheme];
 
         // remove previous selection icon if any
@@ -177,8 +211,9 @@ function appendModal(modalInfo) {
   });
 }
 
+// self explanatory
 function closeModal1() {
-  // declaring modal1m and the close button
+  // declaring modal1 and the close button
   const modal1 = document.querySelector("#modal1");
 
   // animation
@@ -240,12 +275,12 @@ function validateInput2() {
 }
 
 // validates if a theme is selected
-const validateInput3 = (chosenTheme) => {
+function validateInput3(themeStatus) {
   // flag to track if inputs are valid
   let canSubmit = true;
 
   // declare theme input div
-  const themeInputDiv = document.querySelector("#theme-button");
+  const themeInputDiv = document.querySelector("#input-3");
 
   // reset target input border color to default before validation runs again
   themeInputDiv.style.borderColor = "#98908B";
@@ -254,7 +289,7 @@ const validateInput3 = (chosenTheme) => {
   const themeRedMsg = themeInputDiv.querySelector("#error-msg");
   if (themeRedMsg) themeRedMsg.remove();
 
-  if (!chosenTheme) {
+  if (!themeStatus) {
     canSubmit = false;
     themeInputDiv.style.borderColor = "red";
     themeInputDiv.insertAdjacentHTML(
@@ -267,8 +302,9 @@ const validateInput3 = (chosenTheme) => {
 
   // return the state of canSubmit
   return canSubmit;
-};
+}
 
+// self explanatory
 function toggleThemeModal() {
   const themeButton = modal1.querySelector("#input-3");
   const themeModal = modal1.querySelector("#theme-modal-wrapper");
@@ -305,4 +341,33 @@ function toggleThemeModal() {
   });
 }
 
-export { appendModal, validateInput2, validateInput3, closeModal1 };
+// sends the pot data to json: id, name, target, and theme
+async function addNewModal(chosenTheme, renderData, tableName) {
+  const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
+  const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: PUBLIC_KEY,
+        Authorization: `Bearer ${PUBLIC_KEY}`,
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        id: crypto.randomUUID(),
+        name: document.querySelector("#input-1").value,
+        target: parseFloat(document.querySelector("#input-2").value).toFixed(2),
+        total: 0,
+        theme: chosenTheme,
+      }),
+    });
+    // update the ui with the new data if the post request was successful
+    if (response.ok) renderData();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export { appendModal };
