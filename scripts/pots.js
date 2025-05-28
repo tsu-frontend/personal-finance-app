@@ -1,4 +1,5 @@
-import { appendModal } from "../modals/modal1.js";
+import { appendModal1 } from "../modals/modal1.js";
+import { appendModal2 } from "../modals/modal2.js";
 
 let pots = [];
 
@@ -18,9 +19,10 @@ const renderData = async () => {
     const data = await response.json();
     pots = data;
 
+    console.log(data);
     renderPots(pots);
     openNewPotModal();
-    optionsModalLogic();
+    appendModal1(pots, performDeletePot, performEditPot);
   } catch (err) {
     console.error(err);
   }
@@ -50,7 +52,12 @@ function openNewPotModal() {
       buttonText: "Add pot",
       modalType: "new",
     };
-    appendModal(modalInfo, validateInput1, renderData);
+    const fetchInfo = {
+      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
+      fetchValue2: "target",
+      fetchValue3: { key: "total", value: () => 0 },
+    };
+    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -120,39 +127,6 @@ function renderPots(pots) {
   }
 }
 
-// options modal logic for each pot
-function optionsModalLogic() {
-  document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
-    const potOptions = pot.querySelector('[data-name="pot-options"]');
-    const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
-    let potId = pot.getAttribute("data-id");
-    const potData = pots.find((item) => item.id === potId);
-
-    potOptions.addEventListener("click", () => {
-      optionsModal.classList.add("animate-close");
-      setTimeout(() => {
-        optionsModal.classList.toggle("hidden");
-        optionsModal.classList.toggle("flex");
-        optionsModal.classList.remove("animate-close");
-      }, 100);
-    });
-    document.addEventListener("click", () => {
-      if (optionsModal.classList.contains("flex")) {
-        optionsModal.classList.add("animate-close");
-        setTimeout(() => {
-          optionsModal.classList.add("hidden");
-          optionsModal.classList.remove("flex", "animate-close");
-        }, 100);
-      }
-    });
-    optionsModal.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-    performDeletePot(pot, potData, potId);
-    performEditPot(pot, potData, potId);
-  });
-}
-
 // edit pot logic
 function performEditPot(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
@@ -188,7 +162,12 @@ function performEditPot(pot, potData, potId) {
       buttonText: "Save Changes",
       modalType: "edit",
     };
-    appendModal(modalInfo, validateInput1, renderData);
+    const fetchInfo = {
+      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
+      fetchValue2: "target",
+      fetchValue3: { key: "total", value: () => 0 },
+    };
+    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -264,7 +243,7 @@ function performDeletePot(pot, potData, potId) {
           pot.remove();
         }, 2000);
       }, 200);
-      deletePot(potId);
+      sendDeleteFetch(potId);
     });
   });
 }
@@ -333,25 +312,6 @@ function validateInput1() {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////// move to modal1.js:
-
-// generates a unique 6-digit id that doesnt exist in the current pots array
-function uniqueId() {
-  let id;
-  const existingIds = new Set(pots.map((pot) => pot.id));
-  do {
-    id = String(Math.floor(Math.random() * 1000000)).padStart(6, "0");
-  } while (existingIds.has(id));
-
-  // return unique id
-  return id;
-}
-
-// sends a delete request to remove a pot from the server using its data-id attribute
-async function deletePot(potId) {
-  await fetch(`http://localhost:3000/pots/${potId}`, {
-    method: "DELETE",
-  });
-}
 
 // sends an update request to edit the pot on the server
 async function updatePotData(chosenTheme) {
