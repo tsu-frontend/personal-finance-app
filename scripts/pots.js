@@ -35,7 +35,7 @@ function openNewPotModal() {
       buttonText: "Add pot",
       modalType: "new",
     };
-    appendModal(modalInfo);
+    appendModal(modalInfo, validateInput1);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -105,6 +105,7 @@ function renderPots(pots) {
   }
 }
 
+// options modal logic for each pot
 function optionsModalLogic() {
   document.querySelectorAll('[data-name="pot"]').forEach((pot) => {
     const potOptions = pot.querySelector('[data-name="pot-options"]');
@@ -137,6 +138,7 @@ function optionsModalLogic() {
   });
 }
 
+// edit pot logic
 function performEditPot(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
   const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
@@ -170,7 +172,7 @@ function performEditPot(pot, potData, potId) {
       buttonText: "Save Changes",
       modalType: "edit",
     };
-    appendModal(modalInfo);
+    appendModal(modalInfo, validateInput1);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -181,6 +183,7 @@ function performEditPot(pot, potData, potId) {
   });
 }
 
+// delete pot logic
 function performDeletePot(pot, potData, potId) {
   const potOptions = pot.querySelector('[data-name="pot-options"]');
   const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
@@ -250,6 +253,7 @@ function performDeletePot(pot, potData, potId) {
   });
 }
 
+// validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
 function validateInput1() {
   // flag to track if inputs are valid
   let canSubmit = true;
@@ -310,6 +314,11 @@ function validateInput1() {
   return canSubmit;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////// move to modal1.js:
+
+// sends the pot data to json: id, name, target, and theme
 async function sendPotsData(chosenTheme) {
   const response = await fetch("http://localhost:3000/pots", {
     method: "POST",
@@ -329,6 +338,7 @@ async function sendPotsData(chosenTheme) {
   if (response.ok) renderPotsData();
 }
 
+// generates a unique 6-digit id that doesnt exist in the current pots array
 function uniqueId() {
   let id;
   const existingIds = new Set(pots.map((pot) => pot.id));
@@ -340,12 +350,14 @@ function uniqueId() {
   return id;
 }
 
+// sends a delete request to remove a pot from the server using its data-id attribute
 async function deletePot(potId) {
   await fetch(`http://localhost:3000/pots/${potId}`, {
     method: "DELETE",
   });
 }
 
+// sends an update request to edit the pot on the server
 async function updatePotData(chosenTheme) {
   const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
 
