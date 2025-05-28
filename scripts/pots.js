@@ -19,6 +19,7 @@ const renderData = async () => {
     const data = await response.json();
     pots = data;
 
+    console.log(data);
     renderPots(pots);
     openNewPotModal();
     appendModal1(pots, performDeletePot, performEditPot);
@@ -51,7 +52,12 @@ function openNewPotModal() {
       buttonText: "Add pot",
       modalType: "new",
     };
-    appendModal2(modalInfo, validateInput1, renderData);
+    const fetchInfo = {
+      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
+      fetchValue2: "target",
+      fetchValue3: { key: "total", value: () => 0 },
+    };
+    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -156,7 +162,12 @@ function performEditPot(pot, potData, potId) {
       buttonText: "Save Changes",
       modalType: "edit",
     };
-    appendModal2(modalInfo, validateInput1, renderData);
+    const fetchInfo = {
+      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
+      fetchValue2: "target",
+      fetchValue3: { key: "total", value: () => 0 },
+    };
+    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
