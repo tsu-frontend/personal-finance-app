@@ -1,6 +1,8 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
+import { appendEditModal } from "./edit-add-modal.js";
+// import { appendDeleteModal } from "./modal3.js";
 
-function appendModal1() {
+function openOptionsModal() {
   const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
   modalOptionsButton.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -48,6 +50,6 @@ function appendModal1() {
     });
   });
 }
-appendModal1();
+openOptionsModal();
 
-export { appendModal1 };
+export { openOptionsModal };

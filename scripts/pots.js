@@ -1,5 +1,5 @@
-import { appendModal1 } from "../modals/modal1.js";
-import { appendModal2 } from "../modals/modal2.js";
+import { openOptionsModal } from "./modals/options-modal.js";
+import { openEditAddModal } from "./modals/edit-add-modal.js";
 
 let pots = [];
 
@@ -21,8 +21,8 @@ const renderData = async () => {
 
     renderPots(pots);
     openNewPotModal();
-    // appendModal1(pots, appendDeleteModal, appendEditModal);
-    appendModal1();
+    // openOptionsModal(pots, appendDeleteModal, appendEditModal);
+    openOptionsModal();
   } catch (err) {
     console.error(err);
   }
@@ -111,7 +111,7 @@ function openNewPotModal() {
       fetchValue2: "target",
       fetchValue3: { key: "total", value: () => 0 },
     };
-    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
+    openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");

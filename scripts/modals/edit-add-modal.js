@@ -46,7 +46,7 @@ function getThemeOptionsHtml({ themes, usedThemes = [], selectedTheme = null }) 
 }
 
 // self explanatory
-function appendModal2(modalInfo, fetchInfo, validateInput1, renderData) {
+function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
 
@@ -419,7 +419,7 @@ function appendEditModal(chosenTheme, renderData, tableName, fetchInfo) {
       fetchValue2: "target",
       fetchValue3: { key: "total", value: () => 0 },
     };
-    appendModal2(modalInfo, fetchInfo, validateInput1, renderData);
+    openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -439,4 +439,4 @@ async function deleteFetch(modalId) {
   });
 }
 
-export { appendModal2 };
+export { openEditAddModal, appendEditModal };
