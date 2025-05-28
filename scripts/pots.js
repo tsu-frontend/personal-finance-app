@@ -2,16 +2,30 @@ import { appendModal } from "../modals/modal1.js";
 
 let pots = [];
 
-const renderPotsData = async () => {
-  const response = await fetch("../data.json");
-  const data = await response.json();
-  pots = data.pots;
+const renderData = async () => {
+  const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
+  const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
 
-  renderPots(pots);
-  openNewPotModal();
-  optionsModalLogic();
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/pots`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: PUBLIC_KEY,
+        Authorization: `Bearer ${PUBLIC_KEY}`,
+      },
+    });
+    const data = await response.json();
+    pots = data;
+
+    renderPots(pots);
+    openNewPotModal();
+    optionsModalLogic();
+  } catch (err) {
+    console.error(err);
+  }
 };
-renderPotsData();
+renderData();
 
 // open the modal for adding a new pot
 function openNewPotModal() {
@@ -27,6 +41,7 @@ function openNewPotModal() {
         </div>
       `;
     const modalInfo = {
+      tableName: "pots",
       item: pots,
       firstInput,
       title: "Add New Pot",
@@ -35,7 +50,7 @@ function openNewPotModal() {
       buttonText: "Add pot",
       modalType: "new",
     };
-    appendModal(modalInfo, validateInput1);
+    appendModal(modalInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -162,6 +177,7 @@ function performEditPot(pot, potData, potId) {
         </div>
       `;
     const modalInfo = {
+      tableName: "pots",
       modalData: potData,
       modalId: potId,
       item: pots,
@@ -172,7 +188,7 @@ function performEditPot(pot, potData, potId) {
       buttonText: "Save Changes",
       modalType: "edit",
     };
-    appendModal(modalInfo, validateInput1);
+    appendModal(modalInfo, validateInput1, renderData);
 
     // input1 logic
     const input1 = document.querySelector("#input-1");
@@ -318,26 +334,6 @@ function validateInput1() {
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////// move to modal1.js:
 
-// sends the pot data to json: id, name, target, and theme
-async function sendPotsData(chosenTheme) {
-  const response = await fetch("http://localhost:3000/pots", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: uniqueId(),
-      name: document.querySelector("#pot-name-input").value,
-      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
-      total: 0,
-      theme: chosenTheme,
-    }),
-  });
-
-  // update the ui with the new data if the post request was successful
-  if (response.ok) renderPotsData();
-}
-
 // generates a unique 6-digit id that doesnt exist in the current pots array
 function uniqueId() {
   let id;
@@ -375,29 +371,5 @@ async function updatePotData(chosenTheme) {
     }),
   });
 
-  if (response.ok) renderPotsData();
+  if (response.ok) renderData();
 }
-
-// checks if json-server is running and shows setup instructions if not
-// fetch("http://localhost:3000").catch(() => {
-//   console.log(`%c⚠️%cDELETE, POST, and PATCH wont work because json-server isn't set up!`, "color: red; font-size: 50px; padding: 0 50%;", "color: red; font-size: 20px;");
-
-//   console.log(
-//     `%cRun this to install json-server (only once):
-// %cnpm install -g json-server
-
-// %cThen start it with:
-// %cjson-server data.json
-
-// %cAlso, add these lines to settings.json to stop live reload on data.json changes:
-// %c"files.watcherExclude": { "**/data.json": true }
-// liveServer.settings.ignoreFiles": ["**/data.json"]
-// liveServer.settings.noBrowserReloadOnSave": true`,
-//     "color: initial; font-size: 24px;",
-//     "color: initial; font-size: 16px;",
-//     "color: initial; font-size: 24px;",
-//     "color: initial; font-size: 16px;",
-//     "color: initial; font-size: 24px;",
-//     "color: initial; font-size: 16px;"
-//   );
-// });

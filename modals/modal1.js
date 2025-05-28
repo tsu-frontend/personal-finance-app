@@ -46,12 +46,13 @@ function getThemeOptionsHtml({ themes, usedThemes = [], selectedTheme = null }) 
 }
 
 // self explanatory
-function appendModal(modalInfo, validateInput1) {
+function appendModal(modalInfo, validateInput1, renderData) {
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
 
   // declaring modal information
   let modalName, input2Value, modalTheme, modalColorName, colorAnimation, themeStatus;
+  let tableName = modalInfo.tableName;
 
   if (modalInfo.modalType === "edit") {
     modalName = modalInfo.modalData.name;
@@ -131,8 +132,7 @@ function appendModal(modalInfo, validateInput1) {
   const input2 = document.querySelector("#input-2");
   input2.addEventListener("input", () => validateInput2());
 
-  const input3 = document.querySelector("#input-3");
-  // input2.addEventListener("change", () => validateInput3());
+  let chosenTheme = modalTheme;
 
   toggleThemeModal();
   themeSelectHandler({
@@ -141,18 +141,26 @@ function appendModal(modalInfo, validateInput1) {
     setThemeStatus: (val) => {
       themeStatus = val;
     },
+    setChosenTheme: (val) => {
+      chosenTheme = val;
+    },
   });
 
   const submitButton = document.querySelector("#submit-button");
   submitButton.addEventListener("click", () => {
-    validateInput1();
-    validateInput2();
-    validateInput3(themeStatus);
+    const valid1 = validateInput1();
+    const valid2 = validateInput2();
+    const valid3 = validateInput3(themeStatus);
+    const canSubmit = valid1 && valid2 && valid3;
+    if (canSubmit) {
+      addNewModal(chosenTheme, renderData, tableName);
+      closeModal1();
+    }
   });
 }
 
 // theme picker event logic
-function themeSelectHandler({ themes, modalTheme, setThemeStatus }) {
+function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme }) {
   const themeModal = document.querySelector("#theme-modal");
   let selectedTheme = document.querySelector("#theme-modal");
   let chosenTheme = modalTheme;
@@ -168,6 +176,7 @@ function themeSelectHandler({ themes, modalTheme, setThemeStatus }) {
         // set the chosen theme and get its name
         chosenTheme = theme.id;
         if (setThemeStatus) setThemeStatus(true);
+        if (setChosenTheme) setChosenTheme(chosenTheme);
         validateInput3(true);
         const chosenThemeName = themes[chosenTheme];
 
@@ -330,6 +339,35 @@ function toggleThemeModal() {
   themeModal.addEventListener("click", (e) => {
     e.stopPropagation();
   });
+}
+
+// sends the pot data to json: id, name, target, and theme
+async function addNewModal(chosenTheme, renderData, tableName) {
+  const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
+  const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${tableName}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: PUBLIC_KEY,
+        Authorization: `Bearer ${PUBLIC_KEY}`,
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        id: crypto.randomUUID(),
+        name: document.querySelector("#input-1").value,
+        target: parseFloat(document.querySelector("#input-2").value).toFixed(2),
+        total: 0,
+        theme: chosenTheme,
+      }),
+    });
+    // update the ui with the new data if the post request was successful
+    if (response.ok) renderData();
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export { appendModal };
