@@ -153,10 +153,10 @@ function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
     const valid3 = validateInput3(themeStatus);
     const canSubmit = valid1 && valid2 && valid3;
     if (canSubmit) {
-      if (modalType === "new") {
+      if (modalInfo.modalType === "new") {
         postFetch(chosenTheme, renderData, tableName, fetchInfo);
       }
-      if (modalType === "edit") {
+      if (modalInfo.modalType === "edit") {
         appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
       }
       closeModal1();
@@ -431,12 +431,5 @@ function appendEditModal(chosenTheme, renderData, tableName, fetchInfo) {
 }
 
 ///////////////////////////////////////////////////////////
-
-// sends a delete request to remove a pot from the server using its data-id attribute
-async function deleteFetch(modalId) {
-  await fetch(`http://localhost:3000/pots/${modalId}`, {
-    method: "DELETE",
-  });
-}
 
 export { openEditAddModal, appendEditModal };

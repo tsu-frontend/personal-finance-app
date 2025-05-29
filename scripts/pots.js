@@ -1,5 +1,6 @@
 import { openOptionsModal } from "./modals/options-modal.js";
 import { openEditAddModal } from "./modals/edit-add-modal.js";
+import { openDeleteModal } from "./modals/delete-modal.js";
 
 let pots = [];
 
@@ -19,9 +20,10 @@ const renderData = async () => {
     const data = await response.json();
     pots = data;
 
+    localStorage.setItem("data", JSON.stringify(pots));
     renderPots(pots);
     openNewPotModal();
-    // openOptionsModal(pots, appendDeleteModal, appendEditModal);
+    // openOptionsModal(pots, openDeleteModal, appendEditModal);
     openOptionsModal();
   } catch (err) {
     console.error(err);
@@ -122,76 +124,6 @@ function openNewPotModal() {
   });
 }
 
-// delete pot logic
-function appendDeleteModal(pot, potData, potId) {
-  const potOptions = pot.querySelector('[data-name="pot-options"]');
-  const optionsModal = pot.querySelector('[data-name="pot-options-modal"]');
-  const deleteButton = pot.querySelector('[data-name="delete-pot-button"]');
-
-  deleteButton.addEventListener("click", () => {
-    if (!optionsModal.classList.contains("hidden")) {
-      optionsModal.classList.add("animate-close");
-      setTimeout(() => {
-        optionsModal.classList.add("hidden");
-        optionsModal.classList.remove("flex", "animate-close");
-      }, 100);
-    }
-    document.body.classList.add("overflow-hidden");
-    let potName = potData.name;
-    pot.insertAdjacentHTML(
-      "beforeend",
-      `
-         <div id="delete-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-           <div class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-             <div class="w-full flex justify-between">
-               <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">Delete ‘${potName}’?</h1>
-               <button data-name="delete-close-button" class="hover:cursor-pointer w-[32px] h-[32px]">
-                 <img src="../assets/images/icon-close-modal.svg" />
-               </button>
-             </div>
-             <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
-             <button data-name="delete-pot-confirm" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
-               <p class="text-[#FFF] text-[14px] font-bold leading-[150%]">Yes, Confirm Deletion</p>
-             </button>
-             <button data-name="delete-close-button" class="hover:cursor-pointer w-full">
-               <p class="text-[#696868] text-[14px] font-normal leading-[150%]">No, I want to go back</p>
-             </button>
-           </div>
-         </div>
-        `
-    );
-    pot.querySelectorAll('[data-name="delete-close-button"]').forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const deleteModal = pot.querySelector("#delete-modal");
-        deleteModal.classList.add("animate-fade-out");
-        setTimeout(() => {
-          deleteModal.remove();
-          document.body.classList.remove("overflow-hidden");
-        }, 200);
-      });
-    });
-    const delConfirmBtn = pot.querySelector('[data-name="delete-pot-confirm"]');
-    delConfirmBtn.addEventListener("click", () => {
-      const deleteModal = pot.querySelector("#delete-modal");
-      deleteModal.classList.add("animate-fade-out");
-      setTimeout(() => {
-        deleteModal.remove();
-        document.body.classList.remove("overflow-hidden");
-        const rect = pot.getBoundingClientRect();
-        pot.style.position = "fixed";
-        pot.style.left = `${rect.left}px`;
-        pot.style.top = `${rect.top}px`;
-        pot.style.width = `${rect.width}px`;
-        pot.classList.add("animate-pop-out");
-        setTimeout(() => {
-          pot.remove();
-        }, 2000);
-      }, 200);
-      sendDeleteFetch(potId);
-    });
-  });
-}
-
 // validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
 function validateInput1() {
   // flag to track if inputs are valid
@@ -253,9 +185,9 @@ function validateInput1() {
   return canSubmit;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////// move to modal1.js:
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////// move code to separate file
 
 // sends an update request to edit the pot on the server
 async function updatePotData(chosenTheme) {
@@ -277,3 +209,5 @@ async function updatePotData(chosenTheme) {
 
   if (response.ok) renderData();
 }
+
+export { renderData };

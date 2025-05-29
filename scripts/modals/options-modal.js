@@ -1,12 +1,16 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
 import { appendEditModal } from "./edit-add-modal.js";
-// import { appendDeleteModal } from "./modal3.js";
+import { openDeleteModal } from "./delete-modal.js";
 
 function openOptionsModal() {
   const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
   modalOptionsButton.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
+
+      // get modalId from the ancestor with data-name="pot" or "budget"
+      const modalId = btn.closest('[data-name="pot"], [data-name="budget"]').getAttribute("data-id");
+
       // remove any existing modal first (with out animation)
       const existingModal = document.getElementById("options-modal");
       if (existingModal) {
@@ -28,25 +32,33 @@ function openOptionsModal() {
           </div>
         `
       );
-      const modal = btn.querySelector("#options-modal");
+      const optionsModal = btn.querySelector("#options-modal");
 
-      modal.addEventListener("click", (e) => {
+      optionsModal.addEventListener("click", (e) => {
         e.stopPropagation();
       });
       // edit button
-      const editBtn = modal.querySelector("#edit-button");
+      const editBtn = optionsModal.querySelector("#edit-button");
       editBtn.addEventListener("click", () => {
-        // appendEditModal();
+        appendEditModal(modalId);
+        optionsModal.classList.add("animate-close");
+        setTimeout(() => {
+          optionsModal.remove();
+        }, 100);
       });
 
       // delete button
-      const deleteBtn = modal.querySelector("#delete-button");
+      const deleteBtn = optionsModal.querySelector("#delete-button");
       deleteBtn.addEventListener("click", () => {
-        // appendDeleteModal();
+        openDeleteModal(modalId);
+        optionsModal.classList.add("animate-close");
+        setTimeout(() => {
+          optionsModal.remove();
+        }, 100);
       });
 
       // remove modal with out animation when clicking outside
-      clickOutClose(modal, "animate-close", 100);
+      clickOutClose(optionsModal, "animate-close", 100);
     });
   });
 }
