@@ -1,9 +1,8 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
 import { deleteFetch } from "../functions/deleteFetch.js";
 
-const data = JSON.parse(localStorage.getItem("data") || "[]");
-
 function openDeleteModal(modalId) {
+  const data = JSON.parse(localStorage.getItem("data") || "[]");
   const modalData = data.find((modal) => modal.id === modalId);
 
   // stop page scrolling in the background

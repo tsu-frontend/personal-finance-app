@@ -88,7 +88,7 @@ function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
   document.body.insertAdjacentHTML(
     "beforeend",
     `
-      <div id="modal1" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+      <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
         <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
           <div class="w-full flex justify-between items-center">
             <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
@@ -127,7 +127,7 @@ function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
   );
 
   const closeButton = document.querySelector('[data-name="close-button"]');
-  closeButton.addEventListener("click", () => closeModal1());
+  closeButton.addEventListener("click", () => closeEditAddModal());
 
   const input2 = document.querySelector("#input-2");
   input2.addEventListener("input", () => validateInput2());
@@ -159,7 +159,7 @@ function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
       if (modalInfo.modalType === "edit") {
         appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
       }
-      closeModal1();
+      closeEditAddModal();
     }
   });
 }
@@ -217,14 +217,14 @@ function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme
 }
 
 // self explanatory
-function closeModal1() {
-  // declaring modal1 and the close button
-  const modal1 = document.querySelector("#modal1");
+function closeEditAddModal() {
+  // declaring editAddModal and the close button
+  const editAddModal = document.querySelector("#edit-add-modal");
 
   // animation
-  modal1.classList.add("animate-fade-out");
+  editAddModal.classList.add("animate-fade-out");
   setTimeout(() => {
-    modal1.remove();
+    editAddModal.remove();
 
     // resume page scrolling
     document.body.classList.remove("overflow-hidden");
@@ -311,8 +311,8 @@ function validateInput3(themeStatus) {
 
 // self explanatory
 function toggleThemeModal() {
-  const themeButton = modal1.querySelector("#input-3");
-  const themeModal = modal1.querySelector("#theme-modal-wrapper");
+  const themeButton = document.querySelector("#input-3");
+  const themeModal = document.querySelector("#theme-modal-wrapper");
 
   // toggle theme modal
   themeButton.addEventListener("click", () => {
