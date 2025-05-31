@@ -1,7 +1,7 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
 import { deleteFetch } from "../functions/deleteFetch.js";
 
-function openDeleteModal(modalId) {
+function openDeleteModal(modalId, tableName) {
   const data = JSON.parse(localStorage.getItem("data") || "[]");
   const modalData = data.find((modal) => modal.id === modalId);
 
@@ -19,7 +19,7 @@ function openDeleteModal(modalId) {
                  <img src="../assets/images/icon-close-modal.svg" />
                </button>
              </div>
-             <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever.</p>
+             <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">Are you sure you want to delete this ${tableName}? This action cannot be reversed, and all the data inside it will be removed forever.</p>
              <button id="delete-confirm-button" class="hover:cursor-pointer hover:bg-[#d46c5e] transition-all duration-300 ease w-full p-[16px] bg-[#C94736] rounded-[8px]">
                <p class="text-[#FFF] text-[14px] font-bold leading-[150%]">Yes, Confirm Deletion</p>
              </button>
@@ -58,20 +58,20 @@ function openDeleteModal(modalId) {
     setTimeout(() => {
       deleteModal.remove();
 
-      // select the pot by data-id and data-name
-      const pot = document.querySelector(`[data-name="pot"][data-id="${modalId}"]`);
-      const rect = pot.getBoundingClientRect();
-      pot.style.position = "fixed";
-      pot.style.left = `${rect.left}px`;
-      pot.style.top = `${rect.top}px`;
-      pot.style.width = `${rect.width}px`;
-      pot.style.zIndex = 9999;
+      // select the modal by data-id and data-name
+      const modal = document.querySelector(`[data-id="${modalId}"]`);
+      const rect = modal.getBoundingClientRect();
+      modal.style.position = "fixed";
+      modal.style.left = `${rect.left}px`;
+      modal.style.top = `${rect.top}px`;
+      modal.style.width = `${rect.width}px`;
+      modal.style.zIndex = 9999;
 
-      // move pot to body so it survives container reload for animation to finish
-      document.body.appendChild(pot);
-      pot.classList.add("animate-pop-out");
+      // move modal to body so it survives container reload for animation to finish
+      document.body.appendChild(modal);
+      modal.classList.add("animate-pop-out");
       setTimeout(() => {
-        pot.remove();
+        modal.remove();
       }, 2000);
     }, 200);
 
@@ -80,17 +80,3 @@ function openDeleteModal(modalId) {
 }
 
 export { openDeleteModal };
-
-// setTimeout(() => {
-//   deleteModal.remove();
-//   document.body.classList.remove("overflow-hidden");
-//   const rect = pot.getBoundingClientRect();
-//   pot.style.position = "fixed";
-//   pot.style.left = `${rect.left}px`;
-//   pot.style.top = `${rect.top}px`;
-//   pot.style.width = `${rect.width}px`;
-//   pot.classList.add("animate-pop-out");
-//   setTimeout(() => {
-//     pot.remove();
-//   }, 2000);
-// }, 200);

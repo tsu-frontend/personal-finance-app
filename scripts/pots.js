@@ -19,11 +19,11 @@ const renderData = async () => {
     });
     const data = await response.json();
     pots = data;
-
     localStorage.setItem("data", JSON.stringify(pots));
+
     renderPots(pots);
-    // openOptionsModal(pots, openDeleteModal, appendEditModal);
-    openOptionsModal();
+    const tableName = "pot";
+    openOptionsModal(tableName);
   } catch (err) {
     console.error(err);
   }

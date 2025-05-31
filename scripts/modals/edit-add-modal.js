@@ -45,125 +45,6 @@ function getThemeOptionsHtml({ themes, usedThemes = [], selectedTheme = null }) 
     .join("");
 }
 
-// self explanatory
-function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
-  // stop page scrolling in the background
-  document.body.classList.add("overflow-hidden");
-
-  // declaring modal information
-  let modalName, input2Value, modalTheme, modalColorName, colorAnimation, themeStatus;
-  let tableName = modalInfo.tableName;
-
-  if (modalInfo.modalType === "edit") {
-    modalName = modalInfo.modalData.name;
-    input2Value = Number(modalInfo.modalData.target).toFixed(2);
-    modalTheme = modalInfo.modalData.theme;
-    modalColorName = themes[modalInfo.modalData.theme];
-    colorAnimation = "";
-    themeStatus = true;
-  }
-
-  if (modalInfo.modalType === "new") {
-    modalName = "";
-    input2Value = "";
-    modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
-    modalColorName = "Pick a theme";
-    colorAnimation = "animate-color";
-    themeStatus = false;
-  }
-
-  // get used themes, except current selected theme
-  let usedThemes = [];
-  if (Array.isArray(modalInfo.item)) {
-    usedThemes = modalInfo.item.map(({ theme }) => theme).filter((theme) => theme !== modalTheme);
-  }
-
-  // generate color blocks with corresponding state
-  const colorBlocks = getThemeOptionsHtml({
-    themes,
-    usedThemes,
-    selectedTheme: modalTheme,
-  });
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `
-      <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-        <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-          <div class="w-full flex justify-between items-center">
-            <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
-            <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-          </div>
-          <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${modalInfo.subTitle}</p>
-          <div class="w-full flex flex-col gap-[16px]">
-            ${modalInfo.firstInput}
-            <div class="w-full flex flex-col gap-[4px]">
-              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${modalInfo.field2Title}</p>
-              <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-                <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
-              </div>
-            </div>
-            <div class="w-full flex flex-col gap-[4px]">
-              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-              <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
-                <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
-                <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-                <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-                <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
-                  ${colorBlocks}
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-            <p class="font-bold text-[#FFF] text-[14px]">${modalInfo.buttonText}</p>
-          </button>
-        </div>
-      </div>
-    `
-  );
-
-  const closeButton = document.querySelector('[data-name="close-button"]');
-  closeButton.addEventListener("click", () => closeEditAddModal());
-
-  const input2 = document.querySelector("#input-2");
-  input2.addEventListener("input", () => validateInput2());
-
-  let chosenTheme = modalTheme;
-
-  toggleThemeModal();
-  themeSelectHandler({
-    themes,
-    modalTheme,
-    setThemeStatus: (val) => {
-      themeStatus = val;
-    },
-    setChosenTheme: (val) => {
-      chosenTheme = val;
-    },
-  });
-
-  const submitButton = document.querySelector("#submit-button");
-  submitButton.addEventListener("click", () => {
-    const valid1 = validateInput1();
-    const valid2 = validateInput2();
-    const valid3 = validateInput3(themeStatus);
-    const canSubmit = valid1 && valid2 && valid3;
-    if (canSubmit) {
-      if (modalInfo.modalType === "new") {
-        postFetch(chosenTheme, renderData, tableName, fetchInfo);
-      }
-      if (modalInfo.modalType === "edit") {
-        appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
-      }
-      closeEditAddModal();
-    }
-  });
-}
-
 // theme picker event logic
 function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme }) {
   const themeModal = document.querySelector("#theme-modal");
@@ -380,56 +261,125 @@ async function postFetch(chosenTheme, renderData, tableName, fetchInfo) {
 
 ///////////////////////////////////////////////////////////
 
-// edit pot logic
-function appendEditModal(chosenTheme, renderData, tableName, fetchInfo) {
-  const optionsModal = pot.querySelector('[data-name="options-modal"]');
-  const editButton = pot.querySelector('[data-name="edit-pot-button"]');
+// self explanatory
+function openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData) {
+  // stop page scrolling in the background
+  document.body.classList.add("overflow-hidden");
 
-  editButton.addEventListener("click", () => {
-    if (!optionsModal.classList.contains("hidden")) {
-      optionsModal.classList.add("animate-close");
-      setTimeout(() => {
-        optionsModal.classList.add("hidden");
-        optionsModal.classList.remove("flex", "animate-close");
-      }, 100);
-    }
-    const firstInput = `
-        <div class="w-full flex flex-col gap-[4px]">
-          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
+  // declaring modal information
+  let modalName, input2Value, modalTheme, modalColorName, colorAnimation, themeStatus;
+  let tableName = modalInfo.tableName;
+
+  if (modalInfo.modalType === "edit") {
+    modalName = modalInfo.modalData.name;
+    input2Value = Number(modalInfo.modalData.target).toFixed(2);
+    modalTheme = modalInfo.modalData.theme;
+    modalColorName = themes[modalInfo.modalData.theme];
+    colorAnimation = "";
+    themeStatus = true;
+  }
+
+  if (modalInfo.modalType === "new") {
+    modalName = "";
+    input2Value = "";
+    modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
+    modalColorName = "Pick a theme";
+    colorAnimation = "animate-color";
+    themeStatus = false;
+  }
+
+  // get used themes, except current selected theme
+  let usedThemes = [];
+  if (Array.isArray(modalInfo.item)) {
+    usedThemes = modalInfo.item.map(({ theme }) => theme).filter((theme) => theme !== modalTheme);
+  }
+
+  // generate color blocks with corresponding state
+  const colorBlocks = getThemeOptionsHtml({
+    themes,
+    usedThemes,
+    selectedTheme: modalTheme,
+  });
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+      <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+        <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+          <div class="w-full flex justify-between items-center">
+            <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
+            <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
           </div>
-          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+          <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${modalInfo.subTitle}</p>
+          <div class="w-full flex flex-col gap-[16px]">
+            ${modalInfo.firstInput}
+            <div class="w-full flex flex-col gap-[4px]">
+              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${modalInfo.field2Title}</p>
+              <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
+                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
+              </div>
+            </div>
+            <div class="w-full flex flex-col gap-[4px]">
+              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
+              <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
+                <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
+                <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
+                <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
+                  ${colorBlocks}
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+            <p class="font-bold text-[#FFF] text-[14px]">${modalInfo.buttonText}</p>
+          </button>
         </div>
-      `;
-    const modalInfo = {
-      tableName: "pots",
-      modalData: potData,
-      modalId: potId,
-      item: pots,
-      firstInput,
-      title: "Edit Pot",
-      subTitle: "If your saving targets change, feel free to update your pots.",
-      field2Title: "Target",
-      buttonText: "Save Changes",
-      modalType: "edit",
-    };
-    const fetchInfo = {
-      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
-      fetchValue2: "target",
-      fetchValue3: { key: "total", value: () => 0 },
-    };
-    openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
+      </div>
+    `
+  );
 
-    // input1 logic
-    const input1 = document.querySelector("#input-1");
-    const charsLeft = 30 - input1.value.length;
-    const counter = document.querySelector("#characters-left");
-    counter.textContent = `${charsLeft} characters left`;
-    input1.addEventListener("input", () => validateInput1());
+  const closeButton = document.querySelector('[data-name="close-button"]');
+  closeButton.addEventListener("click", () => closeEditAddModal());
+
+  const input2 = document.querySelector("#input-2");
+  input2.addEventListener("input", () => validateInput2());
+
+  let chosenTheme = modalTheme;
+
+  toggleThemeModal();
+  themeSelectHandler({
+    themes,
+    modalTheme,
+    setThemeStatus: (val) => {
+      themeStatus = val;
+    },
+    setChosenTheme: (val) => {
+      chosenTheme = val;
+    },
+  });
+
+  const submitButton = document.querySelector("#submit-button");
+  submitButton.addEventListener("click", () => {
+    const valid1 = validateInput1();
+    const valid2 = validateInput2();
+    const valid3 = validateInput3(themeStatus);
+    const canSubmit = valid1 && valid2 && valid3;
+    if (canSubmit) {
+      if (modalInfo.modalType === "new") {
+        postFetch(chosenTheme, renderData, tableName, fetchInfo);
+      }
+      if (modalInfo.modalType === "edit") {
+        appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
+      }
+      closeEditAddModal();
+    }
   });
 }
 
 ///////////////////////////////////////////////////////////
 
-export { openEditAddModal, appendEditModal };
+export { openEditAddModal };
