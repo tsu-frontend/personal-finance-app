@@ -55,11 +55,28 @@ function openDeleteModal(modalId) {
     }, 200);
 
     // delete animation goes here
+    setTimeout(() => {
+      deleteModal.remove();
+
+      // select the pot by data-id and data-name
+      const pot = document.querySelector(`[data-name="pot"][data-id="${modalId}"]`);
+      const rect = pot.getBoundingClientRect();
+      pot.style.position = "fixed";
+      pot.style.left = `${rect.left}px`;
+      pot.style.top = `${rect.top}px`;
+      pot.style.width = `${rect.width}px`;
+      pot.style.zIndex = 9999;
+
+      // move pot to body so it survives container reload for animation to finish
+      document.body.appendChild(pot);
+      pot.classList.add("animate-pop-out");
+      setTimeout(() => {
+        pot.remove();
+      }, 2000);
+    }, 200);
+
     deleteFetch(modalId);
   });
-
-  // resume page scrolling
-  // document.body.classList.remove("overflow-hidden");
 }
 
 export { openDeleteModal };
