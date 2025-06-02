@@ -19,12 +19,11 @@ const renderData = async () => {
     });
     const data = await response.json();
     pots = data;
-
     localStorage.setItem("data", JSON.stringify(pots));
+
     renderPots(pots);
-    openNewPotModal();
-    // openOptionsModal(pots, openDeleteModal, appendEditModal);
-    openOptionsModal();
+    const tableName = "pot";
+    openOptionsModal(tableName);
   } catch (err) {
     console.error(err);
   }
@@ -85,44 +84,15 @@ function renderPots(pots) {
   }
 }
 
-// open the modal for adding a new pot
-function openNewPotModal() {
-  const newPotButton = document.querySelector("#new-pot-button");
-  newPotButton.addEventListener("click", () => {
-    const firstInput = `
-        <div class="w-full flex flex-col gap-[4px]">
-          <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-          <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-            <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
-          </div>
-          <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-        </div>
-      `;
-    const modalInfo = {
-      tableName: "pots",
-      item: pots,
-      firstInput,
-      title: "Add New Pot",
-      subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
-      field2Title: "Target",
-      buttonText: "Add pot",
-      modalType: "new",
-    };
-    const fetchInfo = {
-      fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
-      fetchValue2: "target",
-      fetchValue3: { key: "total", value: () => 0 },
-    };
-    openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
-
-    // input1 logic
-    const input1 = document.querySelector("#input-1");
-    const charsLeft = 30 - input1.value.length;
-    const counter = document.querySelector("#characters-left");
-    counter.textContent = `${charsLeft} characters left`;
-    input1.addEventListener("input", () => validateInput1());
-  });
-}
+const input1 = `
+  <div class="w-full flex flex-col gap-[4px]">
+    <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+    <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+      <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" />
+    </div>
+    <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+  </div>
+`;
 
 // validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
 function validateInput1() {
@@ -210,4 +180,4 @@ async function updatePotData(chosenTheme) {
   if (response.ok) renderData();
 }
 
-export { renderData };
+export { renderData, input1, validateInput1 };
