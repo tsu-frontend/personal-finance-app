@@ -1,5 +1,5 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
-import { appendEditModal } from "./edit-add-modal.js";
+import { openEditAddModal } from "./edit-add-modal.js";
 import { openDeleteModal } from "./delete-modal.js";
 
 function openOptionsModal() {
@@ -40,7 +40,7 @@ function openOptionsModal() {
       // edit button
       const editBtn = optionsModal.querySelector("#edit-button");
       editBtn.addEventListener("click", () => {
-        appendEditModal(modalId);
+        openEditAddModal("edit", modalId);
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.remove();
@@ -62,6 +62,5 @@ function openOptionsModal() {
     });
   });
 }
-openOptionsModal();
 
 export { openOptionsModal };
