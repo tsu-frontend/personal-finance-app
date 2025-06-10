@@ -1,8 +1,6 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
 import { input1, validateInput1 } from "../pots.js";
 
-const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
-
 const themes = {
   "#277C78": "Green",
   "#F2CDAC": "Yellow",
@@ -269,45 +267,69 @@ async function postFetch(chosenTheme, renderData, tableName, fetchInfo) {
 // call the function to handle both add and edit modals. only input1 and validateInput1 are passed from the main file, all other data and logic shall be within the openEditAddModal function.
 // optionally, input1 and validateInput1 can be included in the modalInfo object to eliminate the need for extra parameters, further simplifying the function signature.
 
-
 function openEditAddModal(modalType, modalId) {
   // stop page scrolling in the background
   // document.body.classList.add("overflow-hidden");
 
-  console.log(pageType);
+  const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
+  // console.log(pageType);
 
-  if (modalType === "edit" && modalId && pageType === "pots") {
+  let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
+
+  if (pageType === "pots") {
+    field2Title = "Target";
     const data = JSON.parse(localStorage.getItem("data") || "[]");
     const modalData = data.find((modal) => modal.id === modalId);
-    console.log(modalData);
-    const modalIdValue = modalData.id;
-    const modalName = modalData.name;
-    const modalTarget = modalData.target;
-    const modalTheme = modalData.theme;
-    const modalTotal = modalData.total;
+
+    const config = {
+      edit: {
+        title: "Add New Pot",
+        subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+        modalIdValue: modalData?.id,
+        modalName: modalData?.name,
+        input2Value: modalData?.target,
+        modalTheme: modalData?.theme,
+        modalColorName: themes[modalData?.theme],
+        colorAnimation: "",
+        buttonText: "Save Changes",
+      },
+      add: {
+        title: "Edit Pot",
+        subTitle: "If your saving targets change, feel free to update your pots.",
+        modalIdValue: "new-modal",
+        modalName: "",
+        input2Value: "",
+        modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+        modalColorName: "Pick a theme",
+        colorAnimation: "animate-color",
+        buttonText: "Add Pot",
+      },
+    };
+
+    function getFirstInput(name) {
+      return `
+      <div class="w-full flex flex-col gap-[4px]">
+        <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+        <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+          <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${name}" />
+        </div>
+        <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+      </div>
+    `;
+    }
+
+    if (modalType === "edit" && modalId) {
+      ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config.edit);
+      firstInput = getFirstInput(modalName);
+    } else if (modalType === "add") {
+      ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config.add);
+      firstInput = getFirstInput(modalName);
+    } else {
+      console.log("modalType is absent");
+    }
   }
 
-  // // declaring modal information
-  // let modalName, input2Value, modalTheme, modalColorName, colorAnimation, themeStatus;
-
-  if (modalInfo.modalType === "edit") {
-    modalName = modalInfo.modalData.name;
-    input2Value = Number(modalInfo.modalData.target).toFixed(2);
-    modalTheme = modalInfo.modalData.theme;
-    modalColorName = themes[modalInfo.modalData.theme];
-    colorAnimation = "";
-    themeStatus = true;
-  }
-
-  // if (modalInfo.modalType === "new") {
-  //   modalName = "";
-  //   input2Value = "";
-  //   modalTheme = "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)";
-  //   modalColorName = "Pick a theme";
-  //   colorAnimation = "animate-color";
-  //   themeStatus = false;
-  // }
-
+  let colorBlocks;
   // // get used themes, except current selected theme
   // let usedThemes = [];
   // if (Array.isArray(modalInfo.item)) {
@@ -321,46 +343,46 @@ function openEditAddModal(modalType, modalId) {
   //   selectedTheme: modalTheme,
   // });
 
-  // document.body.insertAdjacentHTML(
-  //   "beforeend",
-  //   `
-  //     <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-  //       <div data-id="${modalInfo.modalId}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-  //         <div class="w-full flex justify-between items-center">
-  //           <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${modalInfo.title}</h1>
-  //           <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-  //         </div>
-  //         <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${modalInfo.subTitle}</p>
-  //         <div class="w-full flex flex-col gap-[16px]">
-  //           ${modalInfo.firstInput}
-  //           <div class="w-full flex flex-col gap-[4px]">
-  //             <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${modalInfo.field2Title}</p>
-  //             <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-  //               <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-  //               <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
-  //             </div>
-  //           </div>
-  //           <div class="w-full flex flex-col gap-[4px]">
-  //             <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-  //             <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-  //               <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
-  //               <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
-  //               <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-  //               <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-  //               <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
-  //                 ${colorBlocks}
-  //               </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //         <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-  //           <p class="font-bold text-[#FFF] text-[14px]">${modalInfo.buttonText}</p>
-  //         </button>
-  //       </div>
-  //     </div>
-  //   `
-  // );
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+      <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+        <div data-id="${modalIdValue}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+          <div class="w-full flex justify-between items-center">
+            <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>
+            <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
+          </div>
+          <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${subTitle}</p>
+          <div class="w-full flex flex-col gap-[16px]">
+            ${firstInput}
+            <div class="w-full flex flex-col gap-[4px]">
+              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
+              <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
+                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
+              </div>
+            </div>
+            <div class="w-full flex flex-col gap-[4px]">
+              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
+              <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
+                <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
+                <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
+                <div id="theme-modal-wrapper" class="animate-theme-open cursor-auto hidden max-h-[300px] [@media(900px>=height)]:max-h-[200px] [&::-webkit-scrollbar]:hidden overflow-y-auto rounded-[8px] bg-[#FFF] absolute left-[-1px] top-[64px] w-[calc(100%+2px)] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
+                <div id="theme-modal" class="h-full [@media(700px>=height)]:h-[100px] w-full flex flex-col px-[20px]">
+                  ${colorBlocks}
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+            <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
+          </button>
+        </div>
+      </div>
+    `
+  );
 
   // const closeButton = document.querySelector('[data-name="close-button"]');
   // closeButton.addEventListener("click", () => closeEditAddModal());
@@ -408,15 +430,15 @@ function openEditAddModal(modalType, modalId) {
 //       optionsModal.classList.remove("flex", "animate-close");
 //     }, 100);
 //   }
-//   const firstInput = `
-//         <div class="w-full flex flex-col gap-[4px]">
-//           <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-//           <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-//             <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
-//           </div>
-//           <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+// const firstInput = `
+//       <div class="w-full flex flex-col gap-[4px]">
+//         <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
+//         <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
+//           <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${potData.name}" />
 //         </div>
-//       `;
+//         <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
+//       </div>
+//     `;
 //   const modalInfo = {
 //     tableName: "pots",
 //     modalData: potData,
