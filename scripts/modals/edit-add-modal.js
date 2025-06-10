@@ -1,5 +1,35 @@
+/*
+tasks:
+1. save data to localstorage.
+2. openEditAddModal fn should handle both add and edit modals. all data and logic shall be within it.
+3. after completing the all code, remove the modalType error throw.
+4. fix colorBlocks logic
+5. move theme modal toggle and handling functions to a separate module
+6. move postFetch fn to a separate module
+7. rework validateInput1 fn into a separate module. factor in pots and budgets pages.
+
+other possible tasks to improve this code:
+1. submitting the modal form when the user presses the enter key.
+2. trap focus inside the modal so users cant tab to elements behind it.
+3. implement better error handling and user feedback for fetch failures.
+4. add unit tests for modal logic and utility functions?
+example:
+test('returns false for empty input', () => {
+  document.body.innerHTML = '<input id="input-1" value="" />';
+  expect(validateInput1()).toBe(false);
+});
+5. add keyboard navigation and closing modals with escape key.
+6. turn inline styles and classes into css modules or classes.
+7. optimize event listeners to avoid memory leaks by either removing event listeners when they are no longer needed or deleting the dom elements theyre attached to.
+8. add animation end event listeners instead of setTimeout for transitions. cleaner code.
+
+endgame:
+1. persist modal state in URL or history for deep linking.
+*/
+
 import { clickOutClose } from "../functions/clickOutClose.js";
-import { input1, validateInput1 } from "../pots.js";
+import { validateInput2 } from "../functions/validateInput2.js";
+import { validateInput3 } from "../functions/validateInput3.js";
 
 const themes = {
   "#277C78": "Green",
@@ -99,99 +129,6 @@ function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme
 }
 
 // self explanatory
-function closeEditAddModal() {
-  // declaring editAddModal and the close button
-  const editAddModal = document.querySelector("#edit-add-modal");
-
-  // animation
-  editAddModal.classList.add("animate-fade-out");
-  setTimeout(() => {
-    editAddModal.remove();
-
-    // resume page scrolling
-    document.body.classList.remove("overflow-hidden");
-  }, 200);
-}
-
-// validates the second input: checks if its required and a valid number. returns canSubmit state
-function validateInput2() {
-  // flag to track if inputs are valid
-  let canSubmit = true;
-
-  // declare input 2 and its div
-  const input2 = document.querySelector("#input-2");
-  const input2Div = document.querySelector("#input-2-div");
-
-  // reset input2Div border color and error msg to default before validation runs again
-  input2Div.style.borderColor = "#98908B";
-  const redMsg = input2Div.querySelector("#error-msg");
-  if (redMsg) redMsg.remove();
-
-  // validate second input: required, valid number, not 69
-  if (input2.value.length === 0) {
-    canSubmit = false;
-    input2Div.style.borderColor = "red";
-    input2Div.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
-    );
-  } else if (!/^\d+(\.\d{1,2})?$/.test(input2.value) || input2.value < 1 || input2.value > 999999) {
-    canSubmit = false;
-    input2Div.style.borderColor = "red";
-    input2Div.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Invalid target</p>
-      `
-    );
-  } else if (input2.value == 69) {
-    canSubmit = false;
-    input2Div.style.borderColor = "red";
-    input2Div.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">what would ur grandma say</p>
-      `
-    );
-  }
-
-  // return the state of canSubmit
-  return canSubmit;
-}
-
-// validates if a theme is selected
-function validateInput3(themeStatus) {
-  // flag to track if inputs are valid
-  let canSubmit = true;
-
-  // declare theme input div
-  const themeInputDiv = document.querySelector("#input-3");
-
-  // reset target input border color to default before validation runs again
-  themeInputDiv.style.borderColor = "#98908B";
-
-  // remove previous error msg if exists to prevent duplicates
-  const themeRedMsg = themeInputDiv.querySelector("#error-msg");
-  if (themeRedMsg) themeRedMsg.remove();
-
-  if (!themeStatus) {
-    canSubmit = false;
-    themeInputDiv.style.borderColor = "red";
-    themeInputDiv.insertAdjacentHTML(
-      "beforeend",
-      `
-        <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
-      `
-    );
-  }
-
-  // return the state of canSubmit
-  return canSubmit;
-}
-
-// self explanatory
 function toggleThemeModal() {
   const themeButton = document.querySelector("#input-3");
   const themeModal = document.querySelector("#theme-modal-wrapper");
@@ -261,16 +198,8 @@ async function postFetch(chosenTheme, renderData, tableName, fetchInfo) {
 }
 
 ///////////////////////////////////////////////////////////
-// task:
-// save data to localstorage.
-
-// call the function to handle both add and edit modals. only input1 and validateInput1 are passed from the main file, all other data and logic shall be within the openEditAddModal function.
-// optionally, input1 and validateInput1 can be included in the modalInfo object to eliminate the need for extra parameters, further simplifying the function signature.
 
 function openEditAddModal(modalType, modalId) {
-  // stop page scrolling in the background
-  // document.body.classList.add("overflow-hidden");
-
   const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
   // console.log(pageType);
 
@@ -283,8 +212,8 @@ function openEditAddModal(modalType, modalId) {
 
     const config = {
       edit: {
-        title: "Add New Pot",
-        subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+        title: "Edit Pot",
+        subTitle: "If your saving targets change, feel free to update your pots.",
         modalIdValue: modalData?.id,
         modalName: modalData?.name,
         input2Value: modalData?.target,
@@ -294,8 +223,8 @@ function openEditAddModal(modalType, modalId) {
         buttonText: "Save Changes",
       },
       add: {
-        title: "Edit Pot",
-        subTitle: "If your saving targets change, feel free to update your pots.",
+        title: "Add New Pot",
+        subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
         modalIdValue: "new-modal",
         modalName: "",
         input2Value: "",
@@ -325,7 +254,7 @@ function openEditAddModal(modalType, modalId) {
       ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config.add);
       firstInput = getFirstInput(modalName);
     } else {
-      console.log("modalType is absent");
+      throw new Error("modalType is absent");
     }
   }
 
@@ -343,9 +272,13 @@ function openEditAddModal(modalType, modalId) {
   //   selectedTheme: modalTheme,
   // });
 
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `
+  if (modalType === "edit" || modalType === "add") {
+    // stop page scrolling in the background
+    document.body.classList.add("overflow-hidden");
+    // append the modalI
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `
       <div id="edit-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
         <div data-id="${modalIdValue}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
           <div class="w-full flex justify-between items-center">
@@ -382,14 +315,26 @@ function openEditAddModal(modalType, modalId) {
         </div>
       </div>
     `
-  );
+    );
 
-  // const closeButton = document.querySelector('[data-name="close-button"]');
-  // closeButton.addEventListener("click", () => closeEditAddModal());
+    const closeButton = document.querySelector('[data-name="close-button"]');
+    closeButton.addEventListener("click", () => {
+      // declaring editAddModal and the close button
+      const editAddModal = document.querySelector("#edit-add-modal");
 
-  // const input2 = document.querySelector("#input-2");
-  // input2.addEventListener("input", () => validateInput2());
+      // animation
+      editAddModal.classList.add("animate-fade-out");
+      setTimeout(() => {
+        editAddModal.remove();
 
+        // resume page scrolling
+        document.body.classList.remove("overflow-hidden");
+      }, 200);
+    });
+
+    const input2 = document.querySelector("#input-2");
+    input2.addEventListener("input", () => validateInput2());
+  }
   // let chosenTheme = modalTheme;
 
   // toggleThemeModal();
@@ -466,33 +411,73 @@ function openEditAddModal(modalType, modalId) {
 //   // input1.addEventListener("input", () => validateInput1());
 // }z
 
-const newPotButton = document.querySelector("#new-pot-button");
-newPotButton.addEventListener("click", () => {
-  const modalInfo = {
-    tableName: "pots",
-    item: pots,
-    firstInput,
-    title: "Add New Pot",
-    subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
-    field2Title: "Target",
-    buttonText: "Add pot",
-    modalType: "new",
-  };
-  const fetchInfo = {
-    fetchValue1: { key: "name", value: () => document.querySelector("#input-1").value },
-    fetchValue2: "target",
-    fetchValue3: { key: "total", value: () => 0 },
-  };
-  openEditAddModal(modalInfo, fetchInfo, validateInput1, renderData);
-
-  // input1 logic
-  const input1 = document.querySelector("#input-1");
-  const charsLeft = 30 - input1.value.length;
-  const counter = document.querySelector("#characters-left");
-  counter.textContent = `${charsLeft} characters left`;
-  input1.addEventListener("input", () => validateInput1());
-});
-
+// input1 logic
+// const input1 = document.querySelector("#input-1");
+// const charsLeft = 30 - input1.value.length;
+// const counter = document.querySelector("#characters-left");
+// counter.textContent = `${charsLeft} characters left`;
+// input1.addEventListener("input", () => validateInput1());
 ///////////////////////////////////////////////////////////
 
 export { openEditAddModal };
+
+// validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
+// function validateInput1() {
+//   // flag to track if inputs are valid
+//   let canSubmit = true;
+
+//   // declare counter, name input and its div
+//   const counter = document.querySelector("#characters-left");
+//   const input1 = document.querySelector("#input-1");
+//   const input1Div = document.querySelector("#input-div-1");
+
+//   // calculate how many characters are left before reaching the 30 character limit
+//   const charsLeft = 30 - input1.value.length;
+
+//   // change border color to red if input too long, else keep it default
+//   if (charsLeft < 0) {
+//     counter.textContent = "Too long!";
+//   } else {
+//     counter.textContent = `${charsLeft} characters left`;
+//   }
+
+//   // change border color to red if input too long, else keep it default
+//   input1Div.style.borderColor = charsLeft < 0 ? "red" : "#98908B";
+
+//   // remove previous error msg if exists to prevent duplicates
+//   const nameRedMsg = input1Div.querySelector("#error-msg");
+//   if (nameRedMsg) nameRedMsg.remove();
+
+//   // validate name input: required, max 30 chars, alphanumeric
+//   if (input1.value.length === 0) {
+//     canSubmit = false;
+//     input1Div.style.borderColor = "red";
+//     input1Div.insertAdjacentHTML(
+//       "beforeend",
+//       `
+//       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">This field is required</p>
+//     `
+//     );
+//   } else if (input1.value.length > 30) {
+//     canSubmit = false;
+//     input1Div.style.borderColor = "red";
+//     input1Div.insertAdjacentHTML(
+//       "beforeend",
+//       `
+//       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Up to 30 characters allowed</p>
+//     `
+//     );
+//   } else if (!/^[a-zA-Z0-9 ]+$/.test(input1.value)) {
+//     canSubmit = false;
+//     input1Div.style.borderColor = "red";
+//     input1Div.insertAdjacentHTML(
+//       "beforeend",
+//       `
+//       <p id="error-msg" class="absolute right-[-1px] top-[-13.5px] px-[4px] rounded-tl-[8px] rounded-tr-[8px] border-t-1 border-r-1 after:absolute after:top-0 after:left-0 after:h-[60%] after:w-full after:border-l-1 after:border-[red] after:rounded-tl-[8px] bg-white text-[red] text-[14px] pointer-events-none">Name must be alphanumeric</p>
+//     `
+//     );
+//   }
+
+//   // return the state of canSubmit
+//   return canSubmit;
+// }
