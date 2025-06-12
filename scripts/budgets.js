@@ -144,23 +144,20 @@ const getData = async () => {
       transactionsByCat[cat] += amount
     }
   })
-
+console.log(transactionsByCat)
 
   // console.log(budgets);
+  let totalSpending = 0
 
   budgetsData.forEach(object => {
     const { category, maximum, theme } = object
     const spent = Math.abs(transactionsByCat[category] || 0)
 
+    totalSpending += spent
+
     spentArr.push(spent)
     colorsArr.push(theme)
 
-    let SUM = 0
-    for (let i = 0; i < budgetsData.length; i++) {
-      SUM += budgetsData[i].maximum
-    }
-
-    totalSum.textContent = `of $${SUM} limit`
 
 
     let procent = Math.min((spent / maximum) * 100, 100);
@@ -325,7 +322,17 @@ const getData = async () => {
     button.addEventListener('click', () => {
       window.location.href = "transactions.html"
     })
+
+    // chart spendings
+     let SUM = 0
+    for (let i = 0; i < budgetsData.length; i++) {
+      SUM += budgetsData[i].maximum
+    }
+
+    totalSum.textContent = `of $${SUM} limit`
+    spentSum.textContent = `$${parseInt(totalSpending)}`
   })
+
 
 }
 
