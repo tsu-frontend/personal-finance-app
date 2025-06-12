@@ -1,5 +1,5 @@
 // validates if a theme is selected
-function validateInput3(themeStatus) {
+function validateInput3(chosenTheme) {
   // flag to track if inputs are valid
   let canSubmit = true;
 
@@ -13,7 +13,7 @@ function validateInput3(themeStatus) {
   const themeRedMsg = themeInputDiv.querySelector("#error-msg");
   if (themeRedMsg) themeRedMsg.remove();
 
-  if (!themeStatus) {
+  if (!chosenTheme) {
     canSubmit = false;
     themeInputDiv.style.borderColor = "red";
     themeInputDiv.insertAdjacentHTML(
@@ -25,6 +25,7 @@ function validateInput3(themeStatus) {
   }
 
   // return the state of canSubmit
+  console.log("3 = " + canSubmit);
   return canSubmit;
 }
 

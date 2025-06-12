@@ -3,7 +3,7 @@ import { validateInput1 } from "../functions/validateInput1.js";
 import { validateInput2 } from "../functions/validateInput2.js";
 import { validateInput3 } from "../functions/validateInput3.js";
 
-import { themeModal } from "./theme-modal.js";
+import { openThemeModal } from "./theme-modal.js";
 
 const themes = {
   "#277C78": "Green",
@@ -22,60 +22,6 @@ const themes = {
   "#CAB361": "Gold",
   "#BE6C49": "Orange",
 };
-
-// theme picker event logic
-function themeSelectHandler({ themes, modalTheme, setThemeStatus, setChosenTheme }) {
-  const themeModal = document.querySelector("#theme-modal");
-  let selectedTheme = document.querySelector("#theme-modal");
-  let chosenTheme = modalTheme;
-  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-
-  Array.from(themeModal.children).forEach((theme) => {
-    // only add event listener to divs and not spans
-    if (theme.tagName === "DIV") {
-      theme.addEventListener("click", () => {
-        // prevent selecting a theme its already used or currently selected
-        if (theme.querySelector('[data-id="alreadyUsed"]') || theme.querySelector("#selectedTheme")) return;
-
-        // set the chosen theme and get its name
-        chosenTheme = theme.id;
-        if (setThemeStatus) setThemeStatus(true);
-        if (setChosenTheme) setChosenTheme(chosenTheme);
-        validateInput3(true);
-        const chosenThemeName = themes[chosenTheme];
-
-        // remove previous selection icon if any
-        document.querySelector("#selectedTheme")?.remove();
-
-        // restore pointer cursor for previously selected theme
-        selectedTheme?.classList.replace("hover:cursor-not-allowed", "hover:cursor-pointer");
-
-        // mark the new selected theme
-        selectedTheme = theme;
-        selectedTheme.innerHTML += selectedThemeIcon;
-
-        // update the theme button color and label
-        const themeButton = document.querySelector("#input-3");
-        const span = themeButton.querySelector("span");
-        span.classList.remove("animate-color");
-        span.style.background = chosenTheme;
-        themeButton.querySelector("p").textContent = chosenThemeName;
-
-        // close the theme modal with animation
-        const themeModalWrapper = document.querySelector("#theme-modal-wrapper");
-        themeModalWrapper.classList.add("animate-theme-close");
-        setTimeout(() => {
-          themeModalWrapper.classList.add("hidden");
-          themeModalWrapper.classList.remove("animate-theme-close");
-          // disable pointer cursor on the selected theme
-          selectedTheme.classList.replace("hover:cursor-pointer", "hover:cursor-not-allowed");
-        }, 300);
-      });
-    }
-  });
-}
-
-///////////////////////////////////////////////////////////
 
 function openEditAddModal(modalType, modalId) {
   const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
@@ -176,6 +122,8 @@ function openEditAddModal(modalType, modalId) {
       `
     );
 
+    let chosenTheme = modalType === "add" ? "" : modalTheme;
+
     // logic to handle closing the edit/add modal
     const closeButton = document.querySelector('[data-name="close-button"]');
     closeButton.addEventListener("click", () => {
@@ -193,12 +141,14 @@ function openEditAddModal(modalType, modalId) {
     });
 
     const input1 = document.querySelector("#input-1");
-    // input1 logic for pots
+    // input1 logic for pots page
     if (pageType === "pots") {
       const charsLeft = 30 - input1.value.length;
       const counter = document.querySelector("#characters-left");
       counter.textContent = `${charsLeft} characters left`;
       input1.addEventListener("input", () => validateInput1(pageType));
+
+      // input1 logic for budgets page (if even required)
     } else if (pageType === "budgets") {
       // ...
     }
@@ -208,39 +158,30 @@ function openEditAddModal(modalType, modalId) {
 
     const themeButton = document.querySelector("#input-3");
     themeButton.addEventListener("click", () => {
-      // Instead of toggling hidden, call themeModal to append a new modal
-      themeModal(modalTheme, data, themes);
+      openThemeModal(chosenTheme, data, themes, (newTheme) => {
+        chosenTheme = newTheme;
+      });
+    });
+
+    // submit logic
+    const submitButton = document.querySelector("#submit-button");
+
+    submitButton.addEventListener("click", () => {
+      const valid1 = validateInput1(pageType);
+      const valid2 = validateInput2();
+      const valid3 = validateInput3(chosenTheme);
+      const canSubmit = valid1 && valid2 && valid3;
+      if (canSubmit) {
+        if (modalInfo.modalType === "new") {
+          postFetch(chosenTheme, renderData, tableName, fetchInfo);
+        }
+        if (modalInfo.modalType === "edit") {
+          appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
+        }
+        closeEditAddModal();
+      }
     });
   }
-  // let chosenTheme = modalTheme;
-
-  // themeSelectHandler({
-  //   themes,
-  //   modalTheme,
-  //   setThemeStatus: (val) => {
-  //     themeStatus = val;
-  //   },
-  //   setChosenTheme: (val) => {
-  //     chosenTheme = val;
-  //   },
-  // });
-
-  // const submitButton = document.querySelector("#submit-button");
-  // submitButton.addEventListener("click", () => {
-  //   const valid1 = validateInput1();
-  //   const valid2 = validateInput2();
-  //   const valid3 = validateInput3(themeStatus);
-  //   const canSubmit = valid1 && valid2 && valid3;
-  //   if (canSubmit) {
-  //     if (modalInfo.modalType === "new") {
-  //       postFetch(chosenTheme, renderData, tableName, fetchInfo);
-  //     }
-  //     if (modalInfo.modalType === "edit") {
-  //       appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
-  //     }
-  //     closeEditAddModal();
-  //   }
-  // });
 }
 
 ///////////////////////////////////////////////////////////

@@ -43,6 +43,8 @@ function validateInput2() {
   }
 
   // return the state of canSubmit
+
+  console.log("2 = " + canSubmit);
   return canSubmit;
 }
 

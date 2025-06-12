@@ -7,10 +7,11 @@ This document tracks planned improvements and refactoring tasks for the Personal
 1. **Save data to localStorage.**
 2. Refactor `openEditAddModal` to handle both add and edit modals, keeping all data and logic within it.
 3. After completing all code, remove the `modalType` error throw.
-4. Fix colorBlocks logic.
-5. Move theme modal toggle and handling functions to a separate module.
-6. Move `postFetch` function to a separate module.
-7. Rework `validateInput1` into a separate module. Factor in both pots and budgets pages.
+4. ~~Fix colorBlocks logic.~~ ✔️
+   ~~5. Move theme modal toggle and handling functions to a separate module.~~ ✔️
+5. Move `postFetch` function to a separate module.
+   ~~7. Rework `validateInput1` into a separate module.~~ ✔️ **Factor in both pots and budgets pages.** ✖️
+6. Move the `themes` object to a new file in a `constants` folder and update all imports accordingly.
 
 ## Additional Possible Improvements
 

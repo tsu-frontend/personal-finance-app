@@ -1,11 +1,40 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
+import { themeSelectHandler } from "../functions/themeSelectHandler.js";
 
-function themeModal(modalTheme, data, themes) {
+function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
   const themeButton = document.querySelector("#input-3");
 
-  let currentTheme = modalTheme;
-  console.log(currentTheme);
-  const colorBlocks = getColorBlocks(currentTheme, data, themes);
+  const existingModal = document.querySelector("#theme-modal-wrapper");
+  if (existingModal) existingModal.remove();
+
+  // generate colorBlocks html for the modal
+  const usedThemes = data.filter((item) => item.theme && item.theme !== chosenTheme).map((item) => item.theme);
+  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
+  const usedTheme = `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
+
+  const colorBlocks = Object.entries(themes)
+
+    .map(([hex, name]) => {
+      let extra = "";
+      let cursorClass = "hover:cursor-pointer";
+
+      if (hex === chosenTheme) {
+        extra = selectedThemeIcon;
+        cursorClass = "hover:cursor-not-allowed";
+      } else if (usedThemes.includes(hex)) {
+        extra = usedTheme;
+        cursorClass = "hover:cursor-not-allowed";
+      }
+      return `
+        <div id="${hex}" class="group shrink-0 ${cursorClass} hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
+          <span style="background-color: ${hex}" class="w-[16px] h-[16px] rounded-full group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
+          <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">${name}</p>
+          ${extra}
+        </div>
+        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
+      `;
+    })
+    .join("");
 
   // toggle theme modal
   themeButton.insertAdjacentHTML(
@@ -28,40 +57,8 @@ function themeModal(modalTheme, data, themes) {
   themeModal.addEventListener("click", (e) => {
     e.stopPropagation();
   });
+
+  themeSelectHandler(setChosenTheme, themes);
 }
 
-// returns colorBlocks html for the modal
-function getColorBlocks(currentTheme, data, themes) {
-  // collect already used themes except the current one
-  const usedThemes = data.filter((item) => item.theme && item.theme !== currentTheme).map((item) => item.theme);
-  const selectedThemeIcon = `<img id="selectedTheme" src="../assets/images/icon-selected.svg" class="w-[16px] h-[16px] ml-auto group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu" />`;
-  const usedTheme = `<p data-id="alreadyUsed" class="text-[#696868] text-[12px] leading-[150%] group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu ml-auto">Already used</p>`;
-
-  const colorBlocks = Object.entries(themes)
-
-    .map(([hex, name]) => {
-      let extra = "";
-      let cursorClass = "hover:cursor-pointer";
-
-      if (hex === currentTheme) {
-        extra = selectedThemeIcon;
-        cursorClass = "hover:cursor-not-allowed";
-      } else if (usedThemes.includes(hex)) {
-        extra = usedTheme;
-        cursorClass = "hover:cursor-not-allowed";
-      }
-      return `
-        <div id="${hex}" class="group shrink-0 ${cursorClass} hover:scale-y-[1.2] transition-all duration-300 ease transform-gpu w-full h-[45px] flex gap-[12px] items-center">
-          <span style="background-color: ${hex}" class="w-[16px] h-[16px] rounded-full group-hover:scale-x-[1.2] transition-all duration-300 ease transform-gpu"></span>
-          <p class="text-[#201F24] text-[14px] leading-[150%] group-hover:scale-x-[1.2] group-hover:ml-[6px] transition-all duration-300 ease transform-gpu">${name}</p>
-          ${extra}
-        </div>
-        <span class="w-full h-[1px] shrink-0 bg-[#F2F2F2]"></span>
-      `;
-    })
-    .join("");
-
-  return colorBlocks;
-}
-
-export { themeModal };
+export { openThemeModal };

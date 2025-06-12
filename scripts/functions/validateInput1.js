@@ -1,9 +1,9 @@
 function validateInput1(pageType) {
+  // flag to track if inputs are valid
+  let canSubmit = true;
+
   // validates the name input: checks if its required within 30 characters and alphanumeric. returns canSubmit state
   if (pageType === "pots") {
-    // flag to track if inputs are valid
-    let canSubmit = true;
-
     // declare counter, name input and its div
     const counter = document.querySelector("#characters-left");
     const input1 = document.querySelector("#input-1");
@@ -57,10 +57,12 @@ function validateInput1(pageType) {
     }
 
     // return the state of canSubmit
-    return canSubmit;
   } else if (pageType === "budgets") {
     // ...
   }
+
+  console.log("1 = " + canSubmit);
+  return canSubmit;
 }
 
 export { validateInput1 };
