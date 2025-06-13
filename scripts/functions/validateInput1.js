@@ -58,7 +58,8 @@ function validateInput1(pageType) {
 
     // return the state of canSubmit
   } else if (pageType === "budgets") {
-    // ...
+    // natia's part
+    // forge the proof that first input’s truth doth stand!
   }
 
   console.log("1 = " + canSubmit);

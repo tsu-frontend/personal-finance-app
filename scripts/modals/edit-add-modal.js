@@ -2,26 +2,8 @@ import { clickOutClose } from "../functions/clickOutClose.js";
 import { validateInput1 } from "../functions/validateInput1.js";
 import { validateInput2 } from "../functions/validateInput2.js";
 import { validateInput3 } from "../functions/validateInput3.js";
-
 import { openThemeModal } from "./theme-modal.js";
-
-const themes = {
-  "#277C78": "Green",
-  "#F2CDAC": "Yellow",
-  "#82C9D7": "Cyan",
-  "#626070": "Navy",
-  "#C94736": "Red",
-  "#826CB0": "Purple",
-  "#597C7C": "Turquoise",
-  "#93674F": "Brown",
-  "#934F6F": "Magenta",
-  "#3F82B2": "Blue",
-  "#97A0AC": "Navy Grey",
-  "#7F9161": "Army Green",
-  "#f72d93": "Pink",
-  "#CAB361": "Gold",
-  "#BE6C49": "Orange",
-};
+import { themes } from "../constants/themes.js";
 
 function openEditAddModal(modalType, modalId) {
   const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
@@ -150,7 +132,8 @@ function openEditAddModal(modalType, modalId) {
 
       // input1 logic for budgets page (if even required)
     } else if (pageType === "budgets") {
-      // ...
+      // natia's part
+      // if theres any logic that needs to be implemented for the first input, it should be done here
     }
 
     const input2 = document.querySelector("#input-2");
@@ -158,7 +141,7 @@ function openEditAddModal(modalType, modalId) {
 
     const themeButton = document.querySelector("#input-3");
     themeButton.addEventListener("click", () => {
-      openThemeModal(chosenTheme, data, themes, (newTheme) => {
+      openThemeModal(chosenTheme, data, (newTheme) => {
         chosenTheme = newTheme;
       });
     });

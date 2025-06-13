@@ -1,7 +1,8 @@
 import { clickOutClose } from "../functions/clickOutClose.js";
 import { themeSelectHandler } from "../functions/themeSelectHandler.js";
+import { themes } from "../constants/themes.js";
 
-function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
+function openThemeModal(chosenTheme, data, setChosenTheme) {
   const themeButton = document.querySelector("#input-3");
 
   const existingModal = document.querySelector("#theme-modal-wrapper");
@@ -58,7 +59,7 @@ function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
     e.stopPropagation();
   });
 
-  themeSelectHandler(setChosenTheme, themes);
+  themeSelectHandler(setChosenTheme);
 }
 
 export { openThemeModal };
