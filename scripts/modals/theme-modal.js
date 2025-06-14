@@ -48,10 +48,6 @@ function openThemeModal(chosenTheme, data, setChosenTheme) {
       </div>
     `
   );
-  // close theme modal on outside click
-  setTimeout(() => {
-    clickOutClose(themeModal, "animate-theme-close", 300);
-  }, 100);
 
   const themeModal = document.querySelector("#theme-modal-wrapper");
   // dont close theme modal if clicked inside
@@ -60,6 +56,9 @@ function openThemeModal(chosenTheme, data, setChosenTheme) {
   });
 
   themeSelectHandler(setChosenTheme);
+  
+  // close editAddModal on outside click
+  clickOutClose(themeModal, "animate-theme-close", 300);
 }
 
 export { openThemeModal };

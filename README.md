@@ -11,7 +11,7 @@ This document tracks planned improvements and refactoring tasks for the Personal
    ~~5. Move theme modal toggle and handling functions to a separate module.~~ ✔️
 5. Move `postFetch` function to a separate module.
    ~~7. Rework `validateInput1` into a separate module.~~ ✔️ **Factor in both pots and budgets pages.** ✖️
-~~6. Move the `themes` object to a new file in a `constants` folder and update all imports accordingly.~~ ✔️
+   ~~6. Move the `themes` object to a new file in a `constants` folder and update all imports accordingly.~~ ✔️
 
 ## Additional Possible Improvements
 
@@ -33,3 +33,9 @@ This document tracks planned improvements and refactoring tasks for the Personal
 ## Endgame
 
 1. Persist modal state in URL or history for deep linking.
+
+## Known Bugs
+
+1. Clicking the `themeModal` toggle button (which is outside the modal) while the modal is open flickers it, since the button opens the `themeModal` and the `clickOutClose` function closes it.
+
+   > **Fix:** Update the theme button click handler so that it first checks if the theme modal is already open.

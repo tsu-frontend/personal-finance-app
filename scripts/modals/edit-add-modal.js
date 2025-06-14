@@ -164,6 +164,11 @@ function openEditAddModal(modalType, modalId) {
         }
       }
     });
+
+    // close editAddModal on outside click
+    const wrapper = document.querySelector("#edit-add-modal");
+    const editAddModal = wrapper.querySelector("div");
+    clickOutClose(editAddModal, "animate-fade-out", 200, wrapper);
   }
 }
 
