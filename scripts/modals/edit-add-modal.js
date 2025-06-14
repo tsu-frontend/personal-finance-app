@@ -5,6 +5,7 @@ import { validateInput3 } from "../utilities/validateInput3.js";
 import { openThemeModal } from "./theme-modal.js";
 import { themes } from "../constants/themes.js";
 import { patchFetch } from "../api/patchFetch.js";
+import { postFetch } from "../api/postFetch.js";
 import { pageType } from "../utilities/pageType.js";
 
 function openEditAddModal(modalType, modalId) {
@@ -156,12 +157,11 @@ function openEditAddModal(modalType, modalId) {
       const canSubmit = valid1 && valid2 && valid3;
       if (canSubmit) {
         if (modalType === "add") {
-          // postFetch(chosenTheme, renderData, tableName, fetchInfo);
+          postFetch(chosenTheme);
         }
         if (modalType === "edit") {
           patchFetch(chosenTheme);
         }
-        // closeEditAddModal();
       }
     });
   }
