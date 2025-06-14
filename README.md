@@ -39,3 +39,7 @@ This document tracks planned improvements and refactoring tasks for the Personal
 1. Clicking the `themeModal` toggle button (which is outside the modal) while the modal is open flickers it, since the button opens the `themeModal` and the `clickOutClose` function closes it.
 
    > **Fix:** Update the theme button click handler so that it first checks if the theme modal is already open.
+
+2. When changing the theme in the edit modal, the "already used" indicator remains on the current pot's theme because the original selected theme is still included in `colorBlocks` as in use, even after selecting a new theme.
+
+   > **Fix:** Update the logic so that when a new theme is selected in the edit modal, the `colorBlocks` calculation excludes the original theme.
