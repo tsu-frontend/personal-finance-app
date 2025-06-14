@@ -9,7 +9,7 @@ newPotBtn.addEventListener("click", () => {
   openEditAddModal("add");
 });
 
-const renderData = async () => {
+const renderPotsData = async () => {
   const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
   const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
 
@@ -27,13 +27,12 @@ const renderData = async () => {
     localStorage.setItem("data", JSON.stringify(pots));
 
     renderPots(pots);
-    const tableName = "pot";
-    openOptionsModal(tableName);
+    openOptionsModal();
   } catch (err) {
     console.error(err);
   }
 };
-renderData();
+renderPotsData();
 
 // render pots into container
 function renderPots(pots) {
@@ -89,29 +88,4 @@ function renderPots(pots) {
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////// move code to separate file
-
-// sends an update request to edit the pot on the server
-async function updatePotData(chosenTheme) {
-  const potId = document.querySelector("#edit-modal").querySelector("[data-id]").getAttribute("data-id");
-
-  console.log(potId);
-
-  const response = await fetch(`http://localhost:3000/pots/${potId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: document.querySelector("#pot-name-input").value,
-      target: parseFloat(document.querySelector("#pot-target-input").value).toFixed(2),
-      theme: chosenTheme,
-    }),
-  });
-
-  if (response.ok) renderData();
-}
-
-export { renderData };
+export { renderPotsData };

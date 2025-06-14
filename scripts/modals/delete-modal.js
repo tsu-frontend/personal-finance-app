@@ -1,5 +1,5 @@
-import { clickOutClose } from "../functions/clickOutClose.js";
-import { deleteFetch } from "../functions/deleteFetch.js";
+import { clickOutClose } from "../utilities/clickOutClose.js";
+import { deleteFetch } from "../api/deleteFetch.js";
 
 function openDeleteModal(modalId, tableName) {
   const data = JSON.parse(localStorage.getItem("data") || "[]");

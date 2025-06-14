@@ -1,4 +1,4 @@
-import { validateInput3 } from "./validateInput3.js";
+import { validateInput3 } from "../utilities/validateInput3.js";
 import { themes } from "../constants/themes.js";
 
 // theme picker event logic

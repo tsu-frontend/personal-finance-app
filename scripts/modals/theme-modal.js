@@ -1,5 +1,5 @@
-import { clickOutClose } from "../functions/clickOutClose.js";
-import { themeSelectHandler } from "../functions/themeSelectHandler.js";
+import { clickOutClose } from "../utilities/clickOutClose.js";
+import { themeSelectHandler } from "../utilities/themeSelectHandler.js";
 import { themes } from "../constants/themes.js";
 
 function openThemeModal(chosenTheme, data, setChosenTheme) {

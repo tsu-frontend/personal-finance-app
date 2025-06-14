@@ -1,4 +1,6 @@
-function validateInput1(pageType) {
+import { pageType } from "./pageType.js";
+
+function validateInput1() {
   // flag to track if inputs are valid
   let canSubmit = true;
 

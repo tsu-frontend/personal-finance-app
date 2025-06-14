@@ -1,4 +1,6 @@
-import { renderData } from "../pots.js";
+import { renderPotsData } from "../pots.js";
+// import { renderBudgetsData } from "../budgets.js";
+import { pageType } from "../utilities/pageType.js";
 
 const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
 const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
@@ -13,7 +15,13 @@ async function deleteFetch(modalId) {
         Authorization: `Bearer ${PUBLIC_KEY}`,
       },
     });
-    if (response.ok) renderData();
+    if (response.ok) {
+      if (pageType === "pots") {
+        renderPotsData();
+      } else if (pageType === "budgets") {
+        renderBudgetsData();
+      }
+    }
   } catch (error) {
     console.error(error);
   }

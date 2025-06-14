@@ -1,13 +1,13 @@
-import { clickOutClose } from "../functions/clickOutClose.js";
-import { validateInput1 } from "../functions/validateInput1.js";
-import { validateInput2 } from "../functions/validateInput2.js";
-import { validateInput3 } from "../functions/validateInput3.js";
+import { clickOutClose } from "../utilities/clickOutClose.js";
+import { validateInput1 } from "../utilities/validateInput1.js";
+import { validateInput2 } from "../utilities/validateInput2.js";
+import { validateInput3 } from "../utilities/validateInput3.js";
 import { openThemeModal } from "./theme-modal.js";
 import { themes } from "../constants/themes.js";
+import { patchFetch } from "../api/patchFetch.js";
+import { pageType } from "../utilities/pageType.js";
 
 function openEditAddModal(modalType, modalId) {
-  const pageType = window.location.pathname.includes("budgets") ? "budgets" : "pots";
-
   const data = JSON.parse(localStorage.getItem("data") || "[]");
 
   let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
@@ -128,7 +128,7 @@ function openEditAddModal(modalType, modalId) {
       const charsLeft = 30 - input1.value.length;
       const counter = document.querySelector("#characters-left");
       counter.textContent = `${charsLeft} characters left`;
-      input1.addEventListener("input", () => validateInput1(pageType));
+      input1.addEventListener("input", () => validateInput1());
 
       // input1 logic for budgets page (if even required)
     } else if (pageType === "budgets") {
@@ -155,13 +155,13 @@ function openEditAddModal(modalType, modalId) {
       const valid3 = validateInput3(chosenTheme);
       const canSubmit = valid1 && valid2 && valid3;
       if (canSubmit) {
-        if (modalInfo.modalType === "new") {
-          postFetch(chosenTheme, renderData, tableName, fetchInfo);
+        if (modalType === "add") {
+          // postFetch(chosenTheme, renderData, tableName, fetchInfo);
         }
-        if (modalInfo.modalType === "edit") {
-          appendEditModal(chosenTheme, renderData, tableName, fetchInfo);
+        if (modalType === "edit") {
+          patchFetch(chosenTheme);
         }
-        closeEditAddModal();
+        // closeEditAddModal();
       }
     });
   }
