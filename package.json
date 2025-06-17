@@ -1,6 +1,13 @@
 {
   "dependencies": {
     "@tailwindcss/cli": "^4.0.17",
+    "supabase-service-manager": "^1.0.2",
     "tailwindcss": "^4.0.17"
+  },
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
   }
 }
