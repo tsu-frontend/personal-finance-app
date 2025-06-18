@@ -1,7 +1,8 @@
-import { clickOutClose } from "../functions/clickOutClose.js";
-import { themeSelectHandler } from "../functions/themeSelectHandler.js";
+import { clickOutClose } from "../utilities/clickOutClose.js";
+import { themeSelectHandler } from "../utilities/themeSelectHandler.js";
+import { themes } from "../constants/themes.js";
 
-function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
+function openThemeModal(chosenTheme, data, setChosenTheme) {
   const themeButton = document.querySelector("#input-3");
 
   const existingModal = document.querySelector("#theme-modal-wrapper");
@@ -47,10 +48,6 @@ function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
       </div>
     `
   );
-  // close theme modal on outside click
-  setTimeout(() => {
-    clickOutClose(themeModal, "animate-theme-close", 300);
-  }, 100);
 
   const themeModal = document.querySelector("#theme-modal-wrapper");
   // dont close theme modal if clicked inside
@@ -58,7 +55,10 @@ function openThemeModal(chosenTheme, data, themes, setChosenTheme) {
     e.stopPropagation();
   });
 
-  themeSelectHandler(setChosenTheme, themes);
+  themeSelectHandler(setChosenTheme);
+  
+  // close editAddModal on outside click
+  clickOutClose(themeModal, "animate-theme-close", 300);
 }
 
 export { openThemeModal };

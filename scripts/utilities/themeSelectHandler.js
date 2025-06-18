@@ -1,7 +1,8 @@
-import { validateInput3 } from "./validateInput3.js";
+import { validateInput3 } from "../utilities/validateInput3.js";
+import { themes } from "../constants/themes.js";
 
 // theme picker event logic
-function themeSelectHandler(setChosenTheme, themes) {
+function themeSelectHandler(setChosenTheme) {
   const themeModal = document.querySelector("#theme-modal");
 
   Array.from(themeModal.children).forEach((theme) => {

@@ -1,4 +1,4 @@
-import { clickOutClose } from "../functions/clickOutClose.js";
+import { clickOutClose } from "../utilities/clickOutClose.js";
 import { openEditAddModal } from "./edit-add-modal.js";
 import { openDeleteModal } from "./delete-modal.js";
 

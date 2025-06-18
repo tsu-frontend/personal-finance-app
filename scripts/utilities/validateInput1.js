@@ -1,4 +1,6 @@
-function validateInput1(pageType) {
+import { pageType } from "./pageType.js";
+
+function validateInput1() {
   // flag to track if inputs are valid
   let canSubmit = true;
 
@@ -58,10 +60,11 @@ function validateInput1(pageType) {
 
     // return the state of canSubmit
   } else if (pageType === "budgets") {
-    // ...
+    // natia's part
+    // forge the proof that first input’s truth doth stand!
   }
 
-  console.log("1 = " + canSubmit);
+  // return the state of canSubmit
   return canSubmit;
 }
 
