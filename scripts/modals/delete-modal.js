@@ -1,5 +1,6 @@
 import { clickOutClose } from "../utilities/clickOutClose.js";
-import { deleteFetch } from "../api/deleteFetch.js";
+import { fetchRequest } from "../api/fetchRequest.js";
+import { pageType } from "../utilities/pageType.js";
 
 function openDeleteModal(modalId, tableName) {
   const data = JSON.parse(localStorage.getItem("data") || "[]");
@@ -75,7 +76,15 @@ function openDeleteModal(modalId, tableName) {
       }, 2000);
     }, 200);
 
-    deleteFetch(modalId);
+    // make the fetch request to delete the modal
+
+    let body, tableName;
+    if (pageType === "pots") {
+      tableName = "pots";
+    } else if (pageType === "budgets") {
+      tableName = "budgets";
+    }
+    fetchRequest((body = {}), tableName, "DELETE", modalId);
   });
 }
 

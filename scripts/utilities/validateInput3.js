@@ -25,7 +25,6 @@ function validateInput3(chosenTheme) {
   }
 
   // return the state of canSubmit
-  console.log("3 = " + canSubmit);
   return canSubmit;
 }
 

@@ -64,7 +64,7 @@ function validateInput1() {
     // forge the proof that first input’s truth doth stand!
   }
 
-  console.log("1 = " + canSubmit);
+  // return the state of canSubmit
   return canSubmit;
 }
 

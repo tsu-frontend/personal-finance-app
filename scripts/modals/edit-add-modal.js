@@ -4,8 +4,7 @@ import { validateInput2 } from "../utilities/validateInput2.js";
 import { validateInput3 } from "../utilities/validateInput3.js";
 import { openThemeModal } from "./theme-modal.js";
 import { themes } from "../constants/themes.js";
-import { patchFetch } from "../api/patchFetch.js";
-import { postFetch } from "../api/postFetch.js";
+import { fetchRequest } from "../api/fetchRequest.js";
 import { pageType } from "../utilities/pageType.js";
 
 function openEditAddModal(modalType, modalId) {
@@ -156,11 +155,54 @@ function openEditAddModal(modalType, modalId) {
       const valid3 = validateInput3(chosenTheme);
       const canSubmit = valid1 && valid2 && valid3;
       if (canSubmit) {
+        let body, tableName;
+
+        // add type
         if (modalType === "add") {
-          postFetch(chosenTheme);
+          if (pageType === "pots") {
+            tableName = "pots";
+            body = {
+              id: crypto.randomUUID(),
+              name: document.querySelector("#input-1").value,
+              target: parseFloat(document.querySelector("#input-2").value),
+              total: 0,
+              theme: chosenTheme,
+            };
+          } else if (pageType === "budgets") {
+            tableName = "budgets";
+            body = {
+              id: crypto.randomUUID(),
+              // natia's part
+              // category: ...,
+              maximum: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            };
+          }
+
+          fetchRequest(body, tableName, "POST");
         }
+        // edit type
         if (modalType === "edit") {
-          patchFetch(chosenTheme);
+          if (pageType === "pots") {
+            tableName = "pots";
+            body = {
+              name: document.querySelector("#input-1").value,
+              target: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            };
+          } else if (pageType === "budgets") {
+            tableName = "budgets";
+            body = {
+              // natia's part
+              // category: ...,
+              maximum: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            };
+          }
+
+          const modalId = document.querySelector("#edit-add-modal").querySelector("[data-id]").getAttribute("data-id");
+
+          fetchRequest(body, tableName, "PATCH", modalId);
         }
       }
     });
