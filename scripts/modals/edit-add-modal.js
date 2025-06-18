@@ -53,15 +53,43 @@ function openEditAddModal(modalType, modalId) {
     `;
     }
 
-    if (modalType === "edit" && modalId) {
-      ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config.edit);
-      firstInput = getFirstInput(modalName);
-    } else if (modalType === "add") {
-      ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config.add);
-      firstInput = getFirstInput(modalName);
-    } else {
-      throw new Error("modalType is absent");
-    }
+    const configType = config[modalType];
+    ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = configType);
+    firstInput = getFirstInput(modalName);
+  } else if (pageType === "budgets") {
+    field2Title = "Maximum";
+    const modalData = data.find((modal) => modal.id === modalId);
+
+    const config = {
+      edit: {
+        title: "Edit Budget",
+        subTitle: "As your budgets change, feel free to update your spending limits.",
+        modalIdValue: modalData?.id,
+        modalName: modalData?.name,
+        input2Value: modalData?.target,
+        modalTheme: modalData?.theme,
+        modalColorName: themes[modalData?.theme],
+        colorAnimation: "",
+        buttonText: "Save Changes",
+      },
+      add: {
+        title: "Add New Budget",
+        subTitle: "Choose a category to set a spending budget. These categories can help you monitor spending.",
+        modalIdValue: "new-modal",
+        modalName: "",
+        input2Value: "",
+        modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+        modalColorName: "Pick a theme",
+        colorAnimation: "animate-color",
+        buttonText: "Add Budget",
+      },
+    };
+
+    const configType = config[modalType];
+    ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = configType);
+
+    // natia's part
+    firstInput = ``;
   }
 
   if (modalType === "edit" || modalType === "add") {
@@ -213,7 +241,5 @@ function openEditAddModal(modalType, modalId) {
     clickOutClose(editAddModal, "animate-fade-out", 200, wrapper);
   }
 }
-
-///////////////////////////////////////////////////////////
 
 export { openEditAddModal };
