@@ -207,7 +207,7 @@ function openEditAddModal(modalType, modalId) {
             };
           }
 
-          fetchRequest(body, tableName, "POST");
+          fetchRequest(tableName, "POST", body);
         }
         // edit type
         if (modalType === "edit") {
@@ -230,7 +230,7 @@ function openEditAddModal(modalType, modalId) {
 
           const modalId = document.querySelector("#edit-add-modal").querySelector("[data-id]").getAttribute("data-id");
 
-          fetchRequest(body, tableName, "PATCH", modalId);
+          fetchRequest(tableName, "PATCH", body, modalId);
         }
       }
     });

@@ -2,6 +2,7 @@ import { clickOutClose } from "../utilities/clickOutClose.js";
 import { fetchRequest } from "../api/fetchRequest.js";
 import { pageType } from "../utilities/pageType.js";
 
+
 function openDeleteModal(modalId, tableName) {
   const data = JSON.parse(localStorage.getItem("data") || "[]");
   const modalData = data.find((modal) => modal.id === modalId);
@@ -84,7 +85,7 @@ function openDeleteModal(modalId, tableName) {
     } else if (pageType === "budgets") {
       tableName = "budgets";
     }
-    fetchRequest((body = {}), tableName, "DELETE", modalId);
+    fetchRequest(tableName, "DELETE", modalId);
   });
 }
 
