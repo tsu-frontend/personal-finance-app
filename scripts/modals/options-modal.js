@@ -1,9 +1,9 @@
 import { clickOutClose } from "../utilities/clickOutClose.js";
-import { openEditAddModal } from "./edit-add-modal.js";
+import { openEditModal } from "./edit-add-modal.js";
 import { openDeleteModal } from "./delete-modal.js";
 import { pageType } from "../utilities/pageType.js";
 
-function openOptionsModal() {
+function optionsBtnHandler(pots) {
   const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
   modalOptionsButton.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -41,7 +41,8 @@ function openOptionsModal() {
       // edit button
       const editBtn = optionsModal.querySelector("#edit-button");
       editBtn.addEventListener("click", () => {
-        openEditAddModal("edit", modalId);
+        const modalData = pots.find((pot) => pot.id === modalId);
+        openEditModal(modalData);
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.remove();
@@ -68,4 +69,4 @@ function openOptionsModal() {
   });
 }
 
-export { openOptionsModal };
+export { optionsBtnHandler };

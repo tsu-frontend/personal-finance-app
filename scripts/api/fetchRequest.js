@@ -36,22 +36,23 @@ async function fetchRequest(tableName, fetchType, body = null, modalId = null) {
       body: JSON.stringify(body),
     });
 
-    console.log(await response.json());
     if (response.ok) {
       // update the ui with the new data if the fetch request was successful (temporarily! will be moved to files that render the data)
       if (fetchType !== "DELETE") {
         // close the edit add modal
-        const editAddModal = document.querySelector("#edit-add-modal");
-        editAddModal.classList.add("animate-fade-out");
+        const editModal = document.querySelector("#add-modal");
+        const addModal = document.querySelector("#edit-modal");
+        const modal = editModal || addModal;
+        modal.classList.add("animate-fade-out");
         setTimeout(() => {
-          editAddModal.remove();
+          modal.remove();
 
           // resume page scrolling
           document.body.classList.remove("overflow-hidden");
         }, 200);
 
         if (pageType === "pots") {
-          renderPotsData();
+          // renderPotsData();
         } else if (pageType === "budgets") {
           renderBudgetsData();
         }

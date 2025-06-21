@@ -1,20 +1,18 @@
-import { openOptionsModal } from "./modals/options-modal.js";
-import { openEditAddModal } from "./modals/edit-add-modal.js";
+import { optionsBtnHandler } from "./modals/options-modal.js";
+import { openAddModal } from "./modals/edit-add-modal.js";
 import { fetchRequest } from "./api/fetchRequest.js";
 
 let pots = [];
 
 const newPotBtn = document.querySelector("#new-pot-button");
-newPotBtn.addEventListener("click", () => {
-  openEditAddModal("add");
-});
 
 const renderPotsData = async () => {
-  const data = await fetchRequest("pots", "GET");
-  pots = data;
-
+  pots = await fetchRequest("pots", "GET");
   renderPots(pots);
-  openOptionsModal();
+  optionsBtnHandler(pots);
+  newPotBtn.addEventListener("click", () => {
+    openAddModal(pots);
+  });
 };
 renderPotsData();
 
