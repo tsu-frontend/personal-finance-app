@@ -1,6 +1,7 @@
 import { clickOutClose } from "../utilities/clickOutClose.js";
 import { openEditAddModal } from "./edit-add-modal.js";
 import { openDeleteModal } from "./delete-modal.js";
+import { pageType } from "../utilities/pageType.js";
 
 function openOptionsModal() {
   const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
@@ -50,7 +51,11 @@ function openOptionsModal() {
       // delete button
       const deleteBtn = optionsModal.querySelector("#delete-button");
       deleteBtn.addEventListener("click", () => {
-        openDeleteModal(modalId);
+        if (pageType === "pots") {
+          openDeleteModal(modalId, "pot");
+        } else if (pageType === "budgets") {
+          openDeleteModal(modalId, "budget");
+        }
         optionsModal.classList.add("animate-close");
         setTimeout(() => {
           optionsModal.remove();
