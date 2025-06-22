@@ -56,7 +56,7 @@ function openThemeModal(chosenTheme, data, setChosenTheme) {
   });
 
   themeSelectHandler(setChosenTheme);
-  
+
   // close editAddModal on outside click
   clickOutClose(themeModal, "animate-theme-close", 300);
 }

@@ -1,11 +1,13 @@
 import { clickOutClose } from "../utilities/clickOutClose.js";
-import { openEditAddModal } from "./edit-add-modal.js";
+import { openEditModal } from "./edit-modal.js";
 import { openDeleteModal } from "./delete-modal.js";
 
 function openOptionsModal() {
   const modalOptionsButton = document.querySelectorAll('[data-name="options-button"]');
   modalOptionsButton.forEach((btn) => {
     btn.addEventListener("click", (e) => {
+      // if modal already exists, do not open it again, let clickOutClose close it
+      if (document.querySelector("#options-modal")) return;
       e.stopPropagation();
 
       // get modalId from the ancestor with data-name="pot" or "budget"
@@ -16,9 +18,7 @@ function openOptionsModal() {
       if (existingModal) {
         existingModal.classList.add("animate-close");
         setTimeout(() => {
-          if (existingModal && existingModal.parentNode) {
-            existingModal.parentNode.removeChild(existingModal);
-          }
+          existingModal.remove();
         }, 100);
       }
       // insert modal

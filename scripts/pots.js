@@ -1,36 +1,18 @@
 import { openOptionsModal } from "./modals/options-modal.js";
-import { openEditAddModal } from "./modals/edit-add-modal.js";
-import { openDeleteModal } from "./modals/delete-modal.js";
+import { openAddModal } from "./modals/add-modal.js";
+import { fetchRequest } from "./api/fetchRequest.js";
 
 let pots = [];
-
-const newPotBtn = document.querySelector("#new-pot-button");
-newPotBtn.addEventListener("click", () => {
-  openEditAddModal("add");
-});
-
 const renderPotsData = async () => {
-  const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
-  const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
+  pots = (await fetchRequest("pots", "GET")) || [];
+  console.table(pots);
 
-  try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/pots`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: PUBLIC_KEY,
-        Authorization: `Bearer ${PUBLIC_KEY}`,
-      },
-    });
-    const data = await response.json();
-    pots = data;
-    localStorage.setItem("data", JSON.stringify(pots));
-
-    renderPots(pots);
-    openOptionsModal();
-  } catch (err) {
-    console.error(err);
-  }
+  const newPotBtn = document.querySelector("#new-pot-button");
+  newPotBtn.addEventListener("click", () => {
+    openAddModal(pots);
+  });
+  renderPots(pots);
+  openOptionsModal();
 };
 renderPotsData();
 

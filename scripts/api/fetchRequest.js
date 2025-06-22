@@ -4,43 +4,37 @@ import { SUPABASE_URL, PUBLIC_KEY } from "./supabaseConfig.js";
 import { renderPotsData } from "../pots.js";
 // import { renderBudgetsData } from "../budgets.js";
 
-async function fetchRequest(body, tableName, fetchType, modalId = null) {
-  let method, headers, URL;
-  if (fetchType === "POST") {
+async function fetchRequest(tableName, fetchType, body = null, modalId = null) {
+  let URL;
+
+  const headers = {
+    "Content-Type": "application/json",
+    apikey: PUBLIC_KEY,
+    Authorization: `Bearer ${PUBLIC_KEY}`,
+    Prefer: "return=representation",
+  };
+
+  if (fetchType === "POST" || fetchType === "GET") {
     URL = `${SUPABASE_URL}/rest/v1/${tableName}`;
-    method = "POST";
-    headers = {
-      "Content-Type": "application/json",
-      apikey: PUBLIC_KEY,
-      Authorization: `Bearer ${PUBLIC_KEY}`,
-      Prefer: "return=representation",
-    };
-  } else if (fetchType === "PATCH") {
+  } else if (fetchType === "PATCH" || fetchType === "DELETE") {
     URL = `${SUPABASE_URL}/rest/v1/${tableName}?id=eq.${modalId}`;
-    method = "PATCH";
-    headers = {
-      "Content-Type": "application/json",
-      apikey: PUBLIC_KEY,
-      Authorization: `Bearer ${PUBLIC_KEY}`,
-      Prefer: "return=representation",
-    };
-  } else if (fetchType === "DELETE") {
-    URL = `${SUPABASE_URL}/rest/v1/${tableName}?id=eq.${modalId}`;
-    method = "DELETE";
-    headers = {
-      "Content-Type": "application/json",
-      apikey: PUBLIC_KEY,
-      Authorization: `Bearer ${PUBLIC_KEY}`,
-    };
   }
 
   try {
-    const response = await fetch(`${URL}`, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-    });
-
+    let response;
+    if (fetchType === "GET") {
+      response = await fetch(URL, {
+        method: "GET",
+        headers,
+      });
+      return await response.json();
+    } else {
+      response = await fetch(URL, {
+        method: fetchType,
+        headers,
+        body: JSON.stringify(body),
+      });
+    }
     // update the ui with the new data if the fetch request was successful (temporarily! will be moved to files that render the data)
     if (response.ok) {
       if (fetchType !== "DELETE") {
@@ -60,8 +54,6 @@ async function fetchRequest(body, tableName, fetchType, modalId = null) {
           renderBudgetsData();
         }
       }
-    } else {
-      console.error(response.status, response.statusText);
     }
   } catch (err) {
     console.error(err);
