@@ -1,18 +1,22 @@
 import { openOptionsModal } from "./modals/options-modal.js";
-import { openAddModal } from "./modals/add-modal.js";
+import { openEditAddModal } from "./modals/edit-add-modal.js";
 import { fetchRequest } from "./api/fetchRequest.js";
 
 let pots = [];
 const renderPotsData = async () => {
-  pots = (await fetchRequest("pots", "GET")) || [];
-  console.table(pots);
+  const fetchConfig = {
+    tableName: "pots",
+    method: "GET",
+    modalId: null,
+    body: null,
+  };
+  pots = (await fetchRequest(fetchConfig)) || [];
 
   const newPotBtn = document.querySelector("#new-pot-button");
   newPotBtn.addEventListener("click", () => {
-    openAddModal(pots);
+    openEditAddModal("add", pots);
   });
   renderPots(pots);
-  openOptionsModal();
 };
 renderPotsData();
 
@@ -66,6 +70,14 @@ function renderPots(pots) {
         </div>
       </div>
     `;
+    });
+    const optionsButtons = document.querySelectorAll('[data-name="options-button"]');
+
+    optionsButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const modalId = btn.closest('[data-name="pot"]').getAttribute("data-id");
+        openOptionsModal(pots, modalId, btn);
+      });
     });
   }
 }

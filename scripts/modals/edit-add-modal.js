@@ -6,18 +6,16 @@ import { openThemeModal } from "./theme-modal.js";
 import { themes } from "../constants/themes.js";
 import { fetchRequest } from "../api/fetchRequest.js";
 import { pageType } from "../utilities/pageType.js";
+import { potsFirstInput } from "../utilities/potsFirstInput.js";
 
-function openEditModal(modalType, modalId) {
-  const data = JSON.parse(localStorage.getItem("data") || "[]");
+function openEditAddModal(modalType, data, modalId = null) {
   const modalData = data.find((modal) => modal.id === modalId);
 
   let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
 
-  if (pageType === "pots") {
-    field2Title = "Target";
-
-    const config = {
-      pots: {
+  const config = {
+    pots: {
+      edit: {
         title: "Edit Pot",
         subTitle: "If your saving targets change, feel free to update your pots.",
         modalIdValue: modalData?.id,
@@ -28,7 +26,20 @@ function openEditModal(modalType, modalId) {
         colorAnimation: "",
         buttonText: "Save Changes",
       },
-      budgets: {
+      add: {
+        title: "Add New Pot",
+        subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+        modalIdValue: "new-modal",
+        modalName: "",
+        input2Value: "",
+        modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+        modalColorName: "Pick a theme",
+        colorAnimation: "animate-color",
+        buttonText: "Add Pot",
+      },
+    },
+    budgets: {
+      edit: {
         title: "Edit Budget",
         subTitle: "As your budgets change, feel free to update your spending limits.",
         modalIdValue: modalData?.id,
@@ -39,25 +50,27 @@ function openEditModal(modalType, modalId) {
         colorAnimation: "",
         buttonText: "Save Changes",
       },
-    };
+      add: {
+        title: "Add New Budget",
+        subTitle: "Choose a category to set a spending budget. These categories can help you monitor spending.",
+        modalIdValue: "new-modal",
+        modalName: "",
+        input2Value: "",
+        modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+        modalColorName: "Pick a theme",
+        colorAnimation: "animate-color",
+        buttonText: "Add Budget",
+      },
+    },
+  };
 
-    function getFirstInput(name) {
-      return `
-      <div class="w-full flex flex-col gap-[4px]">
-        <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
-        <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
-          <input id="input-1" type="text" placeholder="e.g. Rainy Days" class="hover:cursor-pointer h-[21px] w-full relative focus:outline-none" value="${name}" />
-        </div>
-        <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
-      </div>
-    `;
-    }
+  ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config[pageType][modalType]);
 
-    ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config[pageType]);
-    firstInput = getFirstInput(modalName);
+  if (pageType === "pots") {
+    field2Title = "Target";
+    firstInput = potsFirstInput(modalName);
   } else if (pageType === "budgets") {
     field2Title = "Maximum";
-
     // natia's part
     firstInput = ``;
   }
@@ -101,9 +114,7 @@ function openEditModal(modalType, modalId) {
       `
   );
 
-  let chosenTheme = modalTheme;
-
-  // logic to handle closing the edit/add modal
+  // logic to handle closing the editAddModal
   const closeButton = document.querySelector('[data-name="close-button"]');
   closeButton.addEventListener("click", () => {
     // declaring editAddModal and the close button
@@ -118,6 +129,14 @@ function openEditModal(modalType, modalId) {
       document.body.classList.remove("overflow-hidden");
     }, 200);
   });
+
+  // declaring chosenTheme based on modalType
+  let chosenTheme;
+  if (modalType === "edit") {
+    chosenTheme = modalTheme;
+  } else if (modalType === "add") {
+    chosenTheme = "";
+  }
 
   const input1 = document.querySelector("#input-1");
   // input1 logic for pots page
@@ -152,26 +171,60 @@ function openEditModal(modalType, modalId) {
     const valid3 = validateInput3(chosenTheme);
     const canSubmit = valid1 && valid2 && valid3;
     if (canSubmit) {
-      let body, tableName;
+      const fetchConfig = {
+        pots: {
+          add: {
+            tableName: "pots",
+            method: "POST",
+            modalId: null,
+            body: {
+              id: crypto.randomUUID(),
+              name: document.querySelector("#input-1").value,
+              target: parseFloat(document.querySelector("#input-2").value),
+              total: 0,
+              theme: chosenTheme,
+            },
+          },
+          edit: {
+            tableName: "pots",
+            method: "PATCH",
+            modalId,
+            body: {
+              name: document.querySelector("#input-1").value,
+              target: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            },
+          },
+        },
 
-      if (pageType === "pots") {
-        tableName = "pots";
-        body = {
-          name: document.querySelector("#input-1").value,
-          target: parseFloat(document.querySelector("#input-2").value),
-          theme: chosenTheme,
-        };
-      } else if (pageType === "budgets") {
-        tableName = "budgets";
-        body = {
-          // natia's part
-          // category: ...,
-          maximum: parseFloat(document.querySelector("#input-2").value),
-          theme: chosenTheme,
-        };
-      }
+        budgets: {
+          add: {
+            tableName: "budgets",
+            method: "POST",
+            modalId: null,
+            body: {
+              id: crypto.randomUUID(),
+              // natia's part
+              // category: ...,
+              maximum: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            },
+          },
+          edit: {
+            tableName: "budgets",
+            method: "PATCH",
+            modalId,
+            body: {
+              // natia's part
+              // category: ...,
+              maximum: parseFloat(document.querySelector("#input-2").value),
+              theme: chosenTheme,
+            },
+          },
+        },
+      };
 
-      fetchRequest(body, tableName, "PATCH", modalData.id);
+      fetchRequest(fetchConfig[pageType][modalType]);
     }
   });
 
@@ -181,4 +234,4 @@ function openEditModal(modalType, modalId) {
   clickOutClose(editAddModal, "animate-fade-out", 200, wrapper);
 }
 
-export { openEditModal };
+export { openEditAddModal };

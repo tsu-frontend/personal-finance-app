@@ -4,7 +4,8 @@ import { SUPABASE_URL, PUBLIC_KEY } from "./supabaseConfig.js";
 import { renderPotsData } from "../pots.js";
 // import { renderBudgetsData } from "../budgets.js";
 
-async function fetchRequest(tableName, fetchType, body = null, modalId = null) {
+async function fetchRequest(config) {
+  const { tableName, method, modalId, body } = config;
   let URL;
 
   const headers = {
@@ -14,15 +15,15 @@ async function fetchRequest(tableName, fetchType, body = null, modalId = null) {
     Prefer: "return=representation",
   };
 
-  if (fetchType === "POST" || fetchType === "GET") {
+  if (method === "POST" || method === "GET") {
     URL = `${SUPABASE_URL}/rest/v1/${tableName}`;
-  } else if (fetchType === "PATCH" || fetchType === "DELETE") {
+  } else if (method === "PATCH" || method === "DELETE") {
     URL = `${SUPABASE_URL}/rest/v1/${tableName}?id=eq.${modalId}`;
   }
 
   try {
     let response;
-    if (fetchType === "GET") {
+    if (method === "GET") {
       response = await fetch(URL, {
         method: "GET",
         headers,
@@ -30,24 +31,24 @@ async function fetchRequest(tableName, fetchType, body = null, modalId = null) {
       return await response.json();
     } else {
       response = await fetch(URL, {
-        method: fetchType,
+        method,
         headers,
         body: JSON.stringify(body),
       });
     }
     // update the ui with the new data if the fetch request was successful (temporarily! will be moved to files that render the data)
     if (response.ok) {
-      if (fetchType !== "DELETE") {
+      if (method !== "DELETE") {
         // close the edit add modal
         const editAddModal = document.querySelector("#edit-add-modal");
-        editAddModal.classList.add("animate-fade-out");
-        setTimeout(() => {
-          editAddModal.remove();
-
-          // resume page scrolling
-          document.body.classList.remove("overflow-hidden");
-        }, 200);
-
+        if (editAddModal) {
+          editAddModal.classList.add("animate-fade-out");
+          setTimeout(() => {
+            editAddModal.remove();
+            // resume page scrolling
+            document.body.classList.remove("overflow-hidden");
+          }, 200);
+        }
         if (pageType === "pots") {
           renderPotsData();
         } else if (pageType === "budgets") {
