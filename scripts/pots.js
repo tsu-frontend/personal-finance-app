@@ -1,9 +1,13 @@
 import { openOptionsModal } from "./modals/options-modal.js";
 import { openEditAddModal } from "./modals/edit-add-modal.js";
+import { openWithdrawAddModal } from "./modals/withdraw-add-modal.js";
 import { fetchRequest } from "./api/fetchRequest.js";
 
 let pots = [];
+let isLoading = false;
 const renderPotsData = async () => {
+  isLoading = true;
+
   const fetchConfig = {
     tableName: "pots",
     method: "GET",
@@ -12,13 +16,19 @@ const renderPotsData = async () => {
   };
   pots = (await fetchRequest(fetchConfig)) || [];
 
-  const newPotBtn = document.querySelector("#new-pot-button");
-  newPotBtn.addEventListener("click", () => {
-    openEditAddModal("add", pots);
-  });
+  console.log("pots fetched");
+
   renderPots(pots);
+  isLoading = false;
 };
 renderPotsData();
+
+const newPotBtn = document.querySelector("#new-pot-button");
+newPotBtn.addEventListener("click", () => {
+  if (isLoading) return;
+  openEditAddModal("add", pots);
+  console.log("clicked");
+});
 
 // render pots into container
 function renderPots(pots) {
@@ -72,11 +82,27 @@ function renderPots(pots) {
     `;
     });
     const optionsButtons = document.querySelectorAll('[data-name="options-button"]');
+    const addMoneyButtons = document.querySelectorAll('[data-name="add-money"]');
+    const withdrawMoneyButtons = document.querySelectorAll('[data-name="withdraw-money"]');
 
     optionsButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const modalId = btn.closest('[data-name="pot"]').getAttribute("data-id");
         openOptionsModal(pots, modalId, btn);
+      });
+    });
+
+    addMoneyButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const modalId = btn.closest('[data-name="pot"]').getAttribute("data-id");
+        openWithdrawAddModal("add", pots, modalId);
+      });
+    });
+
+    withdrawMoneyButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const modalId = btn.closest('[data-name="pot"]').getAttribute("data-id");
+        openWithdrawAddModal("withdraw", pots, modalId);
       });
     });
   }
