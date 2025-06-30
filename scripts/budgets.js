@@ -1,3 +1,4 @@
+import {appendModal} from '../modals/modal1'
 const ctx = document.getElementById('doughnut');
 const themeDropdownParent = document.getElementById('theme_dropdown')
 const catDropdownParent = document.getElementById('category_dropdown')
@@ -18,11 +19,11 @@ const chosenColBall = document.getElementById('color_ball')
 // console.log(client)
 
 
-
 // open modals
 showAddBudgetModal.addEventListener('click', () => {
-  addBudgetModal.classList.replace('hidden', 'flex')
-  document.body.style.overflow = 'hidden'
+  // addBudgetModal.classList.replace('hidden', 'flex')
+  // document.body.style.overflow = 'hidden'
+  appendModal(modalData, modalId, firstInput, pots, modalInfo)
 })
 
 // close modals

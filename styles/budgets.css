@@ -1230,6 +1230,16 @@
       outline-style: none;
     }
   }
+  .max-xl\:h-\[344px\] {
+    @media (width < 80rem) {
+      height: 344px;
+    }
+  }
+  .max-xl\:w-full {
+    @media (width < 80rem) {
+      width: 100%;
+    }
+  }
   .max-xl\:flex-col {
     @media (width < 80rem) {
       flex-direction: column;
@@ -1238,6 +1248,11 @@
   .max-xl\:flex-row {
     @media (width < 80rem) {
       flex-direction: row;
+    }
+  }
+  .max-xl\:justify-around {
+    @media (width < 80rem) {
+      justify-content: space-around;
     }
   }
   .md\:m-0 {
