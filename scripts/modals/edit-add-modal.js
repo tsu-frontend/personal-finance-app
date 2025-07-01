@@ -77,7 +77,7 @@ function openEditAddModal(modalType, data, modalId = null) {
 
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
-  // append the modalI
+  // append the modal
   document.body.insertAdjacentHTML(
     "beforeend",
     `
@@ -225,6 +225,7 @@ function openEditAddModal(modalType, data, modalId = null) {
       };
 
       fetchRequest(fetchConfig[pageType][modalType]);
+      console.log("fetch");
     }
   });
 
