@@ -19,6 +19,7 @@ const renderPotsData = async () => {
   console.log("pots fetched");
 
   renderPots(pots);
+  console.log(pots)
   isLoading = false;
 };
 renderPotsData();
@@ -29,6 +30,7 @@ newPotBtn.addEventListener("click", () => {
   openEditAddModal("add", pots);
   console.log("clicked");
 });
+
 
 // render pots into container
 function renderPots(pots) {

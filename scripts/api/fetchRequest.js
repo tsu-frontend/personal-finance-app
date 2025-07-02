@@ -1,7 +1,7 @@
 import { pageType } from "../utilities/pageType.js";
 import { SUPABASE_URL, PUBLIC_KEY } from "./supabaseConfig.js";
 
-import { renderPotsData } from "../pots.js";
+// import { renderPotsData } from "../pots.js";
 // import { renderBudgetsData } from "../budgets.js";
 
 async function fetchRequest(config) {

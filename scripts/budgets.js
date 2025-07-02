@@ -1,4 +1,5 @@
-import {appendModal} from '../modals/modal1'
+import { openEditAddModal } from "./modals/edit-add-modal.js";
+
 const ctx = document.getElementById('doughnut');
 const themeDropdownParent = document.getElementById('theme_dropdown')
 const catDropdownParent = document.getElementById('category_dropdown')
@@ -12,80 +13,13 @@ const chosenCat = document.getElementById('chosen_category')
 const chosenCol = document.getElementById('chosen_color')
 const chosenColBall = document.getElementById('color_ball')
 
-// const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
-// const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
 
-// const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
-// console.log(client)
-
-
-// open modals
-showAddBudgetModal.addEventListener('click', () => {
-  // addBudgetModal.classList.replace('hidden', 'flex')
-  // document.body.style.overflow = 'hidden'
-  appendModal(modalData, modalId, firstInput, pots, modalInfo)
-})
-
-// close modals
-function checkClickedEle(event) {
-  let clicked = event.target
-
-  if (clicked === addBudgetModal || clicked.id === 'close_img') {
-    addBudgetModal.classList.replace('flex', 'hidden')
-    catDropdown.classList.add('hidden')
-    themeDropdown.classList.add('hidden')
-    document.body.style.overflow = 'auto'
-  }
-  if (clicked === editBudgetModal || clicked.id === 'close_img') {
-    editBudgetModal.classList.replace('flex', 'hidden')
-  }
-}
-
-
-
-// dropdowns
-function dropDown(parent, child) {
-  parent.addEventListener('click', () => {
-    parent.classList.toggle('border-[#98908B]')
-
-    if (child.classList.contains('hidden')) {
-
-      child.classList.replace('hidden', 'flex')
-    } else {
-      child.classList.replace('flex', 'hidden')
-    }
-
-    if (parent === catDropdownParent) {
-      themeDropdown.classList.replace('flex', 'hidden')
-    }
-  })
-}
-
-dropDown(catDropdownParent, catDropdown)
-dropDown(themeDropdownParent, themeDropdown)
-
-
-// choose category and theme
-function chooseCat(event) {
-  let clickedEle = event.target
-  let listItem = clickedEle.closest('li')
-
-  if (!listItem) return;
-
-  if (listItem.classList.contains('category')) {
-    chosenCat.innerText = listItem.innerText
-  }
-  if (listItem.classList.contains('color')) {
-    let colorBall = listItem.querySelector('figure')
-    let color = window.getComputedStyle(colorBall).backgroundColor
-
-    chosenCol.innerText = listItem.innerText;
-    chosenColBall.style.backgroundColor = color;
-  }
-}
 
 let spentArr = []
 let colorsArr = []
+
+
+
 
 
 // managing json data
@@ -119,7 +53,7 @@ const getData = async () => {
       },
     })
   const budgetsData = await responseBudgets.json()
-  // console.log(budgetsData)
+  console.log(budgetsData)
 
 
 
@@ -334,7 +268,85 @@ console.log(transactionsByCat)
     spentSum.textContent = `$${parseInt(totalSpending)}`
   })
 
+showAddBudgetModal.addEventListener('click', () => {
+  openEditAddModal('add', budgetsData)
+})
+
+
+
 
 }
 
 getData()
+
+
+
+
+// const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
+// const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
+
+// const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
+// console.log(client)
+
+
+// open modals
+
+
+// close modals
+function checkClickedEle(event) {
+  let clicked = event.target
+
+  if (clicked === addBudgetModal || clicked.id === 'close_img') {
+    addBudgetModal.classList.replace('flex', 'hidden')
+    catDropdown.classList.add('hidden')
+    themeDropdown.classList.add('hidden')
+    document.body.style.overflow = 'auto'
+  }
+  if (clicked === editBudgetModal || clicked.id === 'close_img') {
+    editBudgetModal.classList.replace('flex', 'hidden')
+  }
+}
+
+
+
+// dropdowns
+function dropDown(parent, child) {
+  parent.addEventListener('click', () => {
+    parent.classList.toggle('border-[#98908B]')
+
+    if (child.classList.contains('hidden')) {
+
+      child.classList.replace('hidden', 'flex')
+    } else {
+      child.classList.replace('flex', 'hidden')
+    }
+
+    if (parent === catDropdownParent) {
+      themeDropdown.classList.replace('flex', 'hidden')
+    }
+  })
+}
+
+dropDown(catDropdownParent, catDropdown)
+dropDown(themeDropdownParent, themeDropdown)
+
+
+// choose category and theme
+function chooseCat(event) {
+  let clickedEle = event.target
+  let listItem = clickedEle.closest('li')
+
+  if (!listItem) return;
+
+  if (listItem.classList.contains('category')) {
+    chosenCat.innerText = listItem.innerText
+  }
+  if (listItem.classList.contains('color')) {
+    let colorBall = listItem.querySelector('figure')
+    let color = window.getComputedStyle(colorBall).backgroundColor
+
+    chosenCol.innerText = listItem.innerText;
+    chosenColBall.style.backgroundColor = color;
+  }
+}
+
