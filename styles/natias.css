@@ -1,7 +1,0 @@
-/* @layer components {
-  .scheme {
-    @apply flex flex-col max-xl:flex-row items-center p-8 h-auto pb-0 w-[428px] 
-           max-xl:w-full max-xl:justify-around gap-8 max-xl:h-[344px] 
-           bg-[white] rounded-[12px];
-  }
-} */

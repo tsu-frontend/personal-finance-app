@@ -1,0 +1,37 @@
+@media screen and (max-width: 1280px) {
+  #scheme {
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .responsive {
+    width: 300px;
+  }
+  .chart_responsive {
+    width: 240px;
+    height: 240px;
+  }
+
+  #chart_text {
+    top: 30px;
+    width: 187.5px;
+    height: 187.5px;
+  }
+  #spending_summary h4 {
+    font-size: 14px;
+  }
+  main {
+    flex: auto;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #scheme {
+    flex-direction: column;
+    width: fit-content;
+  }
+  section.items-start {
+    align-items: center;
+  }
+}
