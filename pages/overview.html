@@ -137,79 +137,87 @@
 
         <div id="wrapper-2" class="flex-1 flex flex-col gap-[16px] md:gap-[24px]">
           <!-- budgets-->
-          <section id="budgets-section" class="w-full rounded-[12px] bg-[#FFF] px-[20px] py-[24px] gap-[35.5px]">
-            <div class="w-full flex justify-between items-center">
-              <h2 class="text-[20px] font-[700] leading-[120%] text-[#201F24]">Budgets</h2>
-              <div id="pots-see-more" class="gap-[12px] flex items-center">
-                <button class="text-[#696868] font-[14px] leading-[150%]">See Details</button>
-                <svg class="w-[12px] h-[12px]" fill="none" height="11" viewBox="0 0 6 11" width="6" xmlns="http://www.w3.org/2000/svg"><path d="m.853506.146465 5.000004 5.000005c.04648.04643.08336.10158.10853.16228.02516.06069.03811.12576.03811.19147 0 .0657-.01295.13077-.03811.19147-.02517.06069-.06205.11584-.10853.16228l-5.000004 5.00003c-.069927.07-.159054.1177-.256097.137-.097042.0193-.197637.0094-.289048-.0285-.091412-.0378-.16953-.102-.2244652-.1843-.0549354-.0823-.08421767-.179-.08413981-.278l-.00000043-9.999984c-.00007788-.098949.02920444-.195695.08413984-.277992.0549356-.082297.1330536-.1464431.2244646-.1843193.091412-.03787611.192007-.04777907.289049-.02845381.097042.01932521.186169.06700801.256097.13701411z" fill="#696868" /></svg>
+          <section id="budgets-section" class="w-full rounded-[12px] bg-[#FFF] px-[20px] py-[24px] flex items-start gap-[40px]">
+            <div class="flex flex-col items-center">
+              <h2 class="text-[20px] font-[700] text-[#201F24] mb-[16px]">Budgets</h2>
+              <div class="relative w-[240px] h-[240px] flex items-center justify-center">
+                <canvas id="doughnut" class="absolute top-0 left-0"></canvas>
+                <div class="absolute flex flex-col items-center justify-center">
+                  <span class="text-[32px] font-bold text-[#201F24]">$407</span>
+                  <span class="text-[16px] text-[#888888]">of $975 limit</span>
+                </div>
               </div>
             </div>
-            <div class="w-[240px] h-[240px] border-1">
-              <canvas id="doughnut"></canvas>
-            </div>
-            <!-- <h2 class="text-xl font-semibold mb-6">Budgets</h2>
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div class="bg-white p-6 rounded-lg shadow">
-                <div class="mb-6">
-                  <div class="relative bg-gray-200 rounded-full h-4 overflow-hidden">
-                    <div id="budget-progress-bar" class="absolute top-0 left-0 h-4 bg-indigo-600 rounded-full" style="width: 35.6%"></div>
-                  </div>
-                  <div class="mt-2 text-sm text-gray-600 flex justify-between">
-                    <p id="budget-current-amount">$338</p>
-                    <p id="budget-limit-amount">of $975 limit</p>
-                  </div>
-                </div>
-                <div id="budget-categories-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                  <div class="bg-gray-50 rounded-lg p-3 text-center">
-                    <p class="text-sm text-gray-600">Entertainment</p>
-                    <p class="font-semibold text-gray-800">$50.00</p>
-                  </div>
-                  <div class="bg-gray-50 rounded-lg p-3 text-center">
-                    <p class="text-sm text-gray-600">Bills</p>
-                    <p class="font-semibold text-gray-800">$750.00</p>
-                  </div>
-                  <div class="bg-gray-50 rounded-lg p-3 text-center">
-                    <p class="text-sm text-gray-600">Dining Out</p>
-                    <p class="font-semibold text-gray-800">$75.00</p>
-                  </div>
-                  <div class="bg-gray-50 rounded-lg p-3 text-center">
-                    <p class="text-sm text-gray-600">Personal Care</p>
-                    <p class="font-semibold text-gray-800">$100.00</p>
-                  </div>
-                </div>
+          
+            <div class="flex flex-col gap-[16px] pt-[48px] pl-[40px]">
 
-                <div class="text-right">
-                  <button class="text-[#696868] font-[14px] leading-[150%]">See Details</button>
+
+
+              <div class="flex items-start gap-[12px]">
+                <span class="w-[4px] h-full rounded-[8px] bg-[#277C78]"></span>
+                <div class="flex flex-col">
+                  <span class="text-[14px] text-[#201F24]">Entertainment</span>
+                  <span class="text-[14px] text-[#201F24] font-bold">$25.00</span>
                 </div>
               </div>
-            </div> -->
-          </section>
-          <!-- recurring bills -->
-          <section id="recurring-bills-section" class="w-full rounded-[12px] bg-[#FFF] px-[20px] py-[24px] gap-[32px]">
-            <h2 class="text-xl font-semibold mb-6">Recurring Bills</h2>
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div class="bg-white p-6 rounded-lg shadow">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  <div class="bg-gray-50 rounded-lg p-4 text-center">
-                    <p class="text-sm text-gray-500">Paid Bills</p>
-                    <p id="paid-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$190.00</p>
-                  </div>
-                  <div class="bg-gray-50 rounded-lg p-4 text-center">
-                    <p class="text-sm text-gray-500">Total Upcoming</p>
-                    <p id="total-upcoming-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$194.98</p>
-                  </div>
-                  <div class="bg-gray-50 rounded-lg p-4 text-center">
-                    <p class="text-sm text-gray-500">Due Soon</p>
-                    <p id="due-soon-bills-amount" class="text-lg font-semibold text-gray-800 mt-1">$59.98</p>
-                  </div>
+          
+              <div class="flex items-start gap-[12px]">
+                <div class="w-[8px] h-[40px] rounded-[4px] bg-[#81D4FA]"></div>
+                <div class="flex flex-col">
+                  <span class="text-[14px] text-[#201F24]">Bills</span>
+                  <span class="text-[14px] text-[#201F24] font-bold">$250.00</span>
                 </div>
-                <div class="mt-4 text-right">
-                  <button class="text-[#696868] font-[14px] leading-[150%]">See Details</button>
+              </div>
+        
+              <div class="flex items-start gap-[12px]">
+                <div class="w-[8px] h-[40px] rounded-[4px] bg-[#4A4A5C]"></div>
+                <div class="flex flex-col">
+                  <span class="text-[14px] text-[#201F24]">Personal Care</span>
+                  <span class="text-[14px] text-[#201F24] font-bold">$65.00</span>
+                </div>
+              </div>
+          
+              <div class="flex items-start gap-[12px]">
+                <div class="w-[8px] h-[40px] rounded-[4px] bg-[#F5CBA7]"></div>
+                <div class="flex flex-col">
+                  <span class="text-[14px] text-[#201F24]">Dining Out</span>
+                  <span class="text-[14px] text-[#201F24] font-bold">$67.00</span>
                 </div>
               </div>
             </div>
           </section>
+
+          
+          
+
+          <!-- recurring bills -->
+          <section id="recurring-bills-section" class="w-full bg-white px-[20px] py-[24px] rounded-[12px]">
+            <h2 class="text-xl font-semibold mb-6">Recurring Bills</h2>
+            <div class="bg-white p-6 rounded-[12px] shadow">
+              <div class="grid grid-cols-1 gap-4">
+                <div class="bg-[#f5f2ec] rounded-lg px-4 py-3 flex justify-between items-center border border-gray-200">
+                  <p class="text-sm text-gray-500">Total recurring bills</p>
+                  <p id="paid-bills-amount" class="text-lg font-semibold text-gray-800">$1,550.00</p>
+                </div>
+                <div class="bg-[#f5f2ec] rounded-lg px-4 py-3 flex justify-between items-center border border-gray-200">
+                  <p class="text-sm text-gray-500">Remaining this month</p>
+                  <p id="total-upcoming-bills-amount" class="text-lg font-semibold text-gray-800">$1,230.98</p>
+                </div>
+                <div class="bg-[#f5f2ec] rounded-lg px-4 py-3 flex justify-between items-center border border-gray-200">
+                  <p class="text-sm text-gray-500">Total bills due soon</p>
+                  <p id="due-soon-bills-amount" class="text-lg font-semibold text-gray-800">$40.00</p>
+                </div>
+              </div>
+              <div class="mt-4 text-right">
+                <button class="text-[#696868] text-sm">See Details</button>
+              </div>
+            </div>
+          </section>
+          
+          
+          
+          
+          
         </div>
       </div>
     </main>
