@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/login.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
 
+    <script type="module" src="../scripts/utilities/formUtility.js"></script>
     <script type="module" src="../scripts/login.js"></script>
   </head>
   <body>
@@ -25,6 +26,7 @@
           <input type="password" id="signin-password" />
         </div>
         <button type="submit">Login</button>
+        
         <div class="toggle-form">
           <p>Need to create an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
         </div>
@@ -35,7 +37,7 @@
         <h2>Sign Up</h2>
         <div class="form-group">
           <label for="signup-name">Name</label>
-          <input type="text" id="signup-name" />
+          <input type="text" name="name" id="signup-name" />
         </div>
         <div class="form-group">
           <label for="signup-email">Email</label>
