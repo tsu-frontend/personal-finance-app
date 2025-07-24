@@ -1,6 +1,20 @@
 import { FormUtility } from "./utilities/formUtility.js";
 class SignInForm {
     constructor(element) {
+        this.validateEmail = (target) => {
+            if (target.type === "email") {
+                const isEmailValid = this.formUtility.emailValidator(target.value);
+                this.data.email.value = target.value;
+                this.data.email.isValid = isEmailValid;
+            }
+        };
+        this.validatePassword = (target) => {
+            if (target.type === "password") {
+                const isPasswordValid = this.formUtility.passwordValidator(target.value);
+                this.data.password.value = target.value;
+                this.data.password.isValid = isPasswordValid;
+            }
+        };
         this.formElement = element;
         this.inputElementsList = this.formElement.elements;
         this.valid = false;
@@ -9,6 +23,7 @@ class SignInForm {
             password: { value: null, isValid: false },
         };
         this.formUtility = new FormUtility();
+        this.listenersList = [this.validatePassword, this.validateEmail];
         this.setUpListeners();
     }
     setUpListeners() {
@@ -21,31 +36,12 @@ class SignInForm {
             }
             else if (element instanceof HTMLInputElement) {
                 element.addEventListener("change", (e) => {
-                    // console.log(element.value)
-                    this.validateInputValue(element);
+                    this.listenersList.forEach((listener) => {
+                        listener(element);
+                    });
                 });
             }
         });
-    }
-    validateInputValue(target) {
-        if (target.type === "email") {
-            const isEmailValid = this.formUtility.emailValidator(target.value);
-            this.data.email.value = target.value;
-            this.data.email.isValid = isEmailValid;
-            console.log("dsd");
-        }
-        if (target.type === "password") {
-            const isPasswordValid = this.formUtility.passwordValidator(target.value);
-            this.data.password.value = target.value;
-            this.data.password.isValid = isPasswordValid;
-        }
-        if (target.type === "name") {
-            if (target.name === "name") {
-                const isNameValid = this.formUtility.nameValidator(target.value);
-                this.data.name.value = target.value;
-                this.data.name.isValid = isNameValid;
-            }
-        }
     }
     async submitFormData(formData) { }
 }
@@ -55,11 +51,18 @@ class SignInForm {
 class SignUpForm extends SignInForm {
     constructor(element) {
         super(element);
+        this.validateName = (target) => {
+            if (target.type === "text") {
+                const isNameValid = this.formUtility.nameValidator(target.value);
+                this.data.name.value = target.value;
+                this.data.name.isValid = isNameValid;
+            }
+        };
         this.data = Object.assign(Object.assign({}, this.data), { name: { value: null, isValid: false } });
+        this.listenersList.push(this.validateName);
     }
 }
 const signInForm = document.getElementById("signin-form");
 const newSignInForm = new SignInForm(signInForm);
-// console.log(newSignInForm);
 const signUpForm = document.getElementById("signup-form");
 const newSignUpForm = new SignUpForm(signUpForm);

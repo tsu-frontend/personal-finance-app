@@ -1,15 +1,17 @@
-import { FormUtility } from "./utilities/formUtility.js";
+import {FormUtility} from "./utilities/formUtility.js";
 
 interface TSignIn {
-  email: { value: null | string; isValid: boolean };
-  password: { value: null | string; isValid: boolean };
+  email: {value: null | string; isValid: boolean};
+  password: {value: null | string; isValid: boolean};
 }
 interface TSignUp extends TSignIn {
-  name: { value: null | string; isValid: boolean };
+  name: {value: null | string; isValid: boolean};
 }
 
 class SignInForm {
   data: TSignIn;
+
+  public listenersList: ((element: HTMLInputElement) => void)[];
 
   public formElement: HTMLFormElement;
   public inputElementsList: HTMLFormControlsCollection;
@@ -22,12 +24,12 @@ class SignInForm {
     this.valid = false;
 
     this.data = {
-      email: { value: null, isValid: false },
-      password: { value: null, isValid: false },
+      email: {value: null, isValid: false},
+      password: {value: null, isValid: false},
     };
 
     this.formUtility = new FormUtility();
-
+    this.listenersList = [this.validatePassword, this.validateEmail];
     this.setUpListeners();
   }
 
@@ -40,33 +42,27 @@ class SignInForm {
         });
       } else if (element instanceof HTMLInputElement) {
         element.addEventListener("change", (e: Event) => {
-          // console.log(element.value)
-
-          this.validateInputValue(element);
+          this.listenersList.forEach((listener) => {
+            listener(element);
+          });
         });
       }
     });
   }
-  validateInputValue(target: HTMLInputElement) {
+  validateEmail = (target: HTMLInputElement) => {
     if (target.type === "email") {
       const isEmailValid = this.formUtility.emailValidator(target.value);
       this.data.email.value = target.value;
       this.data.email.isValid = isEmailValid;
-      console.log("dsd");
     }
+  };
+  validatePassword = (target: HTMLInputElement) => {
     if (target.type === "password") {
       const isPasswordValid = this.formUtility.passwordValidator(target.value);
       this.data.password.value = target.value;
       this.data.password.isValid = isPasswordValid;
     }
-    if (target.type === "name") {
-      if (target.name === "name") {
-        const isNameValid = this.formUtility.nameValidator(target.value);
-        this.data.name.value = target.value;
-        this.data.name.isValid = isNameValid;
-      }
-    }
-  }
+  };
 
   async submitFormData(formData: TSignIn) {}
 }
@@ -83,15 +79,22 @@ class SignUpForm extends SignInForm {
 
     this.data = {
       ...this.data,
-      name: { value: null, isValid: false },
+      name: {value: null, isValid: false},
     };
+    this.listenersList.push(this.validateName)
   }
 
+    validateName = (target: HTMLInputElement) => {
+    if (target.type === "text") {
+      const isNameValid = this.formUtility.nameValidator(target.value);
+      this.data.name.value = target.value;
+      this.data.name.isValid = isNameValid;
+    }
+  };
 }
 
 const signInForm = document.getElementById("signin-form");
 const newSignInForm = new SignInForm(signInForm as HTMLFormElement);
-// console.log(newSignInForm);
 
 const signUpForm = document.getElementById("signup-form");
 const newSignUpForm = new SignUpForm(signUpForm as HTMLFormElement);
