@@ -1,5 +1,7 @@
 import {FormUtility} from "./utilities/formUtility.js";
+import {ServiceManager} from "https://esm.sh/supabase-service-manager";
 
+const SupaClient = new ServiceManager({supabase: {url: "https://dhpewqtvbasnugkfiixs.supabase.co", anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk"}});
 interface TSignIn {
   email: {value: null | string; isValid: boolean};
   password: {value: null | string; isValid: boolean};
@@ -38,6 +40,7 @@ class SignInForm {
       if (element instanceof HTMLButtonElement) {
         element.addEventListener("click", (e: MouseEvent) => {
           e.preventDefault();
+          this.submitFormData(this.data);
           console.log(e);
         });
       } else if (element instanceof HTMLInputElement) {
@@ -64,7 +67,18 @@ class SignInForm {
     }
   };
 
-  async submitFormData(formData: TSignIn) {}
+  async submitFormData(formData: TSignIn) {
+    console.log(formData);
+    if (!formData.email.isValid || !formData.password.isValid) {
+      console.log("email or password is invalid ");
+      return;
+    }
+    console.log("valid");
+    try {
+      const response = await SupaClient.signIn(formData.email.value, formData.password.value);
+      console.log(response);
+    } catch {}
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -81,10 +95,10 @@ class SignUpForm extends SignInForm {
       ...this.data,
       name: {value: null, isValid: false},
     };
-    this.listenersList.push(this.validateName)
+    this.listenersList.push(this.validateName);
   }
 
-    validateName = (target: HTMLInputElement) => {
+  validateName = (target: HTMLInputElement) => {
     if (target.type === "text") {
       const isNameValid = this.formUtility.nameValidator(target.value);
       this.data.name.value = target.value;

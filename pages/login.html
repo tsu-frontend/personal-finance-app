@@ -15,7 +15,7 @@
   <body>
     <div class="container">
       <!-- Sign In Form -->
-      <form id="signin-form" class="form-container" style="display: none">
+      <form id="signin-form" class="form-container" style="display: flex">
         <h2>Login</h2>
         <div class="form-group">
           <label for="signin-email">Email</label>
@@ -26,14 +26,14 @@
           <input type="password" id="signin-password" />
         </div>
         <button type="submit">Login</button>
-        
+
         <div class="toggle-form">
           <p>Need to create an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
         </div>
       </form>
 
       <!-- Sign Up Form -->
-      <form id="signup-form" class="form-container">
+      <form id="signup-form" class="form-container" style="display: none">
         <h2>Sign Up</h2>
         <div class="form-group">
           <label for="signup-name">Name</label>
@@ -68,6 +68,7 @@
         }
       }
     </script>
+
     <!-- <script src="../scripts/test.js"></script> -->
   </body>
 </html>
