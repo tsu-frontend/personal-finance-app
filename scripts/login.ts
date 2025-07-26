@@ -93,7 +93,5 @@ class FormManager {
   }
 }
 
-const signInForm = document.getElementById("signin-form");
-const signUpForm = document.getElementById("signup-form");
-const newSignInForm = new FormManager(signInForm as HTMLFormElement);
-const newSignUpForm = new FormManager(signUpForm as HTMLFormElement);
+const signInform = new FormManager(document.getElementById("signin-form") as HTMLFormElement);
+const signUpForm = new FormManager(document.getElementById("signup-form") as HTMLFormElement);

@@ -73,7 +73,5 @@ class FormManager {
         });
     }
 }
-const signInForm = document.getElementById("signin-form");
-const signUpForm = document.getElementById("signup-form");
-const newSignInForm = new FormManager(signInForm);
-const newSignUpForm = new FormManager(signUpForm);
+const signInform = new FormManager(document.getElementById("signin-form"));
+const signUpForm = new FormManager(document.getElementById("signup-form"));
