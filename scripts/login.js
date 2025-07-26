@@ -12,18 +12,15 @@ class FormManager {
         this.submit();
     }
     validate(name, value) {
-        let result = false;
         if (name === "email") {
-            result = !!value && FormManager.EMAIL_REGEX.test(value);
+            return !!value && /^\S+@\S+\.\S+$/.test(value);
         }
         if (name === "password") {
-            result = !!value && FormManager.PASSWORD_REGEX.test(value);
+            return !!value && /^.{8,}$/.test(value);
         }
         if (name === "name") {
-            result = !!value && value.trim().length >= 3;
+            return !!value && value.trim().length >= 3;
         }
-        console.log(name, value, result);
-        return result;
     }
     validation() {
         [...this.inputElementsList].forEach((element) => {
@@ -63,8 +60,6 @@ class FormManager {
         });
     }
 }
-FormManager.EMAIL_REGEX = /^\S+@\S+\.\S+$/;
-FormManager.PASSWORD_REGEX = /^.{8,}$/;
 const signInForm = document.getElementById("signin-form");
 const signUpForm = document.getElementById("signup-form");
 const newSignInForm = new FormManager(signInForm);

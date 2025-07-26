@@ -10,9 +10,6 @@ class FormManager {
   public inputElementsList: HTMLFormControlsCollection;
   public valid: boolean;
 
-  private static EMAIL_REGEX = /^\S+@\S+\.\S+$/;
-  private static PASSWORD_REGEX = /^.{8,}$/;
-
   constructor(element: HTMLFormElement) {
     this.formElement = element;
     this.inputElementsList = this.formElement.elements;
@@ -29,18 +26,15 @@ class FormManager {
   }
 
   private validate(name: string, value: string): boolean {
-    let result = false;
     if (name === "email") {
-      result = !!value && FormManager.EMAIL_REGEX.test(value);
+      return !!value && /^\S+@\S+\.\S+$/.test(value);
     }
     if (name === "password") {
-      result = !!value && FormManager.PASSWORD_REGEX.test(value);
+      return !!value && /^.{8,}$/.test(value);
     }
     if (name === "name") {
-      result = !!value && value.trim().length >= 3;
+      return !!value && value.trim().length >= 3;
     }
-    console.log(name, value, result);
-    return result;
   }
 
   validation() {
