@@ -48,11 +48,11 @@ async function fetchRequest(config) {
             // resume page scrolling
             document.body.classList.remove("overflow-hidden");
           }, 200);
-        }
-        if (pageType === "pots") {
-          renderPotsData();
-        } else if (pageType === "budgets") {
-          renderBudgetsData();
+          if (pageType === "pots") {
+            renderPotsData();
+          } else if (pageType === "budgets") {
+            renderBudgetsData();
+          }
         }
       }
     }

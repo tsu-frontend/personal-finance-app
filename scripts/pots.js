@@ -17,6 +17,7 @@ const renderPotsData = async () => {
   pots = (await fetchRequest(fetchConfig)) || [];
 
   console.log("pots fetched");
+  console.log(pots);
 
   renderPots(pots);
   isLoading = false;
