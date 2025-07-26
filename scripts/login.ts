@@ -4,7 +4,7 @@ type TFormData = {
   password: { value: null | string; isValid: boolean };
 };
 
-class SignInForm {
+class FormManager {
   data: TFormData;
   public formElement: HTMLFormElement;
   public inputElementsList: HTMLFormControlsCollection;
@@ -21,129 +21,69 @@ class SignInForm {
     this.data = {
       email: { value: null, isValid: false },
       password: { value: null, isValid: false },
+      name: { value: null, isValid: false },
     };
 
-    this.setUpListeners();
+    this.validation();
+    this.submit();
   }
 
-  static validateEmail(email: string | null): boolean {
-    return !!email && SignInForm.EMAIL_REGEX.test(email);
-  }
-
-  static validatePassword(password: string | null): boolean {
-    return !!password && SignInForm.PASSWORD_REGEX.test(password);
-  }
-
-  validate(): boolean {
-    const { email, password } = this.data;
-    let valid = true;
-
-    if (!SignInForm.validateEmail(email.value)) {
-      valid = false;
-      console.log("email not valid");
+  private validate(name: string, value: string): boolean {
+    let result = false;
+    if (name === "email") {
+      result = !!value && FormManager.EMAIL_REGEX.test(value);
     }
-    if (!SignInForm.validatePassword(password.value)) {
-      valid = false;
-      console.log("password under 8 characters");
+    if (name === "password") {
+      result = !!value && FormManager.PASSWORD_REGEX.test(value);
     }
-
-    this.valid = valid;
-    return valid;
+    if (name === "name") {
+      result = !!value && value.trim().length >= 3;
+    }
+    console.log(name, value, result);
+    return result;
   }
 
-  setUpListeners() {
+  validation() {
     [...this.inputElementsList].forEach((element) => {
-      if (element instanceof HTMLButtonElement) {
-        element.addEventListener("click", (e: MouseEvent) => {
-          e.preventDefault();
-          // run validation
-          this.validate();
-        });
-      } else {
+      if (element instanceof HTMLInputElement) {
         element.addEventListener("change", (e) => {
           const target = e.target as HTMLInputElement;
 
-          if (this.data[name as keyof TFormData]) {
-            this.data[name as keyof TFormData]!.value = value;
+          const value = target.value;
+          if (target.name === "email") {
+            this.data.email.isValid = this.validate("email", value);
           }
-
-          // run validation
-          let valid = this.validate();
-          if (valid) {
-            console.log("Form is valid");
-          } else {
-            console.log("Form is invalid");
+          if (target.name === "password") {
+            this.data.password.isValid = this.validate("password", value);
           }
-          //
+          if (target.name === "name") {
+            this.data.name.isValid = this.validate("name", value);
+          }
         });
+      }
+    });
+  }
+
+  submit() {
+    this.formElement.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let submittable;
+      if (this.formElement.id === "signin-form") {
+        submittable = this.data.email.isValid && this.data.password.isValid;
+      } else if (this.formElement.id === "signup-form") {
+        submittable = this.data.email.isValid && this.data.password.isValid && this.data.name.isValid;
+      }
+      if (submittable) {
+        console.log("form is valid");
+      } else {
+        console.log("form is invalid");
       }
     });
   }
 }
 
-class SignUpForm extends SignInForm {
-  constructor(element: HTMLFormElement) {
-    super(element);
-    this.data = { ...this.data };
-    this.data.name = { value: null, isValid: false };
-  }
-
-  static validateName(name: string | null): boolean {
-    console.log("validating name:", name);
-
-    return typeof name === "string" && name.trim().length >= 3;
-  }
-
-  validate(): boolean {
-    const { name, email, password } = this.data;
-    let valid = true;
-
-    if (SignUpForm.validateName(name?.value || null)) {
-      console.log("name is valid");
-    } else {
-      valid = false;
-      console.log("name under 3 characters");
-    }
-
-    // if (!SignInForm.validateEmail(email.value)) {
-    //   valid = false;
-    //   console.log("email not valid");
-    // }
-    // if (!SignInForm.validatePassword(password.value)) {
-    //   valid = false;
-    //   console.log("password under 8 characters");
-    // }
-
-    this.valid = valid;
-    return valid;
-  }
-}
-
-const signUpForm = document.getElementById("signup-form");
-const newSignUpForm = new SignUpForm(signUpForm as HTMLFormElement);
-
 const signInForm = document.getElementById("signin-form");
-const newSignInForm = new SignInForm(signInForm as HTMLFormElement);
-
-///////////////////////////////////////////////////////////////////////////////////
-// validation
-
-newSignUpForm.formElement.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (newSignUpForm.validate()) {
-    console.log("valid");
-
-    //
-  }
-});
-
-newSignInForm.formElement.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (newSignInForm.validate()) {
-    console.log("valid");
-
-    //
-  }
-});
+const signUpForm = document.getElementById("signup-form");
+const newSignInForm = new FormManager(signInForm as HTMLFormElement);
+const newSignUpForm = new FormManager(signUpForm as HTMLFormElement);
