@@ -1,7 +1,7 @@
 class FormManager {
     constructor(element) {
         this.formElement = element;
-        this.inputElementsList = this.formElement.elements;
+        this.inputs = this.formElement.elements;
         this.valid = false;
         this.data = {
             email: { value: null, isValid: false },
@@ -23,20 +23,17 @@ class FormManager {
         }
     }
     validation() {
-        [...this.inputElementsList].forEach((element) => {
+        [...this.inputs].forEach((element) => {
             if (element instanceof HTMLInputElement) {
                 element.addEventListener("change", (e) => {
                     const target = e.target;
                     const value = target.value;
-                    if (target.name === "email") {
+                    if (target.name === "email")
                         this.data.email.isValid = this.validate("email", value);
-                    }
-                    if (target.name === "password") {
+                    if (target.name === "password")
                         this.data.password.isValid = this.validate("password", value);
-                    }
-                    if (target.name === "name") {
+                    if (target.name === "name")
                         this.data.name.isValid = this.validate("name", value);
-                    }
                 });
             }
         });
@@ -44,13 +41,8 @@ class FormManager {
     submit() {
         this.formElement.addEventListener("submit", (e) => {
             e.preventDefault();
-            let submittable;
-            if (this.formElement.id === "signin-form") {
-                submittable = this.data.email.isValid && this.data.password.isValid;
-            }
-            else if (this.formElement.id === "signup-form") {
-                submittable = this.data.email.isValid && this.data.password.isValid && this.data.name.isValid;
-            }
+            const requiredFields = this.formElement.id === "signup-form" ? ["email", "password", "name"] : ["email", "password"];
+            const submittable = requiredFields.every((input) => this.data[input].isValid);
             if (submittable) {
                 console.log("form is valid");
             }

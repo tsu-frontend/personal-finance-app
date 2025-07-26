@@ -1,5 +1,5 @@
 type TFormData = {
-  name?: { value: null | string; isValid: boolean };
+  name: { value: null | string; isValid: boolean };
   email: { value: null | string; isValid: boolean };
   password: { value: null | string; isValid: boolean };
 };
@@ -7,12 +7,12 @@ type TFormData = {
 class FormManager {
   data: TFormData;
   public formElement: HTMLFormElement;
-  public inputElementsList: HTMLFormControlsCollection;
+  public inputs: HTMLFormControlsCollection;
   public valid: boolean;
 
   constructor(element: HTMLFormElement) {
     this.formElement = element;
-    this.inputElementsList = this.formElement.elements;
+    this.inputs = this.formElement.elements;
     this.valid = false;
 
     this.data = {
@@ -38,21 +38,15 @@ class FormManager {
   }
 
   validation() {
-    [...this.inputElementsList].forEach((element) => {
+    [...this.inputs].forEach((element) => {
       if (element instanceof HTMLInputElement) {
         element.addEventListener("change", (e) => {
           const target = e.target as HTMLInputElement;
-
           const value = target.value;
-          if (target.name === "email") {
-            this.data.email.isValid = this.validate("email", value);
-          }
-          if (target.name === "password") {
-            this.data.password.isValid = this.validate("password", value);
-          }
-          if (target.name === "name") {
-            this.data.name.isValid = this.validate("name", value);
-          }
+
+          if (target.name === "email") this.data.email.isValid = this.validate("email", value);
+          if (target.name === "password") this.data.password.isValid = this.validate("password", value);
+          if (target.name === "name") this.data.name.isValid = this.validate("name", value);
         });
       }
     });
@@ -62,12 +56,8 @@ class FormManager {
     this.formElement.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      let submittable;
-      if (this.formElement.id === "signin-form") {
-        submittable = this.data.email.isValid && this.data.password.isValid;
-      } else if (this.formElement.id === "signup-form") {
-        submittable = this.data.email.isValid && this.data.password.isValid && this.data.name.isValid;
-      }
+      const requiredFields = this.formElement.id === "signup-form" ? ["email", "password", "name"] : ["email", "password"];
+      const submittable = requiredFields.every((input) => this.data[input].isValid);
       if (submittable) {
         console.log("form is valid");
       } else {
