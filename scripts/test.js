@@ -1,48 +1,77 @@
-function fn() {
-  console.log(this);
-}
+// function fn() {
+//   console.log(this);
+// }
 
-// fn();
+// // fn();
 
-let ob = {
-  fn() {
-    console.log(this);
-  },
-};
+// let ob = {
+//   fn() {
+//     console.log(this);
+//   },
+// };
 
-// ob.fn();
+// // ob.fn();
+
+// class Test {
+//   constructor() {
+//     this.list = [this.fn.bind(this)];
+
+//     this.list[0]();
+//   }
+//   fn() {
+//     console.log("Test is fn", this);
+//   }
+// }
+
+// // let nTest = new Test();
+// // // nTest.fn();
 
 // class test {
 //   constructor() {
 //     this.bn = this.fn;
 //     this.bn()
-//     this.list = [this.fn.bind(this.ob)]
+//     this.list = [this.fn.bind(this, 'name', 'asd')]
 
-//     this.list.forEach(fn => fn())
+//     this.list.forEach(fn => fn(1, 12, 32))
 //   }
-//   fn() {
-//     console.log(this);
+//   fn = (...ar ) => {
+//     console.log(this, ar);
 //   }
 // }
 
 // let nTest = new test();
+// let nTest2 = new test();
 
+// let ar = [1, 2, 3]
 
+// console.log(...ar)
 class test {
   constructor() {
-    this.bn = this.fn;
-    this.bn()
-    this.list = [this.fn.bind(this, 'name', 'asd')]
+    this.list = [this.fn];
 
-    this.list.forEach(fn => fn(1))
+    this.list[0]();
   }
-  fn = (...aas) => {
-    console.log(this, aas);
+  fn() {
+    console.log(this);
   }
 }
 
-let nTest = new test();
+const nts = new test();
 
-let ar = [1, 2, 3]
+// let nTest = new test();
+// let nTest2 = new test();
 
-console.log(...ar)
+// let ar = [1, 2, 3]
+
+// console.log(...ar)
+
+function cn() {
+  let b = 5;
+  console.log("first layer");
+  return function dn() {
+    console.log(b);
+  };
+}
+let retFn = cn();
+
+retFn();
