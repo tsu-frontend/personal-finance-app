@@ -1,3 +1,8 @@
+import { SUPABASE_URL, PUBLIC_KEY } from "./api/supabaseConfig.js";
+
+// const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`;
+// const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`;
+
 type TFormData = {
   name: { value: null | string; isValid: boolean };
   email: { value: null | string; isValid: boolean };
@@ -60,6 +65,27 @@ class FormManager {
       const submittable = requiredFields.every((input) => this.data[input].isValid);
       if (submittable) {
         console.log("form is valid");
+
+        const body: { email: string; password: string; name?: string } = {
+          email: this.data.email.value,
+          password: this.data.password.value,
+        };
+
+        if (this.formElement.id === "signup-form") {
+          body.name = this.data.name.value;
+        }
+
+        fetch(`${SUPABASE_URL}/auth/v1/${this.formElement.id === "signup-form" ? "signup" : "token?grant_type=password"}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: PUBLIC_KEY,
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.error(err));
       } else {
         console.log("form is invalid");
       }

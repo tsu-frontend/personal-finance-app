@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const supabaseConfig_js_1 = require("./api/supabaseConfig.js");
 class FormManager {
     constructor(element) {
         this.formElement = element;
@@ -45,6 +48,24 @@ class FormManager {
             const submittable = requiredFields.every((input) => this.data[input].isValid);
             if (submittable) {
                 console.log("form is valid");
+                const body = {
+                    email: this.data.email.value,
+                    password: this.data.password.value,
+                };
+                if (this.formElement.id === "signup-form") {
+                    body.name = this.data.name.value;
+                }
+                fetch(`${supabaseConfig_js_1.SUPABASE_URL}/auth/v1/${this.formElement.id === "signup-form" ? "signup" : "token?grant_type=password"}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        apikey: supabaseConfig_js_1.PUBLIC_KEY,
+                    },
+                    body: JSON.stringify(body),
+                })
+                    .then((res) => res.json())
+                    .then((data) => console.log(data))
+                    .catch((err) => console.error(err));
             }
             else {
                 console.log("form is invalid");
