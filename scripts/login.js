@@ -1,6 +1,14 @@
 import { FormUtility } from "./utilities/formUtility.js";
 import { ServiceManager } from "https://esm.sh/supabase-service-manager";
-const SupaClient = new ServiceManager({ supabase: { url: "https://dhpewqtvbasnugkfiixs.supabase.co", anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk" } });
+export const SupaClient = new ServiceManager({
+    supabase: {
+        url: "https://dhpewqtvbasnugkfiixs.supabase.co",
+        anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk",
+    },
+});
+// const currentUser = new User();
+// console.log(User)
+// console.log(currentUser)
 class SignInForm {
     constructor(element) {
         this.validateEmail = (target) => {
@@ -56,6 +64,10 @@ class SignInForm {
         try {
             const response = await SupaClient.signIn(formData.email.value, formData.password.value);
             console.log(response);
+            if (response.success) {
+                signOutBtn.style.display = 'block';
+                this.formElement.style.display = 'none';
+            }
         }
         catch (_a) { }
     }
@@ -76,8 +88,38 @@ class SignUpForm extends SignInForm {
         this.data = Object.assign(Object.assign({}, this.data), { name: { value: null, isValid: false } });
         this.listenersList.push(this.validateName);
     }
+    async submitFormData(formData) {
+        console.log(formData);
+        if (!formData.email.isValid ||
+            !formData.password.isValid ||
+            !formData.name.isValid) {
+            console.log("email, name or password is invalid ");
+            return;
+        }
+        console.log("valid");
+        try {
+            const response = await SupaClient.signUp(formData.email.value, formData.password.value, { firstName: formData.name.value });
+            console.log(response);
+        }
+        catch (_a) { }
+    }
 }
+const signOutBtn = document.getElementById('signOut');
 const signInForm = document.getElementById("signin-form");
 const newSignInForm = new SignInForm(signInForm);
 const signUpForm = document.getElementById("signup-form");
 const newSignUpForm = new SignUpForm(signUpForm);
+signOutBtn.addEventListener('click', () => {
+    SupaClient.signOut();
+    signInForm.style.display = 'flex';
+    signOutBtn.style.display = 'none';
+});
+SupaClient.getCurrentUser().then((res) => {
+    console.log(res);
+    if (res.success) {
+        signOutBtn.style.display = "block";
+    }
+    else {
+        signInForm.style.display = 'flex';
+    }
+});

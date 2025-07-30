@@ -14,7 +14,9 @@
 - Supabase მონაცემთა ბაზასთან კავშირი დამყარებული
 
 - დავალება:
+
   - შექმენით მომხმარებლის კლასი შემდეგი ძირითადი სტრუქტურით
+
   ```
     intefrase User {
       private Id: string
@@ -26,5 +28,13 @@
       public getBalance: () => TBalance
     }
   ```
+
   _this interface is for reference, you can modify/update/prune given interface as you see fit_
   _have fun!_
+
+
+
+#3 flow
+
+1. განვსაზღვროთ flow
+2. დავასრულოთ user კლასი
