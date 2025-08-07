@@ -32,9 +32,13 @@
   _this interface is for reference, you can modify/update/prune given interface as you see fit_
   _have fun!_
 
-
-
 #3 flow
 
 1. განვსაზღვროთ flow
 2. დავასრულოთ user კლასი
+
+#4
+
+1. შევქმნათ თითოეული page-სთვის დამოუკიდებელი კლასი
+   (setup()- ის ლოგიკა გვექნება ინდივიდუალური)
+2. ამ კლასის გამოყენებით უნდა განვსაზღვროთ რენდერის ლოგიკა,       (განვსაზღვროთ როდის, როგორ)
