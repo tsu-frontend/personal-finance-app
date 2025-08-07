@@ -1,5 +1,6 @@
 import { FormUtility } from "./utilities/formUtility.js";
 import { ServiceManager } from "https://esm.sh/supabase-service-manager";
+import { User } from "./user.js";
 export const SupaClient = new ServiceManager({
     supabase: {
         url: "https://dhpewqtvbasnugkfiixs.supabase.co",
@@ -7,8 +8,7 @@ export const SupaClient = new ServiceManager({
     },
 });
 // const currentUser = new User();
-// console.log(User)
-// console.log(currentUser)
+// console.log(currentUser);
 class SignInForm {
     constructor(element) {
         this.validateEmail = (target) => {
@@ -42,7 +42,6 @@ class SignInForm {
                 element.addEventListener("click", (e) => {
                     e.preventDefault();
                     this.submitFormData(this.data);
-                    console.log(e);
                 });
             }
             else if (element instanceof HTMLInputElement) {
@@ -55,18 +54,18 @@ class SignInForm {
         });
     }
     async submitFormData(formData) {
-        console.log(formData);
+        // console.log(formData);
         if (!formData.email.isValid || !formData.password.isValid) {
             console.log("email or password is invalid ");
             return;
         }
-        console.log("valid");
+        // console.log("valid");
         try {
             const response = await SupaClient.signIn(formData.email.value, formData.password.value);
             console.log(response);
             if (response.success) {
-                signOutBtn.style.display = 'block';
-                this.formElement.style.display = 'none';
+                signOutBtn.style.display = "block";
+                this.formElement.style.display = "none";
             }
         }
         catch (_a) { }
@@ -96,7 +95,7 @@ class SignUpForm extends SignInForm {
             console.log("email, name or password is invalid ");
             return;
         }
-        console.log("valid");
+        // console.log("valid");
         try {
             const response = await SupaClient.signUp(formData.email.value, formData.password.value, { firstName: formData.name.value });
             console.log(response);
@@ -104,22 +103,22 @@ class SignUpForm extends SignInForm {
         catch (_a) { }
     }
 }
-const signOutBtn = document.getElementById('signOut');
+const signOutBtn = document.getElementById("signOut");
 const signInForm = document.getElementById("signin-form");
 const newSignInForm = new SignInForm(signInForm);
 const signUpForm = document.getElementById("signup-form");
 const newSignUpForm = new SignUpForm(signUpForm);
-signOutBtn.addEventListener('click', () => {
+signOutBtn.addEventListener("click", () => {
     SupaClient.signOut();
-    signInForm.style.display = 'flex';
-    signOutBtn.style.display = 'none';
+    signInForm.style.display = "flex";
+    signOutBtn.style.display = "none";
 });
-SupaClient.getCurrentUser().then((res) => {
-    console.log(res);
-    if (res.success) {
-        signOutBtn.style.display = "block";
-    }
-    else {
-        signInForm.style.display = 'flex';
-    }
-});
+// SupaClient.getCurrentUser().then((res) => {
+//   if (res.success) {
+//     signOutBtn.style.display = "block";
+//     const currentUser = new User(res.data);
+//   } else {
+signInForm.style.display = "flex"; //??
+//   }
+// });
+const currentUser = new User(SupaClient);

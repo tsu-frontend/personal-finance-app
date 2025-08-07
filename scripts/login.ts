@@ -1,6 +1,6 @@
 import { FormUtility } from "./utilities/formUtility.js";
 import { ServiceManager } from "https://esm.sh/supabase-service-manager";
-import { User } from "./user.js";
+import { User, UserTransactions } from "./user.js";
 
 export const SupaClient = new ServiceManager({
   supabase: {
@@ -51,7 +51,6 @@ class SignInForm {
         element.addEventListener("click", (e: MouseEvent) => {
           e.preventDefault();
           this.submitFormData(this.data);
-          console.log(e);
         });
       } else if (element instanceof HTMLInputElement) {
         element.addEventListener("change", (e: Event) => {
@@ -78,12 +77,12 @@ class SignInForm {
   };
 
   async submitFormData(formData: TSignIn) {
-    console.log(formData);
+    // console.log(formData);
     if (!formData.email.isValid || !formData.password.isValid) {
       console.log("email or password is invalid ");
       return;
     }
-    console.log("valid");
+    // console.log("valid");
     try {
       const response = await SupaClient.signIn(
         formData.email.value,
@@ -132,7 +131,7 @@ class SignUpForm extends SignInForm {
       console.log("email, name or password is invalid ");
       return;
     }
-    console.log("valid");
+    // console.log("valid");
     try {
       const response = await SupaClient.signUp(
         formData.email.value,
@@ -158,12 +157,15 @@ signOutBtn.addEventListener("click", () => {
   signOutBtn.style.display = "none";
 });
 
-SupaClient.getCurrentUser().then((res) => {
-  console.log(res);
-
-  if (res.success) {
-    signOutBtn.style.display = "block";
-  } else {
+// SupaClient.getCurrentUser().then((res) => {
+//   if (res.success) {
+//     signOutBtn.style.display = "block";
+//     const currentUser = new User(res.data);
+//   } else {
     signInForm.style.display = "flex"; //??
-  }
-});
+//   }
+// });
+const currentUser = new User(SupaClient)
+
+
+

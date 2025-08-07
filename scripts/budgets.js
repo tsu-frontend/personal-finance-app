@@ -1,3 +1,21 @@
+import { ServiceManager } from "https://esm.sh/supabase-service-manager";
+import { UserBudgets, UserTransactions } from "./user.js";
+
+export const SupaClient = new ServiceManager({
+  supabase: {
+    url: "https://dhpewqtvbasnugkfiixs.supabase.co",
+    anonKey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk",
+  },
+});
+
+const budgetsUser = new UserBudgets(SupaClient)
+
+setTimeout(() => {
+  getData(budgetsUser.userTrData, budgetsUser.userBData)
+}, 1000);
+
+
 const ctx = document.getElementById('doughnut');
 const themeDropdownParent = document.getElementById('theme_dropdown')
 const catDropdownParent = document.getElementById('category_dropdown')
@@ -16,7 +34,18 @@ const chosenColBall = document.getElementById('color_ball')
 
 // const client = supabase.createClient(SUPABASE_URL, PUBLIC_KEY)
 // console.log(client)
+      console.log(document.referrer);
 
+
+// SupaClient.getCurrentUser().then((res) => {
+//   if (res.success) {
+//     signOutBtn.style.display = "block";
+//     const currentUser = new User(res.data);
+//     console.log(currentUser)
+//   } else {
+//     signInForm.style.display = "flex"; //??
+//   }
+// });
 
 
 // open modals
@@ -88,38 +117,7 @@ let colorsArr = []
 
 
 // managing json data
-const getData = async () => {
-
-  const SUPABASE_URL = `https://dhpewqtvbasnugkfiixs.supabase.co`
-  const PUBLIC_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRocGV3cXR2YmFzbnVna2ZpaXhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NzY1MzMsImV4cCI6MjA2MjQ1MjUzM30.8tYLfww-2KjIRsmJvCTQ1vBd3ghf0c4QNmW6TwPYVTk`
-
-  const responseTransactions = await fetch(`${SUPABASE_URL}/rest/v1/transactions`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': PUBLIC_KEY,
-        'Authorization': `Bearer ${PUBLIC_KEY}`,
-        'Prefer': 'return=representation'
-      },
-    })
-  const trsData = await responseTransactions.json()
-
-  // console.log(trsData)
-
-  const responseBudgets = await fetch(`${SUPABASE_URL}/rest/v1/budgets`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': PUBLIC_KEY,
-        'Authorization': `Bearer ${PUBLIC_KEY}`,
-        'Prefer': 'return=representation'
-      },
-    })
-  const budgetsData = await responseBudgets.json()
-  // console.log(budgetsData)
-
+const getData = async (trsData, budgetsData) => {
 
 
   let parentEle = document.querySelector('#budgets_parent')
@@ -335,5 +333,3 @@ console.log(transactionsByCat)
 
 
 }
-
-getData()
