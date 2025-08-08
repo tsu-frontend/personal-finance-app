@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@supabase/supabase-js": "^2.54.0",
     "@tailwindcss/cli": "^4.0.17",
     "tailwindcss": "^4.0.17"
   },
