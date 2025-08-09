@@ -58,7 +58,7 @@ export class User {
   async getBudget() {
     const result = await this.supaService.list("budgets");
     if (result.success) {
-      console.log(result.data);
+      // console.log(result.data);
       return result.data;
     } else {
       console.log("error");
@@ -107,5 +107,23 @@ export class UserBudgets extends User {
 
     this.userBData = budget
     this.userTrData = transaction
+  }
+}
+
+export class UserBalance extends User{
+    constructor(supaService: ServiceManager) {
+    super(supaService);
+  }
+  setup() {
+    this.getBalance();
+  }
+}
+
+export class UserPots extends User{
+    constructor(supaService: ServiceManager) {
+    super(supaService);
+  }
+  setup() {
+    this.getPot();
   }
 }
