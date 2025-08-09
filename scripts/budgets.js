@@ -21,23 +21,17 @@ class BudgetPage {
     };
     this.spentArr = [];
     this.colorsArr = [];
-    this.dropDown(
-      this.elements.themeDropdownParent,
-      this.elements.themeDropdown
-    );
-    this.init()
+    this.dropDown(this.elements.themeDropdownParent, this.elements.themeDropdown);
+    this.init();
 
     this.dropDown(this.elements.catDropdownParent, this.elements.catDropdown);
   }
 
   async init() {
-    console.log(SupaClient)
-    this.budgetsUser = new UserBudgets(SupaClient);
-await this.budgetsUser.setup()
-console.log(this.budgetsUser);
-
-    this.getData(budgetsUser.userTrData, budgetsUser.userBData);
-  
+    this.budgetsUser = new UserBudgets(SupaClient, () => {
+      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData);
+    });
+    // await this.budgetsUser.setup()
   }
 
   setUpListeners() {
@@ -51,19 +45,13 @@ console.log(this.budgetsUser);
   checkClickedEle(event) {
     let clicked = event.target;
 
-    if (
-      clicked === this.elements.addBudgetModal ||
-      clicked.id === "close_img"
-    ) {
+    if (clicked === this.elements.addBudgetModal || clicked.id === "close_img") {
       this.elements.addBudgetModal.classList.replace("flex", "hidden");
       this.elements.catDropdown.classList.add("hidden");
       this.elements.themeDropdown.classList.add("hidden");
       document.body.style.overflow = "auto";
     }
-    if (
-      clicked === this.elements.editBudgetModal ||
-      clicked.id === "close_img"
-    ) {
+    if (clicked === this.elements.editBudgetModal || clicked.id === "close_img") {
       this.elements.editBudgetModal.classList.replace("flex", "hidden");
     }
   }
@@ -135,7 +123,7 @@ console.log(this.budgetsUser);
       totalSpending += spent;
 
       this.spentArr.push(spent);
-      colorsArr.push(theme);
+      this.colorsArr.push(theme);
 
       let procent = Math.min((spent / maximum) * 100, 100);
       let remaining = maximum - spent < 0 ? 0 : maximum - spent;
@@ -206,8 +194,8 @@ console.log(this.budgetsUser);
 
   renderBudgets(budgetStats, parentEle, spendingSummary) {
     budgetStats.forEach((stat) => {
-      parentEle.innerHTML += createBudgetBox(stat);
-      spendingSummary.innerHTML += createSummaryBox(stat);
+      parentEle.innerHTML += this.createBudgetBox(stat);
+      spendingSummary.innerHTML += this.createSummaryBox(stat);
     });
   }
 
@@ -235,11 +223,9 @@ console.log(this.budgetsUser);
       )
       .join("");
 
-    document
-      .querySelectorAll('[data-name="parent_spendings"]')
-      .forEach((parent) => {
-        parent.innerHTML += lastSpendingHTML;
-      });
+    document.querySelectorAll('[data-name="parent_spendings"]').forEach((parent) => {
+      parent.innerHTML += lastSpendingHTML;
+    });
   }
 
   openSmallMenu() {
@@ -249,17 +235,13 @@ console.log(this.budgetsUser);
         e.stopPropagation();
         const editOrDelete = button.querySelector('[data-name="edit_delete"]');
         const isAlreadyOpen = !editOrDelete.classList.contains("hidden");
-        document
-          .querySelectorAll('[data-name="edit_delete"]')
-          .forEach((menu) => menu.classList.add("hidden"));
+        document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) => menu.classList.add("hidden"));
         if (!isAlreadyOpen) editOrDelete.classList.remove("hidden");
       });
     });
 
     document.addEventListener("click", () => {
-      document
-        .querySelectorAll('[data-name="edit_delete"]')
-        .forEach((menu) => menu.classList.add("hidden"));
+      document.querySelectorAll('[data-name="edit_delete"]').forEach((menu) => menu.classList.add("hidden"));
     });
   }
 
@@ -276,9 +258,7 @@ console.log(this.budgetsUser);
     return new Chart(ctx, {
       type: "doughnut",
       data: {
-        datasets: [
-          { data: spentArr, borderWidth: 0, backgroundColor: colorsArr },
-        ],
+        datasets: [{ data: spentArr, borderWidth: 0, backgroundColor: colorsArr }],
       },
       options: { cutout: "68%", responsive: true },
     });
@@ -291,31 +271,26 @@ console.log(this.budgetsUser);
     let totalSum = document.querySelector("#total_sum");
     let spentSum = document.querySelector("#spent_sum");
 
-    const transactionsByCat = transactionsByCategory(trsData);
+    const transactionsByCat = this.transactionsByCategory(trsData);
+    console.log(transactionsByCat);
     // console.log(budgets);
 
-    const budgetStats = calculateBudgetStats(budgetsData, transactionsByCat);
+    const budgetStats = this.calculateBudgetStats(budgetsData, transactionsByCat);
     // console.log(budgetStats)
 
-    renderBudgets(budgetStats, parentEle, spendingSummary);
+    this.renderBudgets(budgetStats, parentEle, spendingSummary);
 
     const spentArray = budgetStats.map((stat) => stat.spent);
     const colorsArray = budgetStats.map((stat) => stat.theme);
 
-    openSmallMenu();
-    addLastSpendings(trsData);
-    initSeeAllButtons();
-    chart(spentArray, colorsArray, this.elements.ctx);
+    this.openSmallMenu();
+    this.addLastSpendings(trsData);
+    this.initSeeAllButtons();
+    this.chart(spentArray, colorsArray, this.elements.ctx);
 
-    totalSum.textContent = `of $${budgetsData.reduce(
-      (sum, b) => sum + b.maximum,
-      0
-    )} limit`;
-    spentSum.textContent = `$${budgetStats.reduce(
-      (sum, b) => sum + b.spent,
-      0
-    )}`;
+    totalSum.textContent = `of $${budgetsData.reduce((sum, b) => sum + b.maximum, 0)} limit`;
+    spentSum.textContent = `$${budgetStats.reduce((sum, b) => sum + b.spent, 0)}`;
   };
 }
 
-new BudgetPage()
+new BudgetPage();
