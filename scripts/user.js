@@ -26,6 +26,7 @@ export class User {
         }
     }
     async getTransaction() {
+        console.log(this.supaService);
         const result = await this.supaService.list("transactions");
         if (result.success) {
             console.log(result.data);

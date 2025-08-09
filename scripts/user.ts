@@ -45,6 +45,8 @@ export class User {
   }
 
   async getTransaction() {
+    console.log(this.supaService);
+    
     const result = await this.supaService.list("transactions");
     if (result.success) {
       console.log(result.data);
@@ -101,7 +103,7 @@ export class UserBudgets extends User {
   constructor(supaService: ServiceManager) {
     super(supaService);
   }
-  async setup() {
+  public async setup() {
     const budget = await this.getBudget();
     const transaction = await this.getTransaction();
 
