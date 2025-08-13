@@ -20,7 +20,7 @@ export class User {
   constructor(supaService: ServiceManager) {
     this.init(supaService);
   }
-  async init(service: ServiceManager) {
+   init(service: ServiceManager) {
     const result = await service.getCurrentSession();
     this.supaService = service;
     if (result.success && result.data) {
