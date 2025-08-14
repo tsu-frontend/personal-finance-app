@@ -82,3 +82,51 @@
 .pop-icons {
   animation: pop-icons 0.6s ease;
 }
+
+@media screen and (max-width: 1280px) {
+  #canvas_parent {
+    width: 250px;
+    height: 250px;
+  }
+  aside#scheme {
+    width: 688px;
+    height: 344px;
+    gap: 50px;
+    padding: 52px 32px 32px 60px;
+  }
+  main section.mt-9 {
+    align-items: center;
+    box-sizing: border-box;
+  }
+  #budgets_parent {
+    width: 688px;
+  }
+  article[data-name="budget"]{
+    width: 100%;
+  }
+  #progress_bar{
+    width: 100%;
+  }
+  #cat_title{
+    font-size: 14px;
+  }
+  div#spending_summary{
+    /* padding-top: 10px; */
+  }
+  #summary_header{
+    margin-bottom: 15px;
+  }
+  #category_box{
+    width: 296px;
+  }
+#summary_line{
+  margin-top: 12px;
+}
+#canvas_opacity{
+  width: 184px;
+  height: 184px;
+}
+#budget_box_parent{
+  justify-content: space-between;
+}
+}

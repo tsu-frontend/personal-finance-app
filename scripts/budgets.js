@@ -25,19 +25,16 @@ class BudgetPage {
       this.elements.themeDropdownParent,
       this.elements.themeDropdown
     );
-    this.init()
+    this.init();
 
     this.dropDown(this.elements.catDropdownParent, this.elements.catDropdown);
   }
 
   async init() {
-    console.log(SupaClient)
-    this.budgetsUser = new UserBudgets(SupaClient);
-await this.budgetsUser.setup()
-console.log(this.budgetsUser);
-
-    this.getData(budgetsUser.userTrData, budgetsUser.userBData);
-  
+    this.budgetsUser = new UserBudgets(SupaClient, () => {
+      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData);
+    });
+    // await this.budgetsUser.setup()
   }
 
   setUpListeners() {
@@ -135,7 +132,7 @@ console.log(this.budgetsUser);
       totalSpending += spent;
 
       this.spentArr.push(spent);
-      colorsArr.push(theme);
+      this.colorsArr.push(theme);
 
       let procent = Math.min((spent / maximum) * 100, 100);
       let remaining = maximum - spent < 0 ? 0 : maximum - spent;
@@ -148,18 +145,18 @@ console.log(this.budgetsUser);
   createSummaryBox({ category, spent, maximum, theme }) {
     return `
     <div id="spending_summary" class="mt-2">
-      <article class="flex flex-col w-[364px]">
+      <article id='category_box' class="flex flex-col w-[364px]">
         <div class="flex justify-between">
           <div class='flex'>
             <figure class="bg-[${theme}] w-1 h-[22px] mr-3 rounded-md"></figure>
-            <h4 class="text-[#696868]">${category}</h4>
+            <h4 id='cat_title' class="text-[#696868]">${category}</h4>
           </div>
           <div class='flex'>
             <p class="mr-2 text-sm font-bold">$${spent}</p>
             <p class="text-[#696868] text-[12px]">of $<span>${maximum}.00</span></p>
           </div>
         </div>
-        <figure class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-3"></figure>
+        <figure id='summary_line' class="h-[1px] bg-[#f8f4f0] w-full mt-4 mb-3"></figure>
       </article>
     </div>`;
   }
@@ -167,9 +164,11 @@ console.log(this.budgetsUser);
   createBudgetBox({ category, spent, maximum, procent, remaining, theme }) {
     return `
     <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
-      <div class="flex items-center">
+      <div id='budget_box_parent' class="flex items-center">
+      <div id="wrapper" class='flex items-center'>
         <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
         <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
+      </div>
         <figure data-name="three_dots" class="text-2xl relative cursor-pointer">...
           <div data-name="edit_delete" class='hidden absolute z-20 bg-white rounded-lg shadow-md'>
             <p>Edit Budget</p>
@@ -179,7 +178,7 @@ console.log(this.budgetsUser);
         </figure>
       </div>
       <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of ${maximum}.00$</div>
-      <div class="w-[544px] p-1 relative h-8 bg-[#F8F4F0] rounded-sm mb-5">
+      <div id='progress_bar' class="w-[544px] p-1 relative h-8 bg-[#F8F4F0] rounded-sm mb-5">
         <div style="width: ${procent}%;" class="h-6 bg-[${theme}] rounded-sm absolute"></div>
       </div>
       <div class="flex gap-[210px]">
@@ -206,8 +205,8 @@ console.log(this.budgetsUser);
 
   renderBudgets(budgetStats, parentEle, spendingSummary) {
     budgetStats.forEach((stat) => {
-      parentEle.innerHTML += createBudgetBox(stat);
-      spendingSummary.innerHTML += createSummaryBox(stat);
+      parentEle.innerHTML += this.createBudgetBox(stat);
+      spendingSummary.innerHTML += this.createSummaryBox(stat);
     });
   }
 
@@ -280,7 +279,7 @@ console.log(this.budgetsUser);
           { data: spentArr, borderWidth: 0, backgroundColor: colorsArr },
         ],
       },
-      options: { cutout: "68%", responsive: true },
+      options: { cutout: "68%", responsive: true, maintainAspectRatio: false },
     });
   }
 
@@ -291,21 +290,25 @@ console.log(this.budgetsUser);
     let totalSum = document.querySelector("#total_sum");
     let spentSum = document.querySelector("#spent_sum");
 
-    const transactionsByCat = transactionsByCategory(trsData);
+    const transactionsByCat = this.transactionsByCategory(trsData);
+    console.log(transactionsByCat);
     // console.log(budgets);
 
-    const budgetStats = calculateBudgetStats(budgetsData, transactionsByCat);
+    const budgetStats = this.calculateBudgetStats(
+      budgetsData,
+      transactionsByCat
+    );
     // console.log(budgetStats)
 
-    renderBudgets(budgetStats, parentEle, spendingSummary);
+    this.renderBudgets(budgetStats, parentEle, spendingSummary);
 
     const spentArray = budgetStats.map((stat) => stat.spent);
     const colorsArray = budgetStats.map((stat) => stat.theme);
 
-    openSmallMenu();
-    addLastSpendings(trsData);
-    initSeeAllButtons();
-    chart(spentArray, colorsArray, this.elements.ctx);
+    this.openSmallMenu();
+    this.addLastSpendings(trsData);
+    this.initSeeAllButtons();
+    this.chart(spentArray, colorsArray, this.elements.ctx);
 
     totalSum.textContent = `of $${budgetsData.reduce(
       (sum, b) => sum + b.maximum,
@@ -318,4 +321,4 @@ console.log(this.budgetsUser);
   };
 }
 
-new BudgetPage()
+new BudgetPage();
