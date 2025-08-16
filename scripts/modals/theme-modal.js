@@ -5,6 +5,9 @@ import { themes } from "../constants/themes.js";
 function openThemeModal(chosenTheme, data, setChosenTheme) {
   const themeButton = document.querySelector("#input-3");
 
+  // if modal already exists, do not open it again, let clickOutClose close it
+  if (themeButton.querySelector("#theme-modal")) return;
+
   const existingModal = document.querySelector("#theme-modal-wrapper");
   if (existingModal) existingModal.remove();
 

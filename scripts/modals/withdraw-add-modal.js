@@ -1,26 +1,31 @@
 import { clickOutClose } from "../utilities/clickOutClose.js";
+import { validateInput4 } from "../utilities/validateInput4.js";
+import { handleInputError } from "../utilities/handleInputError.js";
 
 function openWithdrawAddModal(modalType, data, modalId) {
   const modalData = data.find((modal) => modal.id === modalId);
+  // console.log(modalData);
 
-  let title, subTitle, amountLabel, buttonText;
+  let title, subTitle, amountLabel, buttonText, color;
 
   const config = {
     withdraw: {
       title: `Withdraw from ‘${modalData.name}’`,
       subTitle: "Enter the amount you want to withdraw from this pot. Withdrawing funds will reduce your progress towards your savings goal.",
-      amountLabel: "Amount to Add",
+      amountLabel: "Amount to Withdraw",
       buttonText: "Confirm Withdrawal",
+      color: "#C94736",
     },
     add: {
       title: `Add to ‘${modalData.name}’`,
       subTitle: "Enter the amount you want to add to this pot. Adding funds will help you reach your savings target faster.",
       amountLabel: "Amount to Add",
       buttonText: "Confirm Addition",
+      color: "#277C78",
     },
   };
 
-  ({ title, subTitle, amountLabel, buttonText } = config[modalType]);
+  ({ title, subTitle, amountLabel, buttonText, color } = config[modalType]);
 
   // stop page scrolling in the background
   document.body.classList.add("overflow-hidden");
@@ -40,16 +45,16 @@ function openWithdrawAddModal(modalType, data, modalId) {
             <div class="w-full flex flex-col gap-[16px] py-[10.5px]">
               <div class="w-full flex justify-between items-center">
                 <p class="text-[#696868] font text-[14px] leading-[150%]">New Amount</p>
-                <h1 class="text-[#201F24] font-[700] font text-[32px] leading-[120%]">$${modalData.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h1>
+                <h1 id="new-amount" class="text-[#201F24] font-[700] font text-[32px] leading-[120%] transition-all duration-500">$${modalData.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h1>
               </div>
 
 
               <div class="flex w-full flex-wrap justify-between gap-[13px]">
                 <div id="progress-bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0] flex gap-[2px]">
-                  <div id="bar-percentage" class="h-full rounded-l-[4px] bg-[#201F24]" style="width: ${(modalData.total / modalData.target) * 100}%"></div>
-                  <div id="bar-percentage-difference" class="h-full rounded-r-[4px]"></div>
+                  <div id="bar-percentage" class="h-full rounded-l-[4px] bg-[#201F24] transition-all duration-500" style="width: ${(modalData.total / modalData.target) * 100}%"></div>
+                  <div id="bar-percentage-difference" class="h-full w-0 rounded-r-[4px] bg-[${color}] transition-all duration-500"></div>
                 </div>
-                <p id="target-percentage" class="text-[#C94736] text-[12px] font-[700] leading-[150%]">0%</p>
+                <p id="difference-percentage" class="text-[${color}] text-[12px] font-[700] leading-[150%]">0%</p>
                 <p class="text-[#696868] text-[12px] leading-[150%]">Target of $${modalData.target.toLocaleString()}</p>
               </div>
 
@@ -58,19 +63,68 @@ function openWithdrawAddModal(modalType, data, modalId) {
             <!-- s2 -->
             <div class="w-full flex flex-col gap-[4px]">
               <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${amountLabel}</p>
-              <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+              <div id="input-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                 <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                <input id="input-2" type="text" placeholder="Enter amount" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
+                <input id="input" type="text" placeholder="Enter amount" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
               </div>
             </div>
           </div>
-          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+          <button id="submit-button" class="cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
             <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
           </button>
         </div>
       </div>
     `
   );
+
+  const inputField = document.querySelector("#input");
+  const inputDiv = document.querySelector("#input-div");
+  const submitButton = document.querySelector("#submit-button");
+  let inputValue = "";
+
+  inputField.addEventListener("input", () => {
+    inputValue = inputField.value;
+
+    if (validateInput4(inputValue, modalType, modalData)) {
+      handleInputError(inputDiv, validateInput4(inputValue, modalType, modalData));
+    } else {
+      handleInputError(inputDiv, validateInput4(inputValue, modalType, modalData));
+      const barPercentage = document.querySelector("#bar-percentage");
+      const barPercentageDifference = document.querySelector("#bar-percentage-difference");
+      const differencePercentage = document.querySelector("#difference-percentage");
+      let newAmount = document.querySelector("#new-amount");
+
+      const difference = parseFloat((inputValue / modalData.target) * 100);
+      differencePercentage.textContent = `${difference.toFixed(2)}%`;
+
+      if (modalType === "add") {
+        barPercentageDifference.style.width = `${difference}%`;
+        newAmount.textContent = `$${(Number(modalData.total) + Number(inputValue)).toFixed(2).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      } else if (modalType === "withdraw") {
+        barPercentageDifference.style.width = `${difference}%`;
+        barPercentage.style.width = `${(modalData.total / modalData.target) * 100 - difference}%`;
+        newAmount.textContent = `$${(Number(modalData.total) - Number(inputValue)).toFixed(2).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      }
+
+      // amount change animation
+      newAmount.style.color = `${color}`;
+      setTimeout(() => {
+        newAmount.style.color = "#201F24";
+      }, 300);
+    }
+  });
+
+  submitButton.addEventListener("click", () => {
+    if (validateInput4(inputValue, modalType, modalData)) {
+      handleInputError(inputDiv, validateInput4(inputValue, modalType, modalData));
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.remove("cursor-pointer");
+      submitButton.classList.add("opacity-50", "cursor-not-allowed");
+
+      // submit logic... using supabase service manager
+    }
+  });
 
   // logic to handle closing the withdrawAddModal
   const closeButton = document.querySelector('[data-name="close-button"]');
@@ -93,9 +147,5 @@ function openWithdrawAddModal(modalType, data, modalId) {
   const withdrawAddModal = wrapper.querySelector("div");
   clickOutClose(withdrawAddModal, "animate-fade-out", 200, wrapper);
 }
-
-const e = `
-
-`;
 
 export { openWithdrawAddModal };
