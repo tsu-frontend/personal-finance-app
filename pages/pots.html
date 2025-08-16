@@ -8,14 +8,14 @@
     <link rel="icon" href="../assets/images/icon-nav-pots.svg" />
 
     <link rel="stylesheet" href="../styles/pots.css" />
-    <link rel="stylesheet" href="../styles/pots-animations.css" />
+    <link rel="stylesheet" href="../styles/animations.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
 
     <script type="module" src="../scripts/utilities/clickOutClose.js"></script>
     <script type="module" src="../scripts/modals/edit-add-modal.js"></script>
     <script type="module" src="../scripts/modals/options-modal.js"></script>
     <script type="module" src="../scripts/modals/delete-modal.js"></script>
-    <script type="module" src="../scripts/all-pages.js"></script>
+    <script type="module" src="../scripts/nav.js"></script>
     <script type="module" src="../scripts/pots.js" defer></script>
   </head>
   <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
@@ -24,78 +24,7 @@
         <h1 class="text-[#201F24] text-[32px] font-bold leading-[120%]">Pots</h1>
         <button id="new-pot-button" class="hover:cursor-pointer hover:bg-[#696868] transition-all duration-300 ease w-[128px] h-full rounded-[8px] bg-[#201F24] text-[#FFF] text-[14px] font-bold leading-[150%]">+ Add New Pot</button>
       </header>
-      <div id="pots-container" class="relative grid grid-cols-1 gap-[24px] xl:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]">
-        <!-- test modal -->
-        <!-- <div id="withdraw-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] hidden justify-center items-center">
-          <div data-id="${modalIdValue}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-            <div class="w-full flex justify-between items-center">
-              <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>
-              <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-            </div>
-            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${subTitle}</p>
-            <div class="w-full flex flex-col gap-[16px]">
-              <div class="w-full flex flex-col gap-[16px] py-[10.5px] border-1 border-red-700">
-                <div class="w-full flex justify-between items-center border-1 border-red-700">
-                  <p class="text-[#696868] font text-[14px] leading-[150%]">New Amount</p>
-                  <h1 class="text-[#201F24] font-[700] font text-[32px] leading-[120%]">&{totalValue}</h1>
-                </div>
-                <div class="flex w-full flex-wrap justify-between gap-[13px]">
-                  <div class="w-full border-1 border-red-700 h=[12px]">
-                    <div id="progress-bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0]">
-                      <div id="bar-percentage" class="h-full rounded-[4px]" style="background-color: ${pot.theme}; width: ${(pot.total / pot.target) * 100}%"></div>
-                    </div>
-                  </div>
-                  <p id="target-percentage" class="border-1 border-red-700 text-[#C94736] text-[12px] font-[700] leading-[150%]">${targetPercentage}</p>
-                  <p class="border-1 border-red-700 text-[#696868] text-[12px] leading-[150%]">${targetAmount}</p>
-                </div>
-              </div>
-
-              <div class="w-full flex flex-col gap-[4px]">
-                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${amountLabel}</p>
-                <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-                  <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                  <input id="input-2" type="text" placeholder="Enter amount" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" />
-                </div>
-              </div>
-            </div>
-            <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-              <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
-            </button>
-          </div>
-        </div> -->
-
-        <!--  -->
-
-        <!-- <div data-name="pot-percentage" class="flex w-full flex-wrap justify-between gap-[13px]">
-          <div data-name="bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0]">
-            <div data-name="bar-percentage" class="h-full rounded-[4px]" style="background-color: ${pot.theme}; width: ${(pot.total / pot.target) * 100}%"></div>
-          </div>
-          <p class="text-[#696868] text-[12px] font-[Public Sans] font-bold leading-[150%]">${((pot.total / pot.target) * 100).toFixed(2)}%</p>
-          <p data-name="pot-target" class="text-[#696868] text-[12px] font-[Public Sans] font-normal leading-[150%]">Target of $${pot.target.toLocaleString()}</p>
-        </div> -->
-
-        <!-- <div class="flex w-full flex-wrap justify-between gap-[13px]">
-          /////////////////////////
-          <div class="w-full h=[12px]">
-            <div id="progress-bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0]">
-              <div id="bar-percentage" class="h-full rounded-[4px]" style="background-color: ${modalData.theme}; width: ${(modalData.total / modalData.target) * 100}%"></div>
-            </div>
-          </div>
-          <p id="target-percentage" class="text-[#C94736] text-[12px] font-[700] leading-[150%]">${((modalData.total / modalData.target) * 100).toFixed(2)}%</p>
-          <p class="text-[#696868] text-[12px] leading-[150%]">${modalData.theme}</p>
-          //////////////////////
-        </div> -->
-
-        <!-- <div class="flex w-full flex-wrap justify-between gap-[13px]">
-          <div id="progress-bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0] flex">
-            <div id="bar-percentage" class="h-full rounded-l-[4px] bg-[#201F24] gap-[2px]" style=" width: ${(modalData.total / modalData.target) * 100}%"></div>
-            <div id="bar-percentage-difference" class="h-full rounded-r-[4px]" style="background-color: ${modalData.theme}; width: 0%"></div>
-          </div>
-          <p id="target-percentage" class="text-[#C94736] text-[12px] font-[700] leading-[150%]">${((modalData.total / modalData.target) * 100).toFixed(2)}%</p>
-          <p class="text-[#696868] text-[12px] leading-[150%]">Target of $${modalData.target.toLocaleString()}</p>
-        </div> -->
-        <!--  -->
-      </div>
+      <div id="pots-container" class="relative grid grid-cols-1 gap-[24px] xl:grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))]"></div>
     </main>
   </body>
 </html>
