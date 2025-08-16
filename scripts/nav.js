@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // generate all anchors
   const navAnchors = Object.keys(navConfig).map(createNavAnchor).join("");
 
+  // check for nav state in ls
+  let navClosed = localStorage.getItem("navClosed") === "true";
+
   document.body.insertAdjacentHTML(
     "afterbegin",
     `
@@ -84,6 +87,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const minimize = document.querySelector("#nav-minimize-button");
   const nav = document.querySelector("nav");
   const navWrapper = document.querySelector("#nav-wrapper");
+
+  if (navClosed) {
+    const anchors = document.querySelectorAll("#nav-anchor-overview, #nav-anchor-transactions, #nav-anchor-budgets, #nav-anchor-pots, #nav-anchor-recurring");
+    const navP = navWrapper.querySelectorAll("p");
+    const minimizeSvg = minimize.querySelector("svg");
+    const letters = document.querySelectorAll('[data-id="logo-letter"]');
+
+    navWrapper.classList.remove("xl:w-[min(20.83%,300px)]");
+    navWrapper.classList.add("xl:w-[85px]");
+    nav.classList.remove("xl:w-[min(20.83%,300px)]");
+    nav.classList.add("xl:w-[85px]");
+    navWrapper.classList.add("xl:pr-[4px]");
+    navWrapper.classList.remove("xl:pr-[24px]");
+    navP.forEach((p) => p.classList.add("xl:hidden"));
+    anchors.forEach((anchor) => {
+      anchor.classList.add("xl:w-fit");
+    });
+    minimizeSvg.classList.add("rotate-180");
+    letters[0].classList.add("fill-[#201F24]", "scale-200", "translate-y-[-10px]");
+    letters[0].classList.remove("animate-letters");
+    letters[0].setAttribute("stroke", "white");
+    letters[0].setAttribute("stroke-width", "1");
+    letters.forEach((letter, index) => {
+      if (index !== 0) {
+        letter.classList.add("hidden");
+      }
+    });
+  }
 
   minimize.disabled = false;
 
@@ -153,6 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }, index * 50);
       }
     });
+
+    // save nav state to ls
+    const isClosed = navWrapper.classList.contains("xl:w-[85px]");
+    localStorage.setItem("navClosed", isClosed ? "true" : "false");
   });
 });
 
