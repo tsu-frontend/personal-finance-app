@@ -2,47 +2,56 @@ import { OptionsModal } from "./modals/options-modal.js";
 import { EditAddModal } from "./modals/edit-add-modal.js";
 import { WithdrawAddModal } from "./modals/withdraw-add-modal.js";
 import { FetchRequest } from "./api/fetchRequest.js";
+
+export interface Pot {
+  id: string;
+  name: string;
+  theme: string;
+  total: number;
+  target: number;
+}
+
 class PotsManager {
-    async renderPotsData() {
-        this.isLoading = true;
-        const fetchConfig = {
-            tableName: "pots",
-            method: "GET",
-            modalId: null,
-            body: null,
-        };
-        this.pots = (await FetchRequest.request(fetchConfig)) || [];
-        console.log("pots fetched");
-        this.renderPots(this.pots);
-        this.isLoading = false;
-    }
-    constructor() {
-        this.pots = [];
-        this.isLoading = false;
-        this.renderPotsData();
-        const newPotBtn = document.querySelector("#new-pot-button");
-        newPotBtn === null || newPotBtn === void 0 ? void 0 : newPotBtn.addEventListener("click", () => {
-            if (this.isLoading)
-                return;
-            EditAddModal.open("add", this.pots);
-            console.log("clicked");
-        });
-    }
-    renderPots(pots) {
-        const potsContainer = document.querySelector("#pots-container");
-        if (!potsContainer)
-            return;
-        potsContainer.innerHTML = "";
-        if (pots.length === 0) {
-            potsContainer.innerHTML = `
+  private pots: Pot[] = [];
+  private isLoading: boolean = false;
+
+  async renderPotsData(): Promise<void> {
+    this.isLoading = true;
+    const fetchConfig = {
+      tableName: "pots",
+      method: "GET" as "GET",
+      modalId: null,
+      body: null,
+    };
+    this.pots = (await FetchRequest.request(fetchConfig)) || [];
+    console.log("pots fetched");
+    this.renderPots(this.pots);
+    this.isLoading = false;
+  }
+
+  constructor() {
+    this.renderPotsData();
+    const newPotBtn = document.querySelector("#new-pot-button") as HTMLButtonElement;
+    newPotBtn?.addEventListener("click", () => {
+      if (this.isLoading) return;
+      EditAddModal.open("add", this.pots);
+      console.log("clicked");
+    });
+  }
+
+  private renderPots(pots: Pot[]): void {
+    const potsContainer = document.querySelector("#pots-container") as HTMLElement;
+    if (!potsContainer) return;
+    potsContainer.innerHTML = "";
+    if (pots.length === 0) {
+      potsContainer.innerHTML = `
         <h1 class="absolute inset-0 h-fit border-2 border-dashed border-gray-400 text-center text-3xl text-gray-600 font-medium p-10 rounded-lg shadow-sm">
         You haven’t added any pots yet. Start by creating one!
         </h1>
       `;
-        }
-        else {
-            pots.forEach((pot) => {
-                potsContainer.innerHTML += `
+    } else {
+      pots.forEach((pot) => {
+        potsContainer.innerHTML += `
         <div data-id="${pot.id}" data-name="pot" class="h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
           <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
             <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-full" style="background-color: ${pot.theme}"></div>
@@ -74,33 +83,34 @@ class PotsManager {
           </div>
         </div>
       `;
-            });
-            const optionsButtons = document.querySelectorAll('[data-name="options-button"]');
-            const addMoneyButtons = document.querySelectorAll('[data-name="add-money"]');
-            const withdrawMoneyButtons = document.querySelectorAll('[data-name="withdraw-money"]');
-            optionsButtons.forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    var _a;
-                    const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    OptionsModal.open(this.pots, modalId, btn);
-                });
-            });
-            addMoneyButtons.forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    var _a;
-                    const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    WithdrawAddModal.open("add", this.pots, modalId);
-                });
-            });
-            withdrawMoneyButtons.forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    var _a;
-                    const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    WithdrawAddModal.open("withdraw", this.pots, modalId);
-                });
-            });
-        }
+      });
+      const optionsButtons = document.querySelectorAll('[data-name="options-button"]');
+      const addMoneyButtons = document.querySelectorAll('[data-name="add-money"]');
+      const withdrawMoneyButtons = document.querySelectorAll('[data-name="withdraw-money"]');
+
+      optionsButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const modalId = (btn.closest('[data-name="pot"]') as HTMLElement)?.getAttribute("data-id");
+          OptionsModal.open(this.pots, modalId, btn as HTMLElement);
+        });
+      });
+
+      addMoneyButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const modalId = (btn.closest('[data-name="pot"]') as HTMLElement)?.getAttribute("data-id");
+          WithdrawAddModal.open("add", this.pots, modalId);
+        });
+      });
+
+      withdrawMoneyButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const modalId = (btn.closest('[data-name="pot"]') as HTMLElement)?.getAttribute("data-id");
+          WithdrawAddModal.open("withdraw", this.pots, modalId);
+        });
+      });
     }
+  }
 }
+
 const potsManager = new PotsManager();
 export { potsManager };

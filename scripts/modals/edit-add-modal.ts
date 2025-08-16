@@ -7,8 +7,9 @@ import { ThemeModal } from "./theme-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
 import { pageType } from "../utilities/pageType.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
+
 class EditAddModal {
-  static open(modalType, data, modalId = null) {
+  static open(modalType: "edit" | "add", data: any[], modalId: string | null = null): void {
     const modalData = data.find((modal) => modal.id === modalId);
     let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
     const config = {
@@ -16,11 +17,11 @@ class EditAddModal {
         edit: {
           title: "Edit Pot",
           subTitle: "If your saving targets change, feel free to update your pots.",
-          modalIdValue: modalData === null || modalData === void 0 ? void 0 : modalData.id,
-          modalName: modalData === null || modalData === void 0 ? void 0 : modalData.name,
-          input2Value: modalData === null || modalData === void 0 ? void 0 : modalData.target,
-          modalTheme: modalData === null || modalData === void 0 ? void 0 : modalData.theme,
-          modalColorName: themes[modalData === null || modalData === void 0 ? void 0 : modalData.theme],
+          modalIdValue: modalData?.id,
+          modalName: modalData?.name,
+          input2Value: modalData?.target,
+          modalTheme: modalData?.theme,
+          modalColorName: themes[modalData?.theme],
           colorAnimation: "",
           buttonText: "Save Changes",
         },
@@ -40,11 +41,11 @@ class EditAddModal {
         edit: {
           title: "Edit Budget",
           subTitle: "As your budgets change, feel free to update your spending limits.",
-          modalIdValue: modalData === null || modalData === void 0 ? void 0 : modalData.id,
-          modalName: modalData === null || modalData === void 0 ? void 0 : modalData.name,
-          input2Value: modalData === null || modalData === void 0 ? void 0 : modalData.target,
-          modalTheme: modalData === null || modalData === void 0 ? void 0 : modalData.theme,
-          modalColorName: themes[modalData === null || modalData === void 0 ? void 0 : modalData.theme],
+          modalIdValue: modalData?.id,
+          modalName: modalData?.name,
+          input2Value: modalData?.target,
+          modalTheme: modalData?.theme,
+          modalColorName: themes[modalData?.theme],
           colorAnimation: "",
           buttonText: "Save Changes",
         },
@@ -103,9 +104,9 @@ class EditAddModal {
         </div>
       </div>`
     );
-    const closeButton = document.querySelector('[data-name="close-button"]');
+    const closeButton = document.querySelector('[data-name="close-button"]') as HTMLElement;
     closeButton.addEventListener("click", () => {
-      const editAddModal = document.querySelector("#edit-add-modal");
+      const editAddModal = document.querySelector("#edit-add-modal") as HTMLElement;
       editAddModal.classList.add("animate-fade-out");
       setTimeout(() => {
         editAddModal.remove();
@@ -118,22 +119,22 @@ class EditAddModal {
     } else if (modalType === "add") {
       chosenTheme = "";
     }
-    const input1 = document.querySelector("#input-1");
+    const input1 = document.querySelector("#input-1") as HTMLInputElement;
     if (pageType === "pots") {
       const charsLeft = 30 - input1.value.length;
-      const counter = document.querySelector("#characters-left");
+      const counter = document.querySelector("#characters-left") as HTMLElement;
       counter.textContent = `${charsLeft} characters left`;
       input1.addEventListener("input", () => ValidateInput1.validate());
     }
-    const input2 = document.querySelector("#input-2");
+    const input2 = document.querySelector("#input-2") as HTMLInputElement;
     input2.addEventListener("input", () => ValidateInput2.validate());
-    const themeButton = document.querySelector("#input-3");
+    const themeButton = document.querySelector("#input-3") as HTMLElement;
     themeButton.addEventListener("click", () => {
-      ThemeModal.open(chosenTheme, data, (newTheme) => {
+      ThemeModal.open(chosenTheme, data, (newTheme: string) => {
         chosenTheme = newTheme;
       });
     });
-    const submitButton = document.querySelector("#submit-button");
+    const submitButton = document.querySelector("#submit-button") as HTMLElement;
     submitButton.addEventListener("click", () => {
       const valid1 = ValidateInput1.validate();
       const valid2 = ValidateInput2.validate();
@@ -144,23 +145,23 @@ class EditAddModal {
           pots: {
             add: {
               tableName: "pots",
-              method: "POST",
+              method: "POST" as "POST",
               modalId: null,
               body: {
                 id: crypto.randomUUID(),
-                name: document.querySelector("#input-1").value,
-                target: parseFloat(document.querySelector("#input-2").value),
+                name: (document.querySelector("#input-1") as HTMLInputElement).value,
+                target: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
                 total: 0,
                 theme: chosenTheme,
               },
             },
             edit: {
               tableName: "pots",
-              method: "PATCH",
+              method: "PATCH" as "PATCH",
               modalId,
               body: {
-                name: document.querySelector("#input-1").value,
-                target: parseFloat(document.querySelector("#input-2").value),
+                name: (document.querySelector("#input-1") as HTMLInputElement).value,
+                target: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
                 theme: chosenTheme,
               },
             },
@@ -168,20 +169,20 @@ class EditAddModal {
           budgets: {
             add: {
               tableName: "budgets",
-              method: "POST",
+              method: "POST" as "POST",
               modalId: null,
               body: {
                 id: crypto.randomUUID(),
-                maximum: parseFloat(document.querySelector("#input-2").value),
+                maximum: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
                 theme: chosenTheme,
               },
             },
             edit: {
               tableName: "budgets",
-              method: "PATCH",
+              method: "PATCH" as "PATCH",
               modalId,
               body: {
-                maximum: parseFloat(document.querySelector("#input-2").value),
+                maximum: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
                 theme: chosenTheme,
               },
             },
@@ -191,9 +192,10 @@ class EditAddModal {
         console.log("fetch");
       }
     });
-    const wrapper = document.querySelector("#edit-add-modal");
-    const editAddModal = wrapper.querySelector("div");
+    const wrapper = document.querySelector("#edit-add-modal") as HTMLElement;
+    const editAddModal = wrapper.querySelector("div") as HTMLElement;
     ClickOutClose.handle(editAddModal, "animate-fade-out", 200, wrapper);
   }
 }
+
 export { EditAddModal };
