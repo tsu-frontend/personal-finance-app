@@ -246,6 +246,9 @@
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
+  .bottom-\[24px\] {
+    bottom: 24px;
+  }
   .-left-\[1px\] {
     left: calc(1px * -1);
   }
@@ -479,6 +482,9 @@
   }
   .h-\[100\%\] {
     height: 100%;
+  }
+  .h-\[100px\] {
+    height: 100px;
   }
   .h-\[101\.76px\] {
     height: 101.76px;
@@ -1761,9 +1767,34 @@
       padding-inline: calc(var(--spacing) * 8);
     }
   }
+  .xl\:absolute {
+    @media (width >= 80rem) {
+      position: absolute;
+    }
+  }
+  .xl\:relative {
+    @media (width >= 80rem) {
+      position: relative;
+    }
+  }
   .xl\:static {
     @media (width >= 80rem) {
       position: static;
+    }
+  }
+  .xl\:top-0 {
+    @media (width >= 80rem) {
+      top: calc(var(--spacing) * 0);
+    }
+  }
+  .xl\:bottom-\[84px\] {
+    @media (width >= 80rem) {
+      bottom: 84px;
+    }
+  }
+  .xl\:left-0 {
+    @media (width >= 80rem) {
+      left: calc(var(--spacing) * 0);
     }
   }
   .xl\:mx-\[40px\] {
@@ -1834,6 +1865,11 @@
   .xl\:w-fit {
     @media (width >= 80rem) {
       width: fit-content;
+    }
+  }
+  .xl\:w-full {
+    @media (width >= 80rem) {
+      width: 100%;
     }
   }
   .xl\:grid-cols-\[repeat\(auto-fill\,_minmax\(400px\,_1fr\)\)\] {
@@ -1947,11 +1983,6 @@
   .xl\:pb-0 {
     @media (width >= 80rem) {
       padding-bottom: calc(var(--spacing) * 0);
-    }
-  }
-  .xl\:pl-\[31\.32px\] {
-    @media (width >= 80rem) {
-      padding-left: 31.32px;
     }
   }
   .xl\:pl-\[31px\] {

@@ -1,3 +1,82 @@
+@keyframes animate-Left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (width >= 1280px) {
+  .animate-left {
+    animation: animate-Left 0.5s ease;
+  }
+}
+
+@keyframes animate-slow-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slow-left {
+  animation: animate-slow-left 1s ease;
+}
+
+@keyframes animate-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-bottom {
+  animation: animate-bottom 1s ease;
+}
+
+@keyframes animate-letters {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-letters {
+  animation: animate-letters 1s ease;
+}
+
+@keyframes animate-pop-out {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-pop-out {
+  animation: animate-pop-out 0.6s ease;
+}
+
 @keyframes animate-open {
   0% {
     opacity: 0;
@@ -150,13 +229,4 @@
 
 .animate-color {
   animation: animate-color 10s linear infinite;
-}
-
-* {
-  /* border: 1px solid red; */
-  /* box-shadow: 0 0 1px red; */
-}
-
-input {
-  /* background-color: blue; */
 }

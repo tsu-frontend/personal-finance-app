@@ -9,9 +9,68 @@
     <link rel="stylesheet" href="../styles/login.css" />
     <link rel="stylesheet" href="../styles/all-pages.css" />
 
-    <script type="module" src="../scripts/login.js" defer></script>
+    <script type="module" src="../scripts/utilities/formUtility.js"></script>
+    <script type="module" src="../scripts/login.js"></script>
+    <!-- <script type="module" src="../scripts/user.js"></script> -->
   </head>
   <body>
-    <!-- ####################### დაიწყე კოდის წერა აქ! ####################### -->
+    <div class="container">
+      <button id="signOut" style="display: none;">sign out</button>
+      <!-- Sign In Form -->
+      <form id="signin-form" class="form-container" style="display:none">
+        <h2>Login</h2>
+        <div class="form-group">
+          <label for="signin-email">Email</label>
+          <input type="email" id="signin-email" />
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input type="password" id="signin-password" />
+        </div>
+        <button type="submit">Login</button>
+
+        <div class="toggle-form">
+          <p>Need to create an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
+        </div>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signup-form" class="form-container" style="display: none">
+        <h2>Sign Up</h2>
+        <div class="form-group">
+          <label for="signup-name">Name</label>
+          <input type="text" name="name" id="signup-name" />
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email-cool" />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Create Password</label>
+          <input type="password" id="signup-password" />
+        </div>
+        <button type="submit">Create Account</button>
+        <div class="toggle-form">
+          <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function toggleForms() {
+        const signinForm = document.getElementById("signin-form");
+        const signupForm = document.getElementById("signup-form");
+
+        if (signinForm.style.display === "none") {
+          signinForm.style.display = "flex";
+          signupForm.style.display = "none";
+        } else {
+          signinForm.style.display = "none";
+          signupForm.style.display = "flex";
+        }
+      }
+    </script>
+
+    <!-- <script src="../scripts/test.js"></script> -->
   </body>
 </html>
