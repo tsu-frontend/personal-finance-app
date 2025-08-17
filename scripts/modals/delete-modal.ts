@@ -6,6 +6,7 @@ class DeleteModal {
   static open(data: any[], modalId: string, tableName: string): void {
     const modalData = data.find((modal) => modal.id === modalId);
     document.body.classList.add("overflow-hidden");
+    document.body.style.scrollbarGutter = "stable";
     document.body.insertAdjacentHTML(
       "beforeend",
       `<div id="wrapper" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">

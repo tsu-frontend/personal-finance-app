@@ -1,3 +1,8 @@
+/* reserves scrollbar space so body doesn't shift when overflow is hidden */
+html {
+  scrollbar-gutter: stable;
+}
+
 @keyframes animate-Left {
   from {
     opacity: 0;
