@@ -2,49 +2,58 @@ import { OptionsModal } from "./modals/options-modal.js";
 import { EditAddModal } from "./modals/edit-add-modal.js";
 import { WithdrawAddModal } from "./modals/withdraw-add-modal.js";
 import { FetchRequest } from "./api/fetchRequest.js";
+
+export interface Pot {
+  id: string;
+  name: string;
+  theme: string;
+  total: number;
+  target: number;
+}
+
 class PotsManager {
-    async renderPotsData() {
-        this.isLoading = true;
-        const fetchConfig = {
-            tableName: "pots",
-            method: "GET",
-            modalId: null,
-            body: null,
-        };
-        this.pots = (await FetchRequest.request(fetchConfig)) || [];
-        console.log("pots fetched");
-        this.renderPots(this.pots);
-        this.isLoading = false;
-    }
-    constructor() {
-        this.pots = [];
-        this.isLoading = false;
-        this.renderPotsData();
-        const newPotBtn = document.querySelector("#new-pot-button");
-        newPotBtn === null || newPotBtn === void 0 ? void 0 : newPotBtn.addEventListener("click", () => {
-            if (this.isLoading)
-                return;
-            EditAddModal.open("add", this.pots);
-            console.log("clicked");
-        });
-    }
-    renderPots(pots) {
-        const potsContainer = document.querySelector("#pots-container");
-        if (!potsContainer)
-            return;
-        potsContainer.innerHTML = "";
-        if (pots.length === 0) {
-            potsContainer.innerHTML = `
+  private pots: Pot[] = [];
+  private isLoading: boolean = false;
+
+  async renderPotsData(): Promise<void> {
+    this.isLoading = true;
+    const fetchConfig = {
+      tableName: "pots",
+      method: "GET" as "GET",
+      modalId: null,
+      body: null,
+    };
+    this.pots = (await FetchRequest.request(fetchConfig)) || [];
+    console.log("pots fetched");
+    this.renderPots(this.pots);
+    this.isLoading = false;
+  }
+
+  constructor() {
+    this.renderPotsData();
+    const newPotBtn = document.querySelector("#new-pot-button") as HTMLButtonElement;
+    newPotBtn?.addEventListener("click", () => {
+      if (this.isLoading) return;
+      EditAddModal.open("add", this.pots);
+      console.log("clicked");
+    });
+  }
+
+  private renderPots(pots: Pot[]): void {
+    const potsContainer = document.querySelector("#pots-container") as HTMLElement;
+    if (!potsContainer) return;
+    potsContainer.innerHTML = "";
+    if (pots.length === 0) {
+      potsContainer.innerHTML = `
         <h1 class="absolute inset-0 h-fit border-2 border-dashed border-gray-400 text-center text-3xl text-gray-600 font-medium p-10 rounded-lg shadow-sm">
         You haven’t added any pots yet. Start by creating one!
         </h1>
       `;
-        }
-        else {
-            pots.forEach((pot, i) => {
-                setTimeout(() => {
-                    const template = document.createElement("template");
-                    template.innerHTML = `
+    } else {
+      pots.forEach((pot, i) => {
+        setTimeout(() => {
+          const template = document.createElement("template");
+          template.innerHTML = `
             <div data-id="${pot.id}" data-name="pot" class="animate-fade-in h-[317px] xl:h-[303px] bg-[#FFF] rounded-[12px] py-[24px] px-[20px] xl:p-[24px] flex flex-col gap-[32px] flex-1 basis-0 grow-0">
               <div data-name="pot-title" class="w-full h-[24px] items-center flex gap-[16px]">
                 <div data-name="pot-theme" class="w-[16px] h-[16px] shrink-0 rounded-full" style="background-color: ${pot.theme}"></div>
@@ -76,31 +85,35 @@ class PotsManager {
               </div>
             </div>
           `;
-                    const potDiv = template.content.firstElementChild;
-                    potsContainer.appendChild(potDiv);
-                }, i * 120);
-            });
-            potsContainer.addEventListener("click", (e) => {
-                var _a, _b, _c;
-                const target = e.target;
-                if (target.closest('[data-name="options-button"]')) {
-                    const btn = target.closest('[data-name="options-button"]');
-                    const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    OptionsModal.open(this.pots, modalId, btn);
-                }
-                if (target.closest('[data-name="add-money"]')) {
-                    const btn = target.closest('[data-name="add-money"]');
-                    const modalId = (_b = btn.closest('[data-name="pot"]')) === null || _b === void 0 ? void 0 : _b.getAttribute("data-id");
-                    WithdrawAddModal.open("add", this.pots, modalId);
-                }
-                if (target.closest('[data-name="withdraw-money"]')) {
-                    const btn = target.closest('[data-name="withdraw-money"]');
-                    const modalId = (_c = btn.closest('[data-name="pot"]')) === null || _c === void 0 ? void 0 : _c.getAttribute("data-id");
-                    WithdrawAddModal.open("withdraw", this.pots, modalId);
-                }
-            });
+          const potDiv = template.content.firstElementChild as HTMLElement;
+          potsContainer.appendChild(potDiv);
+        }, i * 120);
+      });
+
+      potsContainer.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+
+        if (target.closest('[data-name="options-button"]')) {
+          const btn = target.closest('[data-name="options-button"]') as HTMLElement;
+          const modalId = btn.closest('[data-name="pot"]')?.getAttribute("data-id");
+          OptionsModal.open(this.pots, modalId, btn);
         }
+
+        if (target.closest('[data-name="add-money"]')) {
+          const btn = target.closest('[data-name="add-money"]') as HTMLElement;
+          const modalId = btn.closest('[data-name="pot"]')?.getAttribute("data-id");
+          WithdrawAddModal.open("add", this.pots, modalId);
+        }
+
+        if (target.closest('[data-name="withdraw-money"]')) {
+          const btn = target.closest('[data-name="withdraw-money"]') as HTMLElement;
+          const modalId = btn.closest('[data-name="pot"]')?.getAttribute("data-id");
+          WithdrawAddModal.open("withdraw", this.pots, modalId);
+        }
+      });
     }
+  }
 }
+
 const potsManager = new PotsManager();
 export { potsManager };

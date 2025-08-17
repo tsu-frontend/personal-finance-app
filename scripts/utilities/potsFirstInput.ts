@@ -1,6 +1,6 @@
 class PotsFirstInput {
-    static render(name) {
-        return `
+  static render(name: string): string {
+    return `
       <div class="w-full flex flex-col gap-[4px]">
         <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Pot Name</p>
         <div id="input-div-1" class="w-full px-[20px] py-[12px] flex items-center rounded-[8px] border-1 border-[#98908B] relative">
@@ -9,6 +9,7 @@ class PotsFirstInput {
         <p id="characters-left" class="w-full text-[#696868] text-[12px] font-normal leading-[150%] text-right"></p>
       </div>
     `;
-    }
+  }
 }
+
 export { PotsFirstInput };
