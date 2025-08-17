@@ -6,6 +6,11 @@ import { HandleInputError } from "../utilities/handleInputError.js";
 type ModalType = "withdraw" | "add";
 
 class WithdrawAddModal {
+  private static updateNewAmountText(newAmount: HTMLElement, modalType: ModalType, modalData: Pot, inputValue: string) {
+    const value = modalType === "add" ? Number(modalData.total) + Number(inputValue) : Number(modalData.total) - Number(inputValue);
+    newAmount.textContent = `$${value.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+  }
+
   static open(modalType: ModalType, data: Pot[], modalId: string): void {
     const modalData = data.find((modal) => modal.id === modalId);
     if (!modalData) return;
@@ -78,25 +83,23 @@ class WithdrawAddModal {
     inputField.addEventListener("input", () => {
       inputValue = inputField.value;
 
-      if (ValidateInput4.validate(inputValue, modalType, modalData)) {
-        HandleInputError.display(inputDiv, ValidateInput4.validate(inputValue, modalType, modalData));
-      } else {
-        HandleInputError.display(inputDiv, ValidateInput4.validate(inputValue, modalType, modalData));
-        const barPercentage = document.querySelector("#bar-percentage") as HTMLElement;
-        const barPercentageDifference = document.querySelector("#bar-percentage-difference") as HTMLElement;
-        const differencePercentage = document.querySelector("#difference-percentage") as HTMLElement;
-        let newAmount = document.querySelector("#new-amount") as HTMLElement;
+      const validationOutput = ValidateInput4.validate(inputValue, modalType, modalData);
 
+      const barPercentage = document.querySelector("#bar-percentage") as HTMLElement;
+      const barPercentageDifference = document.querySelector("#bar-percentage-difference") as HTMLElement;
+      const differencePercentage = document.querySelector("#difference-percentage") as HTMLElement;
+      const newAmount = document.querySelector("#new-amount") as HTMLElement;
+
+      HandleInputError.display(inputDiv, validationOutput);
+      if (!validationOutput) {
         const difference = parseFloat(((Number(inputValue) / modalData.target) * 100).toString());
-        differencePercentage.textContent = `${difference.toFixed(2)}%`;
 
-        if (modalType === "add") {
-          barPercentageDifference.style.width = `${difference}%`;
-          newAmount.textContent = `$${(Number(modalData.total) + Number(inputValue)).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-        } else if (modalType === "withdraw") {
-          barPercentageDifference.style.width = `${difference}%`;
+        differencePercentage.textContent = `${difference.toFixed(2)}%`;
+        barPercentageDifference.style.width = `${difference}%`;
+        this.updateNewAmountText(newAmount, modalType, modalData, inputValue);
+
+        if (modalType === "withdraw") {
           barPercentage.style.width = `${(modalData.total / modalData.target) * 100 - difference}%`;
-          newAmount.textContent = `$${(Number(modalData.total) - Number(inputValue)).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
         }
 
         // amount change animation
@@ -108,9 +111,11 @@ class WithdrawAddModal {
     });
 
     submitButton.addEventListener("click", () => {
-      if (ValidateInput4.validate(inputValue, modalType, modalData)) {
-        HandleInputError.display(inputDiv, ValidateInput4.validate(inputValue, modalType, modalData));
-      } else {
+      const validationOutput = ValidateInput4.validate(inputValue, modalType, modalData);
+
+      HandleInputError.display(inputDiv, validationOutput);
+
+      if (!validationOutput) {
         submitButton.disabled = true;
         submitButton.classList.remove("cursor-pointer");
         submitButton.classList.add("opacity-50", "cursor-not-allowed");

@@ -1,5 +1,5 @@
-import { ValidateInput3 } from "./validateInput3";
-import { themes } from "../constants/themes";
+import { ValidateInput3 } from "./validateInput3.js";
+import { themes } from "../constants/themes.js";
 
 class ThemeSelectHandler {
   static handle(setChosenTheme: (theme: string) => void): void {
