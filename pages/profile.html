@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/profile.css" />
+  </head>
+  <body>
+    <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
+      <!-- Navigation is dynamically injected, do not add here -->
+      <main class="flex-1 flex flex-col gap-[32px] py-[24px] px-[16px] md:py-[32px] md:px-[40px]">
+        <header class="w-full h-[56px] flex items-center">
+          <h1 class="text-[#201F24] text-[32px] font-bold leading-[120%]">Profile</h1>
+        </header>
+
+        <section class="w-full flex flex-col md:flex-row gap-[24px]">
+          <!-- Profile Card -->
+          <div class="bg-white rounded-[12px] p-[24px] flex flex-col items-center md:w-[350px] shadow-sm">
+            <div class="w-[120px] h-[120px] rounded-full overflow-hidden mb-4 border-4 border-[#F8F4F0]">
+              <img id="profile-avatar" src="../assets/images/avatars/serenity-spa-and-wellness.jpg" alt="Profile Avatar" class="w-full h-full object-cover" />
+            </div>
+            <h2 id="profile-name" class="text-[24px] font-bold text-[#201F24] mb-1">Ahmad Ali</h2>
+            <p id="profile-email" class="text-[#696868] text-[15px] mb-4">ahmad.ali@email.com</p>
+            <button id="edit-profile-btn" class="bg-[#201F24] text-white rounded-[8px] px-6 py-2 font-bold text-[14px] hover:bg-[#696868] transition-all duration-300">Edit Profile</button>
+          </div>
+
+          <!-- Profile Details & Settings -->
+          <div class="flex-1 flex flex-col gap-[24px]">
+            <!-- Account Details -->
+            <section class="bg-white rounded-[12px] p-[24px] flex flex-col gap-[16px] shadow-sm">
+              <h3 class="text-[20px] font-bold text-[#201F24] mb-2">Account Details</h3>
+              <div class="flex flex-col md:flex-row gap-[16px]">
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Full Name</label>
+                  <input type="text" value="Ahmad Ali" class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]" disabled />
+                </div>
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Email</label>
+                  <input type="email" value="ahmad.ali@email.com" class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]" disabled />
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row gap-[16px] mt-4">
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Phone Number</label>
+                  <input type="text" value="+1 234 567 8901" class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]" disabled />
+                </div>
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Joined</label>
+                  <input type="text" value="Jan 10, 2024" class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]" disabled />
+                </div>
+              </div>
+            </section>
+
+            <!-- Security Settings -->
+            <section class="bg-white rounded-[12px] p-[24px] flex flex-col gap-[16px] shadow-sm">
+              <h3 class="text-[20px] font-bold text-[#201F24] mb-2">Security</h3>
+              <div class="flex flex-col md:flex-row gap-[16px]">
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Password</label>
+                  <input type="password" value="********" class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]" disabled />
+                </div>
+                <div class="flex items-end">
+                  <button id="change-password-btn" class="bg-[#201F24] text-white rounded-[8px] px-6 py-2 font-bold text-[14px] hover:bg-[#696868] transition-all duration-300">Change Password</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- Preferences -->
+            <section class="bg-white rounded-[12px] p-[24px] flex flex-col gap-[16px] shadow-sm">
+              <h3 class="text-[20px] font-bold text-[#201F24] mb-2">Preferences</h3>
+              <div class="flex flex-col md:flex-row gap-[16px]">
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Theme</label>
+                  <select class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]">
+                    <option>System Default</option>
+                    <option>Light</option>
+                    <option>Dark</option>
+                  </select>
+                </div>
+                <div class="flex-1">
+                  <label class="block text-[#696868] text-[14px] mb-1">Language</label>
+                  <select class="w-full border border-[#98908B] rounded-lg px-4 py-2 text-[#201F24] bg-[#F8F4F0]">
+                    <option>English</option>
+                    <option>Arabic</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <!-- Danger Zone -->
+            <section class="bg-white rounded-[12px] p-[24px] flex flex-col gap-[16px] shadow-sm border border-[#F2CDAC]">
+              <h3 class="text-[20px] font-bold text-[#C94736] mb-2">Danger Zone</h3>
+              <button id="delete-account-btn" class="bg-[#C94736] text-white rounded-[8px] px-6 py-2 font-bold text-[14px] hover:bg-[#a32d22] transition-all duration-300 w-fit">Delete Account</button>
+            </section>
+          </div>
+        </section>
+      </main>
+    </body>
+  </body>
+</html>
