@@ -1,4 +1,9 @@
 {
+  "name": "personal-finance-app",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.17",
     "supabase-service-manager": "^1.0.2",
