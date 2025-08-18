@@ -184,11 +184,11 @@ class BudgetPage {
       <div class="flex gap-[210px]">
         <div class="flex">
           <figure class="w-[5px] h-[43px] mr-4 bg-[${theme}] rounded-lg"></figure>
-          <div><span>Spent</span><p class="font-semibold pt-1.5">$${spent}</p></div>
+          <div><span class='text-xs text-[#696868]'>Spent</span><p class="font-semibold pt-1.5 text-sm">$${spent}</p></div>
         </div>
         <div class="flex">
           <figure class="w-[5px] h-[43px] bg-[#F8F4F0] rounded-lg mr-4"></figure>
-          <div><span>Remaining</span><p class="font-semibold pt-1.5">$${remaining}</p></div>
+          <div><span class='text-xs text-[#696868]'>Remaining</span><p class="font-semibold pt-1.5 text-sm">$${remaining}</p></div>
         </div>
       </div>
       <section data-name='parent_spendings' class="mt-5 p-5 bg-[#F8F4F0] h-[250px] rounded-[12px] gap-4">
@@ -209,6 +209,14 @@ class BudgetPage {
       spendingSummary.innerHTML += this.createSummaryBox(stat);
     });
   }
+  formateDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
 
   addLastSpendings(trsInfo) {
     // take only the latest 3 spendings
@@ -220,15 +228,17 @@ class BudgetPage {
     <article>
       <div class="flex justify-between">
         <div class="flex items-center">
-          <img src="" class="mr-4" alt="">
-          <p class="text-sm font-semibold">${name}</p>
+          <img src="${avatar}" class="mr-4" alt="">
+          <p class="text-xs font-semibold">${name}</p>
         </div>
         <aside>
-          <div class="font-semibold text-sm">${amount}$</div>
-          <span class="text-[#696868] text-[12px]">${date}</span>
+          <div class="font-semibold text-xs">${amount}$</div>
+          <span class="text-[#696868] text-[12px]">${this.formateDate(
+            date
+          )}</span>
         </aside>
       </div>
-      <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3"></figure>
+      <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
     </article>
   `
       )
