@@ -41,4 +41,16 @@
 
 1. შევქმნათ თითოეული page-სთვის დამოუკიდებელი კლასი
    (setup()- ის ლოგიკა გვექნება ინდივიდუალური)
-2. ამ კლასის გამოყენებით უნდა განვსაზღვროთ რენდერის ლოგიკა,       (განვსაზღვროთ როდის, როგორ)
+2. ამ კლასის გამოყენებით უნდა განვსაზღვროთ რენდერის ლოგიკა, (განვსაზღვროთ როდის, როგორ)
+
+# 5 Refactor Pages with OOP & TS
+
+- Turn each page into a class
+- Follow `budgets.ts` structure
+- Use constructor for init & events
+- Put logic in methods & properties
+- Apply TS types everywhere
+- Use private/public modifiers
+- Define data with interfaces/types
+- Export classes individually
+- Keep code clean & modular

@@ -8,12 +8,11 @@
     <link rel="icon" href="../assets/images/icon-nav-budgets.svg" />
 
     <link rel="stylesheet" href="../styles/budgets.css" />
-        <link rel="stylesheet" href="../styles/animations.css" />
-    <link rel="stylesheet" href="../styles/all-pages.css" />
+    <link rel="stylesheet" href="../styles/animations.css" />
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
-    <script type="module" src="../scripts/budgets.js" defer></script>
+    <script type="module" src="../scripts/api/supaService.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script type="module" src="../scripts/budgets.js" defer></script>
     <script type="module" src="../scripts/nav.js" defer></script>
   </head>
   <body class="bg-[#f8f4f0] min-h-screen flex pb-[52px] md:pb-[74px] xl:pb-0">
@@ -21,21 +20,35 @@
       <!-- heading -->
       <section class="w-full flex justify-between">
         <h2 class="text-[27px] font-bold">Budgets</h2>
-        <button id="add_btn" class="bg-[#201F24] cursor-pointer text-[white] text-[15px] w-40 h-14 rounded-md">+ Add New Budget</button>
+        <button
+          id="add_btn"
+          class="bg-[#201F24] cursor-pointer text-[white] text-[15px] w-40 h-14 rounded-md"
+        >
+          + Add New Budget
+        </button>
       </section>
 
       <section class="flex max-xl:flex-col mt-9 gap-6 h-auto items-start">
-        <aside id="scheme" class="flex flex-col max-xl:flex-row items-center p-8 h-auto pb-0 w-[428px] gap-8 bg-[white] rounded-[12px]">
+        <aside
+          id="scheme"
+          class="flex flex-col max-xl:flex-row max-xl:w-fit items-center p-8 h-auto pb-0  gap-8 bg-[white] rounded-[12px]"
+        >
           <!-- cyrcle -->
-          <div class="relative h-[300px] w-[300px] flex justify-center items-center">
+          <div id="canvas_parent"
+            class="relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center"
+          >
             <canvas id="doughnut"></canvas>
-            <div class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col">
+            <div id="canvas_opacity"
+              class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col"
+            >
               <span id="spent_sum" class="font-bold text-[32px]"></span>
               <span id="total_sum" class="text-[12px] text-[#696868]"></span>
             </div>
           </div>
           <div id="spending_summary">
-            <h3 class="text-xl font-semibold tracking-[0.01em] mb-6">Spending Summary</h3>
+            <h3 id="summary_header" class="text-xl font-semibold tracking-[0.01em] mb-6">
+              Spending Summary
+            </h3>
           </div>
         </aside>
         <!-- budgets -->
@@ -46,186 +59,360 @@
       </section>
       <!-- modals  -->
 
-      <section id="add_budget" onclick="checkClickedEle(event)" class="hidden absolute h-screen w-full bg-[#464646e9] top-0 left-0 justify-center items-center">
+      <section
+        id="add_budget"
+        onclick="checkClickedEle(event)"
+        class="hidden absolute h-screen w-full bg-[#464646e9] top-0 left-0 justify-center items-center"
+      >
         <!-- white modal box -->
-        <div class="w-[560px] h-[490px] bg-white rounded-xl p-8 gap-5 flex flex-col">
+        <div
+          class="w-[560px] h-[490px] bg-white rounded-xl p-8 gap-5 flex flex-col"
+        >
           <aside class="flex justify-between">
             <h4 class="text-[32px] font-bold">Add New Budget</h4>
-            <img id="close_img" class="cursor-pointer" src="../assets/images/icon-close-modal.svg" alt="" />
+            <img
+              id="close_img"
+              class="cursor-pointer"
+              src="../assets/images/icon-close-modal.svg"
+              alt=""
+            />
           </aside>
 
-          <article class="text-sm text-[#696868] leading-[150%]">Choose a category to set a spending budget. These categories can help you monitor spending.</article>
+          <article class="text-sm text-[#696868] leading-[150%]">
+            Choose a category to set a spending budget. These categories can
+            help you monitor spending.
+          </article>
 
           <!-- form element -->
           <form class="w-[496px] h-[306px] flex flex-col">
             <p class="text-xs font-bold text-[#696868] mb-1">Budget Category</p>
 
-            <div id="category_dropdown" class="relative mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5">
-              <p id="chosen_category" class="text-sm text-[#201F24] cursor-pointer">Entertainment</p>
-              <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="" />
+            <div
+              id="category_dropdown"
+              class="relative mb-4 h-[45px] border-[#98908B] rounded-lg border-[1px] flex items-center justify-between pl-5 pr-5"
+            >
+              <p
+                id="chosen_category"
+                class="text-sm text-[#201F24] cursor-pointer"
+              >
+                Entertainment
+              </p>
+              <img
+                src="../assets/images/icon-caret-down.svg"
+                class="cursor-pointer"
+                alt=""
+              />
 
               <!-- caregory dwopdown -->
-              <div id="cat_dropdown" onclick="chooseCat(event)" class="hidden absolute gap-3 top-[60px] z-10 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] -left-[1px] flex-col bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Entertainment</li>
+              <div
+                id="cat_dropdown"
+                onclick="chooseCat(event)"
+                class="hidden absolute gap-3 top-[60px] z-10 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] -left-[1px] flex-col bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar"
+              >
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Entertainment
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Bills</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Bills
+                </li>
                 <figure class="h-[1px] w-full bg-[#f8f4f0] shrink-0"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Groceries</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Groceries
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Dining Out</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Dining Out
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Transportation</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Transportation
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Personal Care</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Personal Care
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Education</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Education
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Lifestyle</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Lifestyle
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">General</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  General
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="category w-full h-5 cursor-pointer list-none text-sm">Shopping</li>
+                <li
+                  class="category w-full h-5 cursor-pointer list-none text-sm"
+                >
+                  Shopping
+                </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
               </div>
             </div>
             <div class="mb-4">
-              <label for="max" class="text-xs font-bold text-[#696868] mb-1">Maximum Spend</label>
-              <input type="text" name="max" placeholder="$ e.g. 2000" class="w-full h-[45px] border-[#98908B] rounded-lg border-[1px] pl-5" />
+              <label for="max" class="text-xs font-bold text-[#696868] mb-1"
+                >Maximum Spend</label
+              >
+              <input
+                type="text"
+                name="max"
+                placeholder="$ e.g. 2000"
+                class="w-full h-[45px] border-[#98908B] rounded-lg border-[1px] pl-5"
+              />
             </div>
 
             <p class="text-xs font-bold text-[#696868] mb-1">Theme</p>
-            <div id="theme_dropdown" class="relative mb-4 h-[45px] rounded-lg border-[1px] border-[#98908B] flex items-center justify-between pl-5 pr-5">
-              <div id="theme_dropdown" class="flex items-center gap-3 cursor-pointer">
-                <figure id="color_ball" class="w-4 h-4 rounded-4xl bg-[#277C78]"></figure>
+            <div
+              id="theme_dropdown"
+              class="relative mb-4 h-[45px] rounded-lg border-[1px] border-[#98908B] flex items-center justify-between pl-5 pr-5"
+            >
+              <div
+                id="theme_dropdown"
+                class="flex items-center gap-3 cursor-pointer"
+              >
+                <figure
+                  id="color_ball"
+                  class="w-4 h-4 rounded-4xl bg-[#277C78]"
+                ></figure>
                 <p id="chosen_color" class="text-sm">Green</p>
               </div>
-              <img src="../assets/images/icon-caret-down.svg" class="cursor-pointer" alt="" />
+              <img
+                src="../assets/images/icon-caret-down.svg"
+                class="cursor-pointer"
+                alt=""
+              />
               <!-- theme dropdown -->
-              <div id="col_dropdown" onclick="chooseCat(event)" class="hidden absolute top-[60px] -left-[1px] flex-col shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] gap-3 bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar">
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+              <div
+                id="col_dropdown"
+                onclick="chooseCat(event)"
+                class="hidden absolute top-[60px] -left-[1px] flex-col shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)] gap-3 bg-white w-[496px] h-[300px] pt-3 pr-5 pl-5 rounded-lg overflow-y-auto hide-scrollbar"
+              >
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#277C78]"></figure>
                     Green
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#F2CDAC]"></figure>
                     Yellow
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#82C9D7]"></figure>
                     Cyan
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#626070]"></figure>
                     Navy
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#C94736]"></figure>
                     red
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#826CB0]"></figure>
                     purple
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#597C7C]"></figure>
                     Turqoise
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#93674F]"></figure>
                     Brown
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#934F6F]"></figure>
                     Magenta
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#3F82B2]"></figure>
                     Blue
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#97A0AC]"></figure>
                     Nave Grey
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#7F9161]"></figure>
                     Army Green
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#826CB0]"></figure>
                     Pink
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#CAB361]"></figure>
                     Gold
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
-                <li class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm">
+                <li
+                  class="color flex items-center justify-between w-full h-5 cursor-pointer list-none text-sm"
+                >
                   <div class="flex gap-3">
                     <figure class="w-4 h-4 rounded-4xl bg-[#BE6C49]"></figure>
                     Orange
                   </div>
-                  <img src="../assets/images/icon-selected.svg" class="w-4 h-4 hidden" />
+                  <img
+                    src="../assets/images/icon-selected.svg"
+                    class="w-4 h-4 hidden"
+                  />
                 </li>
                 <figure class="h-[1px] bg-[#f8f4f0] shrink-0 w-full"></figure>
               </div>
             </div>
 
-            <button id="add_new" class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer">Add Budget</button>
+            <button
+              id="add_new"
+              class="w-full h-[53px] bg-[#201F24] text-white font-bold text-sm rounded-lg cursor-pointer"
+            >
+              Add Budget
+            </button>
           </form>
         </div>
       </section>

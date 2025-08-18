@@ -16,9 +16,11 @@ export class User {
   public name: string;
   public isUserSignedIn: boolean;
   private supaService: ServiceManager;
+  private callBack: () => void;
 
-  constructor(supaService: ServiceManager) {
+  constructor(supaService: ServiceManager, callBack: () => void) {
     this.init(supaService);
+    this.callBack = callBack;
   }
   async init(service: ServiceManager) {
     const result = await service.getCurrentSession();
@@ -28,14 +30,17 @@ export class User {
       this.email = result.data.user.email;
       this.name = result.data.user.firstName;
       this.isUserSignedIn = !!this.id && !!this.email && !!this.name;
-      console.log(this.isUserSignedIn);
+      console.log(`User signed in: ${this.isUserSignedIn}`);
     } else {
-      console.log("not workign");
+      // work on this later
+      console.error("User sign-in failed: No valid session found.", result);
     }
-    this.setup();
+    this.setup().then(() => {
+      this.callBack();
+    });
   }
 
-  setup() {
+  async setup() {
     //setup when using user class as an instance
     console.log("works");
     if (this.isUserSignedIn) {
@@ -58,7 +63,7 @@ export class User {
   async getBudget() {
     const result = await this.supaService.list("budgets");
     if (result.success) {
-      console.log(result.data);
+      // console.log(result.data);
       return result.data;
     } else {
       console.log("error");
@@ -86,10 +91,10 @@ export class User {
 }
 
 export class UserTransactions extends User {
-  constructor(supaService: ServiceManager) {
-    super(supaService);
+  constructor(supaService: ServiceManager, callBack: () => void) {
+    super(supaService, callBack);
   }
-  setup() {
+  async setup() {
     this.getTransaction();
   }
 }
@@ -98,14 +103,32 @@ export class UserBudgets extends User {
   public userBData: any;
   public userTrData: any;
 
-  constructor(supaService: ServiceManager) {
-    super(supaService);
+  constructor(supaService: ServiceManager, callBack: () => void) {
+    super(supaService, callBack);
   }
   async setup() {
     const budget = await this.getBudget();
     const transaction = await this.getTransaction();
 
-    this.userBData = budget
-    this.userTrData = transaction
+    this.userBData = budget;
+    this.userTrData = transaction;
+  }
+}
+
+export class UserBalance extends User {
+  constructor(supaService: ServiceManager, callBack: () => void) {
+    super(supaService, callBack);
+  }
+  async setup() {
+    this.getBalance();
+  }
+}
+
+export class UserPots extends User {
+  constructor(supaService: ServiceManager, callBack: () => void) {
+    super(supaService, callBack);
+  }
+  async setup() {
+    this.getPot();
   }
 }
