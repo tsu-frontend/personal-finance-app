@@ -29,7 +29,7 @@ class WithdrawAddModal {
         const { title, subTitle, amountLabel, buttonText, color } = config[modalType];
         document.body.classList.add("overflow-hidden");
         document.body.insertAdjacentHTML("beforeend", `
-        <div id="withdraw-add-modal" class="animate-fade-in z-2 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+        <div id="withdraw-add-modal" class="animate-fade-in z-3 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
           <div data-id="${modalData.id}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
             <div class="w-full flex justify-between items-center">
               <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>

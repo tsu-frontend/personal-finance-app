@@ -260,7 +260,7 @@ class BudgetPage {
        if (e.target.closest('[data-name="three_dots"]')) {
           const btn = e.target.closest('[data-name="three_dots"]');
           const modalId = btn.closest('[data-name="budget"]')?.getAttribute("data-id");
-          OptionsModal.open(budgetData, modalId, btn, 'budgets');
+          OptionsModal.open(budgetData, modalId, btn, 'budget');
         }
 
       });

@@ -255,6 +255,9 @@
   .z-2 {
     z-index: 2;
   }
+  .z-3 {
+    z-index: 3;
+  }
   .z-10 {
     z-index: 10;
   }
@@ -566,9 +569,6 @@
   }
   .w-\[100vw\] {
     width: 100vw;
-  }
-  .w-\[114px\] {
-    width: 114px;
   }
   .w-\[128px\] {
     width: 128px;
@@ -1163,10 +1163,6 @@
     --tw-leading: 18px;
     line-height: 18px;
   }
-  .leading-\[100\%\] {
-    --tw-leading: 100%;
-    line-height: 100%;
-  }
   .leading-\[120\%\] {
     --tw-leading: 120%;
     line-height: 120%;
@@ -1202,6 +1198,12 @@
   .tracking-\[0\.01em\] {
     --tw-tracking: 0.01em;
     letter-spacing: 0.01em;
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
+  .text-\[\#9F2B68\] {
+    color: #9F2B68;
   }
   .text-\[\#201F24\] {
     color: #201F24;
