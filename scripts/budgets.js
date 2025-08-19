@@ -1,7 +1,9 @@
 import { SupaClient } from "./api/supaService.js";
 import { UserBudgets } from "./user.js";
+import { OptionsModal } from "./modals/options-modal.js";
+import { EditAddModal } from "./modals/edit-add-modal.js";
 
-setTimeout(() => {}, 1000);
+// setTimeout(() => {}, 1000);
 
 class BudgetPage {
   constructor() {
@@ -126,7 +128,7 @@ class BudgetPage {
     let totalSpending = 0;
 
     const result = budgetsInfo.map((budgetStat) => {
-      const { category, maximum, theme } = budgetStat;
+      const { category, maximum, theme, id } = budgetStat;
       const spent = Math.abs(transactionsByCat[category] || 0);
 
       totalSpending += spent;
@@ -134,10 +136,10 @@ class BudgetPage {
       this.spentArr.push(spent);
       this.colorsArr.push(theme);
 
-      let procent = Math.min((spent / maximum) * 100, 100);
+      let percent = Math.min((spent / maximum) * 100, 100);
       let remaining = maximum - spent < 0 ? 0 : maximum - spent;
 
-      return { category, maximum, theme, spent, procent, remaining };
+      return { category, maximum, theme, spent, percent, remaining, id };
     });
     return result;
   }
@@ -161,25 +163,21 @@ class BudgetPage {
     </div>`;
   }
 
-  createBudgetBox({ category, spent, maximum, procent, remaining, theme }) {
+  createBudgetBox({ category, spent, maximum, percent, remaining, theme, id }) {
     return `
-    <article data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
+    <article id="${id}" data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
       <div id='budget_box_parent' class="flex items-center">
       <div id="wrapper" class='flex items-center'>
         <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
         <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
       </div>
         <figure data-name="three_dots" class="text-2xl relative cursor-pointer">...
-          <div data-name="edit_delete" class='hidden absolute z-20 bg-white rounded-lg shadow-md'>
-            <p>Edit Budget</p>
-            <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
-            <p class='text-[#C94736]'>Delete Budget</p>
-          </div>
+          
         </figure>
       </div>
       <div class="text-[#696868] text-lg mt-4 mb-5">Maximum of ${maximum}.00$</div>
       <div id='progress_bar' class="w-[544px] p-1 relative h-8 bg-[#F8F4F0] rounded-sm mb-5">
-        <div style="width: ${procent}%;" class="h-6 bg-[${theme}] rounded-sm absolute"></div>
+        <div style="width: ${percent}%;" class="h-6 bg-[${theme}] rounded-sm absolute"></div>
       </div>
       <div class="flex gap-[210px]">
         <div class="flex">
@@ -203,7 +201,10 @@ class BudgetPage {
     </article>`;
   }
 
+
   renderBudgets(budgetStats, parentEle, spendingSummary) {
+    console.log(budgetStats);
+
     budgetStats.forEach((stat) => {
       parentEle.innerHTML += this.createBudgetBox(stat);
       spendingSummary.innerHTML += this.createSummaryBox(stat);
@@ -221,6 +222,7 @@ class BudgetPage {
   addLastSpendings(trsInfo) {
     // take only the latest 3 spendings
     const latest = trsInfo.slice(0, 3);
+    
 
     const lastSpendingHTML = latest
       .map(
@@ -251,17 +253,16 @@ class BudgetPage {
       });
   }
 
-  openSmallMenu() {
+  openSmallMenu(budgetData) {
     const threeDots = document.querySelectorAll('[data-name="three_dots"]');
     threeDots.forEach((button) => {
       button.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const editOrDelete = button.querySelector('[data-name="edit_delete"]');
-        const isAlreadyOpen = !editOrDelete.classList.contains("hidden");
-        document
-          .querySelectorAll('[data-name="edit_delete"]')
-          .forEach((menu) => menu.classList.add("hidden"));
-        if (!isAlreadyOpen) editOrDelete.classList.remove("hidden");
+       if (e.target.closest('[data-name="three_dots"]')) {
+          const btn = e.target.closest('[data-name="three_dots"]');
+          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("data-id");
+          OptionsModal.open(budgetData, modalId, btn, 'budgets');
+        }
+
       });
     });
 
@@ -301,9 +302,9 @@ class BudgetPage {
     let spentSum = document.querySelector("#spent_sum");
 
     const transactionsByCat = this.transactionsByCategory(trsData);
-    console.log(transactionsByCat);
+    // console.log(transactionsByCat);
     // console.log(budgets);
-
+    console.log(budgetsData);
     const budgetStats = this.calculateBudgetStats(
       budgetsData,
       transactionsByCat
@@ -315,7 +316,7 @@ class BudgetPage {
     const spentArray = budgetStats.map((stat) => stat.spent);
     const colorsArray = budgetStats.map((stat) => stat.theme);
 
-    this.openSmallMenu();
+    this.openSmallMenu(budgetStats);
     this.addLastSpendings(trsData);
     this.initSeeAllButtons();
     this.chart(spentArray, colorsArray, this.elements.ctx);

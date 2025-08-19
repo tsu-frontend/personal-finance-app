@@ -122,7 +122,7 @@ class SignUpForm extends SignInForm {
     }
   };
   async submitFormData(formData: TSignUp) {
-    console.log(formData);
+    // console.log(formData);
     if (
       !formData.email.isValid ||
       !formData.password.isValid ||
