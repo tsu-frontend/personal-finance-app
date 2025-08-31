@@ -12,11 +12,18 @@ class OptionsModal {
                 existingModal.remove();
             }, 100);
         }
-        console.log(data);
         btn.insertAdjacentHTML("beforeend", `<div id="options-modal" class="animate-open z-1 hover:cursor-default flex absolute right-0 top-[36px] bg-[#FFF] py-[12px] px-[20px] rounded-[8px] flex-col gap-[12px] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.25)]">
-        <button id="edit-button" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%] whitespace-nowrap">Edit ${pageType}</button>
+        <button id="edit-button" class="hover:cursor-pointer text-[#201F24] text-[14px] font-[Public Sans] font-normal leading-[150%] whitespace-nowrap">Edit ${pageType === "pots"
+            ? "pot"
+            : pageType === "budgets"
+                ? "budget"
+                : pageType}</button>
         <div class="w-full h-[1px] bg-[#F2F2F2]"></div>
-        <button id="delete-button" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%] whitespace-nowrap">Delete ${pageType}</button>
+        <button id="delete-button" class="hover:cursor-pointer text-[#C94736] text-[14px] font-[Public Sans] font-normal leading-[150%] whitespace-nowrap">Delete ${pageType === "pots"
+            ? "pot"
+            : pageType === "budgets"
+                ? "budget"
+                : pageType}</button>
       </div>`);
         const optionsModal = btn.querySelector("#options-modal");
         optionsModal.addEventListener("click", (e) => {
@@ -24,7 +31,7 @@ class OptionsModal {
         });
         const editBtn = optionsModal.querySelector("#edit-button");
         editBtn.addEventListener("click", () => {
-            EditAddModal.open("edit", data, modalId);
+            EditAddModal.open(data, "edit", pageType, modalId);
             optionsModal.classList.add("animate-close");
             setTimeout(() => {
                 optionsModal.remove();
@@ -32,7 +39,7 @@ class OptionsModal {
         });
         const deleteBtn = optionsModal.querySelector("#delete-button");
         deleteBtn.addEventListener("click", () => {
-            DeleteModal.open(data, modalId, "pot");
+            DeleteModal.open(data, modalId, pageType);
             optionsModal.classList.add("animate-close");
             setTimeout(() => {
                 optionsModal.remove();

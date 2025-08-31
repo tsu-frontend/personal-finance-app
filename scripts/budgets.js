@@ -1,14 +1,13 @@
 import { SupaClient } from "./api/supaService.js";
 import { UserBudgets } from "./user.js";
 import { OptionsModal } from "./modals/options-modal.js";
-import { EditAddModal } from "./modals/edit-add-modal.js";
 
 // setTimeout(() => {}, 1000);
 
 class BudgetPage {
   constructor() {
-    this.chartContainer = document.getElementById('chart_container')
-        this.summaryParent = ` <aside
+    this.chartContainer = document.getElementById("chart_container");
+    this.summaryParent = ` <aside
           id="scheme"
           class="flex flex-col max-xl:flex-row max-xl:w-fit items-center p-8 h-auto pb-0 gap-8 bg-[white] rounded-[12px]"
         >
@@ -25,8 +24,8 @@ class BudgetPage {
             </h3>
           
           </div>
-        </aside>` 
-        this.chartContainer.insertAdjacentHTML("afterbegin", this.summaryParent);
+        </aside>`;
+    this.chartContainer.insertAdjacentHTML("afterbegin", this.summaryParent);
     this.elements = {
       themeDropdownParent: document.getElementById("theme_dropdown"),
       catDropdownParent: document.getElementById("category_dropdown"),
@@ -39,7 +38,7 @@ class BudgetPage {
       chosenCat: document.getElementById("chosen_category"),
       chosenCol: document.getElementById("chosen_color"),
       chosenColBall: document.getElementById("color_ball"),
-      canvasParent: document.getElementById("canvas_parent")
+      canvasParent: document.getElementById("canvas_parent"),
     };
 
     this.spentArr = [];
@@ -55,10 +54,9 @@ class BudgetPage {
 
   async init() {
     this.budgetsUser = new UserBudgets(SupaClient, () => {
-      this.renderChart()
-      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData)
+      this.renderChart();
+      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData);
     });
-    // await this.budgetsUser.setup()
   }
 
   setUpListeners() {
@@ -144,11 +142,7 @@ class BudgetPage {
     return transactionsByCat;
   }
 
-
-
   calculateBudgetStats(budgetsInfo, transactionsByCat) {
-    // console.log(budgetsInfo);
-
     let totalSpending = 0;
 
     const result = budgetsInfo.map((budgetStat) => {
@@ -190,9 +184,9 @@ class BudgetPage {
 
   createBudgetBox({ category, spent, maximum, percent, remaining, theme, id }) {
     return `
-    <article id="${id}" data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
+    <article data-id="${id}" data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
       <div id='budget_box_parent' class="flex items-center">
-      <div id="wrapper" class='flex items-center'>
+      <div class='flex items-center'>
         <figure class="w-4 h-4 rounded-4xl bg-[${theme}] mr-4"></figure>
         <h5 class="font-semibold text-xl mr-[357px]">${category}</h5>
       </div>
@@ -226,14 +220,8 @@ class BudgetPage {
     </article>`;
   }
 
-
   renderBudgets(budgetStats, parentEle, spendingSummary) {
-    console.log(budgetStats);
-    // console.log(spendingSummary)
-
     budgetStats.forEach((stat) => {
-      console.log('now');
-      
       parentEle.innerHTML += this.createBudgetBox(stat);
       spendingSummary.innerHTML += this.createSummaryBox(stat);
     });
@@ -250,7 +238,6 @@ class BudgetPage {
   addLastSpendings(trsInfo) {
     // take only the latest 3 spendings
     const latest = trsInfo.slice(0, 3);
-    
 
     const lastSpendingHTML = latest
       .map(
@@ -285,12 +272,13 @@ class BudgetPage {
     const threeDots = document.querySelectorAll('[data-name="three_dots"]');
     threeDots.forEach((button) => {
       button.addEventListener("click", (e) => {
-       if (e.target.closest('[data-name="three_dots"]')) {
+        if (e.target.closest('[data-name="three_dots"]')) {
           const btn = e.target.closest('[data-name="three_dots"]');
-          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("data-id");
-          OptionsModal.open(budgetData, modalId, btn, 'budget');
+          const modalId = btn
+            .closest('[data-name="budget"]')
+            ?.getAttribute("data-id");
+          OptionsModal.open(budgetData, modalId, btn, "budgets");
         }
-
       });
     });
 
@@ -310,36 +298,36 @@ class BudgetPage {
   }
 
   renderChart() {
-  // create wrapper
-  const canvasContainer = document.createElement("div");
-  canvasContainer.id = "canvas_parent";
-  canvasContainer.className =
-    "relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center";
+    // create wrapper
+    const canvasContainer = document.createElement("div");
+    canvasContainer.id = "canvas_parent";
+    canvasContainer.className =
+      "relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center";
 
-  // create canvas
-  const canvas = document.createElement("canvas");
-  canvas.id = "doughnut";
+    // create canvas
+    const canvas = document.createElement("canvas");
+    canvas.id = "doughnut";
 
-  // overlay div
-  const overlay = document.createElement("div");
-  overlay.id = "canvas_opacity";
-  overlay.className =
-    "bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col";
-  overlay.innerHTML = `
+    // overlay div
+    const overlay = document.createElement("div");
+    overlay.id = "canvas_opacity";
+    overlay.className =
+      "bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col";
+    overlay.innerHTML = `
     <span id="spent_sum" class="font-bold text-[32px]"></span>
     <span id="total_sum" class="text-[12px] text-[#696868]"></span>
   `;
 
-  // append children
-  canvasContainer.appendChild(canvas);
-  canvasContainer.appendChild(overlay);
+    // append children
+    canvasContainer.appendChild(canvas);
+    canvasContainer.appendChild(overlay);
 
-  // put it at the very start of #scheme
-  this.elements.canvasParent.appendChild(canvasContainer);
+    // put it at the very start of #scheme
+    this.elements.canvasParent.appendChild(canvasContainer);
 
-  // update ctx for Chart.js
-  this.elements.ctx = canvas.getContext("2d");
-}
+    // update ctx for Chart.js
+    this.elements.ctx = canvas.getContext("2d");
+  }
 
   // chart
   chart(spentArr, colorsArr, ctx) {
@@ -362,10 +350,10 @@ class BudgetPage {
     let spentSum = document.querySelector("#spent_sum");
 
     const transactionsByCat = this.transactionsByCategory(trsData);
-    // console.log(transactionsByCat);
-    // console.log(budgets);
+
     const budgetStats = this.calculateBudgetStats(
       budgetsData,
+
       transactionsByCat
     );
 

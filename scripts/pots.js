@@ -24,7 +24,7 @@ class PotsManager {
         newPotBtn === null || newPotBtn === void 0 ? void 0 : newPotBtn.addEventListener("click", () => {
             if (this.isLoading)
                 return;
-            EditAddModal.open("add", this.pots);
+            EditAddModal.open("add", this.pots, "pots");
             console.log("clicked");
         });
     }
@@ -62,7 +62,8 @@ class PotsManager {
                   <div data-name="bar" class="w-full h-[8px] rounded-[4px] bg-[#F8F4F0]">
                     <div data-name="bar-percentage" class="h-full rounded-[4px]" style="background-color: ${pot.theme}; width: ${(pot.total / pot.target) * 100}%"></div>
                   </div>
-                  <p class="text-[#696868] text-[12px] font-[Public Sans] font-bold leading-[150%]">${((pot.total / pot.target) * 100).toFixed(2)}%</p>
+                  <p class="text-[#696868] text-[12px] font-[Public Sans] font-bold leading-[150%]">${((pot.total / pot.target) *
+                        100).toFixed(2)}%</p>
                   <p data-name="pot-target" class="text-[#696868] text-[12px] font-[Public Sans] font-normal leading-[150%]">Target of $${pot.target.toLocaleString()}</p>
                 </div>
                 <div data-name="pot-actions" class="w-full flex gap-[16px]">
@@ -85,17 +86,20 @@ class PotsManager {
                 const target = e.target;
                 if (target.closest('[data-name="options-button"]')) {
                     const btn = target.closest('[data-name="options-button"]');
-                    const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    OptionsModal.open(this.pots, modalId, btn, "pot");
+                    const modalId = (_a = btn
+                        .closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
+                    OptionsModal.open(this.pots, modalId, btn, "pots");
                 }
                 if (target.closest('[data-name="add-money"]')) {
                     const btn = target.closest('[data-name="add-money"]');
-                    const modalId = (_b = btn.closest('[data-name="pot"]')) === null || _b === void 0 ? void 0 : _b.getAttribute("data-id");
+                    const modalId = (_b = btn
+                        .closest('[data-name="pot"]')) === null || _b === void 0 ? void 0 : _b.getAttribute("data-id");
                     WithdrawAddModal.open("add", this.pots, modalId);
                 }
                 if (target.closest('[data-name="withdraw-money"]')) {
                     const btn = target.closest('[data-name="withdraw-money"]');
-                    const modalId = (_c = btn.closest('[data-name="pot"]')) === null || _c === void 0 ? void 0 : _c.getAttribute("data-id");
+                    const modalId = (_c = btn
+                        .closest('[data-name="pot"]')) === null || _c === void 0 ? void 0 : _c.getAttribute("data-id");
                     WithdrawAddModal.open("withdraw", this.pots, modalId);
                 }
             });

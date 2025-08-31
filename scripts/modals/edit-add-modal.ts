@@ -5,18 +5,34 @@ import { ValidateInput2 } from "../utilities/validateInput2.js";
 import { ValidateInput3 } from "../utilities/validateInput3.js";
 import { ThemeModal } from "./theme-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
-import { pageType } from "../utilities/pageType.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
 
 class EditAddModal {
-  static open(modalType: "edit" | "add", data: any[], modalId: string | null = null): void {
+  static open(
+    data: any[],
+    modalType: "edit" | "add",
+    pageType: string,
+    modalId: string | null = null
+  ): void {
     const modalData = data.find((modal) => modal.id === modalId);
-    let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
+
+    let field2Title,
+      firstInput,
+      title,
+      subTitle,
+      modalIdValue,
+      modalName,
+      input2Value,
+      modalTheme,
+      modalColorName,
+      colorAnimation,
+      buttonText;
     const config = {
       pots: {
         edit: {
           title: "Edit Pot",
-          subTitle: "If your saving targets change, feel free to update your pots.",
+          subTitle:
+            "If your saving targets change, feel free to update your pots.",
           modalIdValue: modalData?.id,
           modalName: modalData?.name,
           input2Value: modalData?.target,
@@ -27,11 +43,13 @@ class EditAddModal {
         },
         add: {
           title: "Add New Pot",
-          subTitle: "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
+          subTitle:
+            "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
           modalIdValue: "new-modal",
           modalName: "",
           input2Value: "",
-          modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+          modalTheme:
+            "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
           modalColorName: "Pick a theme",
           colorAnimation: "animate-color",
           buttonText: "Add Pot",
@@ -40,10 +58,11 @@ class EditAddModal {
       budgets: {
         edit: {
           title: "Edit Budget",
-          subTitle: "As your budgets change, feel free to update your spending limits.",
+          subTitle:
+            "As your budgets change, feel free to update your spending limits.",
           modalIdValue: modalData?.id,
           modalName: modalData?.name,
-          input2Value: modalData?.target,
+          input2Value: modalData?.maximum,
           modalTheme: modalData?.theme,
           modalColorName: themes[modalData?.theme],
           colorAnimation: "",
@@ -51,23 +70,38 @@ class EditAddModal {
         },
         add: {
           title: "Add New Budget",
-          subTitle: "Choose a category to set a spending budget. These categories can help you monitor spending.",
+          subTitle:
+            "Choose a category to set a spending budget. These categories can help you monitor spending.",
           modalIdValue: "new-modal",
           modalName: "",
           input2Value: "",
-          modalTheme: "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
+          modalTheme:
+            "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
           modalColorName: "Pick a theme",
           colorAnimation: "animate-color",
           buttonText: "Add Budget",
         },
       },
     };
-    ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config[pageType][modalType]);
+
+    ({
+      title,
+      subTitle,
+      modalIdValue,
+      modalName,
+      input2Value,
+      modalTheme,
+      modalColorName,
+      colorAnimation,
+      buttonText,
+    } = config[pageType][modalType]);
+
     if (pageType === "pots") {
       field2Title = "Target";
       firstInput = PotsFirstInput.render(modalName);
     } else if (pageType === "budgets") {
       field2Title = "Maximum";
+      // natia
       firstInput = ``;
     }
     document.body.classList.add("overflow-hidden");
@@ -86,7 +120,9 @@ class EditAddModal {
               <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
               <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                 <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
+                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value.toFixed(
+                  2
+                )}" />
               </div>
             </div>
             <div class="w-full flex flex-col gap-[4px]">
@@ -104,9 +140,13 @@ class EditAddModal {
         </div>
       </div>`
     );
-    const closeButton = document.querySelector('[data-name="close-button"]') as HTMLElement;
+    const closeButton = document.querySelector(
+      '[data-name="close-button"]'
+    ) as HTMLElement;
     closeButton.addEventListener("click", () => {
-      const editAddModal = document.querySelector("#edit-add-modal") as HTMLElement;
+      const editAddModal = document.querySelector(
+        "#edit-add-modal"
+      ) as HTMLElement;
       editAddModal.classList.add("animate-fade-out");
       setTimeout(() => {
         editAddModal.remove();
@@ -134,7 +174,9 @@ class EditAddModal {
         chosenTheme = newTheme;
       });
     });
-    const submitButton = document.querySelector("#submit-button") as HTMLElement;
+    const submitButton = document.querySelector(
+      "#submit-button"
+    ) as HTMLElement;
     submitButton.addEventListener("click", () => {
       const valid1 = ValidateInput1.validate();
       const valid2 = ValidateInput2.validate();
@@ -149,8 +191,11 @@ class EditAddModal {
               modalId: null,
               body: {
                 id: crypto.randomUUID(),
-                name: (document.querySelector("#input-1") as HTMLInputElement).value,
-                target: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
+                name: (document.querySelector("#input-1") as HTMLInputElement)
+                  .value,
+                target: parseFloat(
+                  (document.querySelector("#input-2") as HTMLInputElement).value
+                ),
                 total: 0,
                 theme: chosenTheme,
               },
@@ -160,8 +205,11 @@ class EditAddModal {
               method: "PATCH" as "PATCH",
               modalId,
               body: {
-                name: (document.querySelector("#input-1") as HTMLInputElement).value,
-                target: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
+                name: (document.querySelector("#input-1") as HTMLInputElement)
+                  .value,
+                target: parseFloat(
+                  (document.querySelector("#input-2") as HTMLInputElement).value
+                ),
                 theme: chosenTheme,
               },
             },
@@ -173,7 +221,9 @@ class EditAddModal {
               modalId: null,
               body: {
                 id: crypto.randomUUID(),
-                maximum: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
+                maximum: parseFloat(
+                  (document.querySelector("#input-2") as HTMLInputElement).value
+                ),
                 theme: chosenTheme,
               },
             },
@@ -182,7 +232,9 @@ class EditAddModal {
               method: "PATCH" as "PATCH",
               modalId,
               body: {
-                maximum: parseFloat((document.querySelector("#input-2") as HTMLInputElement).value),
+                maximum: parseFloat(
+                  (document.querySelector("#input-2") as HTMLInputElement).value
+                ),
                 theme: chosenTheme,
               },
             },

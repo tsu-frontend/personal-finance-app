@@ -5,10 +5,9 @@ import { ValidateInput2 } from "../utilities/validateInput2.js";
 import { ValidateInput3 } from "../utilities/validateInput3.js";
 import { ThemeModal } from "./theme-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
-import { pageType } from "../utilities/pageType.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
 class EditAddModal {
-    static open(modalType, data, modalId = null) {
+    static open(data, modalType, pageType, modalId = null) {
         const modalData = data.find((modal) => modal.id === modalId);
         let field2Title, firstInput, title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText;
         const config = {
@@ -42,7 +41,7 @@ class EditAddModal {
                     subTitle: "As your budgets change, feel free to update your spending limits.",
                     modalIdValue: modalData === null || modalData === void 0 ? void 0 : modalData.id,
                     modalName: modalData === null || modalData === void 0 ? void 0 : modalData.name,
-                    input2Value: modalData === null || modalData === void 0 ? void 0 : modalData.target,
+                    input2Value: modalData === null || modalData === void 0 ? void 0 : modalData.maximum,
                     modalTheme: modalData === null || modalData === void 0 ? void 0 : modalData.theme,
                     modalColorName: themes[modalData === null || modalData === void 0 ? void 0 : modalData.theme],
                     colorAnimation: "",
@@ -61,13 +60,24 @@ class EditAddModal {
                 },
             },
         };
-        ({ title, subTitle, modalIdValue, modalName, input2Value, modalTheme, modalColorName, colorAnimation, buttonText } = config[pageType][modalType]);
+        ({
+            title,
+            subTitle,
+            modalIdValue,
+            modalName,
+            input2Value,
+            modalTheme,
+            modalColorName,
+            colorAnimation,
+            buttonText,
+        } = config[pageType][modalType]);
         if (pageType === "pots") {
             field2Title = "Target";
             firstInput = PotsFirstInput.render(modalName);
         }
         else if (pageType === "budgets") {
             field2Title = "Maximum";
+            // natia
             firstInput = ``;
         }
         document.body.classList.add("overflow-hidden");
@@ -84,7 +94,7 @@ class EditAddModal {
               <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
               <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
                 <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value}" />
+                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value.toFixed(2)}" />
               </div>
             </div>
             <div class="w-full flex flex-col gap-[4px]">
@@ -147,7 +157,8 @@ class EditAddModal {
                             modalId: null,
                             body: {
                                 id: crypto.randomUUID(),
-                                name: document.querySelector("#input-1").value,
+                                name: document.querySelector("#input-1")
+                                    .value,
                                 target: parseFloat(document.querySelector("#input-2").value),
                                 total: 0,
                                 theme: chosenTheme,
@@ -158,7 +169,8 @@ class EditAddModal {
                             method: "PATCH",
                             modalId,
                             body: {
-                                name: document.querySelector("#input-1").value,
+                                name: document.querySelector("#input-1")
+                                    .value,
                                 target: parseFloat(document.querySelector("#input-2").value),
                                 theme: chosenTheme,
                             },
