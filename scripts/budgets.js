@@ -287,8 +287,8 @@ class BudgetPage {
       button.addEventListener("click", (e) => {
        if (e.target.closest('[data-name="three_dots"]')) {
           const btn = e.target.closest('[data-name="three_dots"]');
-          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("id");
-          OptionsModal.open(budgetData, modalId, btn, 'budgets');
+          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("data-id");
+          OptionsModal.open(budgetData, modalId, btn, 'budget');
         }
 
       });

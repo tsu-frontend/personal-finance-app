@@ -86,7 +86,7 @@ class PotsManager {
                 if (target.closest('[data-name="options-button"]')) {
                     const btn = target.closest('[data-name="options-button"]');
                     const modalId = (_a = btn.closest('[data-name="pot"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
-                    OptionsModal.open(this.pots, modalId, btn);
+                    OptionsModal.open(this.pots, modalId, btn, "pot");
                 }
                 if (target.closest('[data-name="add-money"]')) {
                     const btn = target.closest('[data-name="add-money"]');
