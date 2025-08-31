@@ -7,8 +7,27 @@ import { EditAddModal } from "./modals/edit-add-modal.js";
 
 class BudgetPage {
   constructor() {
+    this.chartContainer = document.getElementById('chart_container')
+        this.summaryParent = ` <aside
+          id="scheme"
+          class="flex flex-col max-xl:flex-row max-xl:w-fit items-center p-8 h-auto pb-0 gap-8 bg-[white] rounded-[12px]"
+        >
+          <!-- cyrcle -->
+          <div
+            id="canvas_parent"
+            class="relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center"
+          >
+          
+          </div>
+          <div id="spending_summary">
+            <h3 class="text-xl font-semibold tracking-[0.01em] mb-6">
+              Spending Summary
+            </h3>
+          
+          </div>
+        </aside>` 
+        this.chartContainer.insertAdjacentHTML("afterbegin", this.summaryParent);
     this.elements = {
-      ctx: document.getElementById("doughnut"),
       themeDropdownParent: document.getElementById("theme_dropdown"),
       catDropdownParent: document.getElementById("category_dropdown"),
       catDropdown: document.getElementById("cat_dropdown"),
@@ -20,7 +39,9 @@ class BudgetPage {
       chosenCat: document.getElementById("chosen_category"),
       chosenCol: document.getElementById("chosen_color"),
       chosenColBall: document.getElementById("color_ball"),
+      canvasParent: document.getElementById("canvas_parent")
     };
+
     this.spentArr = [];
     this.colorsArr = [];
     this.dropDown(
@@ -34,13 +55,14 @@ class BudgetPage {
 
   async init() {
     this.budgetsUser = new UserBudgets(SupaClient, () => {
-      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData);
+      this.renderChart()
+      this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData)
     });
     // await this.budgetsUser.setup()
   }
 
   setUpListeners() {
-    showAddBudgetModal.addEventListener("click", () => {
+    this.elements.showAddBudgetModal.addEventListener("click", () => {
       this.elements.addBudgetModal.classList.replace("hidden", "flex");
       document.body.style.overflow = "hidden";
     });
@@ -122,6 +144,8 @@ class BudgetPage {
     return transactionsByCat;
   }
 
+
+
   calculateBudgetStats(budgetsInfo, transactionsByCat) {
     // console.log(budgetsInfo);
 
@@ -146,7 +170,8 @@ class BudgetPage {
 
   createSummaryBox({ category, spent, maximum, theme }) {
     return `
-    <div id="spending_summary" class="mt-2">
+    
+    <div id="summary_part" class="mt-2">
       <article id='category_box' class="flex flex-col w-[364px]">
         <div class="flex justify-between">
           <div class='flex'>
@@ -204,8 +229,11 @@ class BudgetPage {
 
   renderBudgets(budgetStats, parentEle, spendingSummary) {
     console.log(budgetStats);
+    // console.log(spendingSummary)
 
     budgetStats.forEach((stat) => {
+      console.log('now');
+      
       parentEle.innerHTML += this.createBudgetBox(stat);
       spendingSummary.innerHTML += this.createSummaryBox(stat);
     });
@@ -259,7 +287,7 @@ class BudgetPage {
       button.addEventListener("click", (e) => {
        if (e.target.closest('[data-name="three_dots"]')) {
           const btn = e.target.closest('[data-name="three_dots"]');
-          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("data-id");
+          const modalId = btn.closest('[data-name="budget"]')?.getAttribute("id");
           OptionsModal.open(budgetData, modalId, btn, 'budgets');
         }
 
@@ -280,6 +308,38 @@ class BudgetPage {
       });
     });
   }
+
+  renderChart() {
+  // create wrapper
+  const canvasContainer = document.createElement("div");
+  canvasContainer.id = "canvas_parent";
+  canvasContainer.className =
+    "relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center";
+
+  // create canvas
+  const canvas = document.createElement("canvas");
+  canvas.id = "doughnut";
+
+  // overlay div
+  const overlay = document.createElement("div");
+  overlay.id = "canvas_opacity";
+  overlay.className =
+    "bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col";
+  overlay.innerHTML = `
+    <span id="spent_sum" class="font-bold text-[32px]"></span>
+    <span id="total_sum" class="text-[12px] text-[#696868]"></span>
+  `;
+
+  // append children
+  canvasContainer.appendChild(canvas);
+  canvasContainer.appendChild(overlay);
+
+  // put it at the very start of #scheme
+  this.elements.canvasParent.appendChild(canvasContainer);
+
+  // update ctx for Chart.js
+  this.elements.ctx = canvas.getContext("2d");
+}
 
   // chart
   chart(spentArr, colorsArr, ctx) {
@@ -304,12 +364,10 @@ class BudgetPage {
     const transactionsByCat = this.transactionsByCategory(trsData);
     // console.log(transactionsByCat);
     // console.log(budgets);
-    console.log(budgetsData);
     const budgetStats = this.calculateBudgetStats(
       budgetsData,
       transactionsByCat
     );
-    // console.log(budgetStats)
 
     this.renderBudgets(budgetStats, parentEle, spendingSummary);
 
@@ -319,6 +377,7 @@ class BudgetPage {
     this.openSmallMenu(budgetStats);
     this.addLastSpendings(trsData);
     this.initSeeAllButtons();
+    // this.renderChart()
     this.chart(spentArray, colorsArray, this.elements.ctx);
 
     totalSum.textContent = `of $${budgetsData.reduce(

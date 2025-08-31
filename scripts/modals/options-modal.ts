@@ -28,7 +28,7 @@ class OptionsModal {
     const editBtn = optionsModal.querySelector("#edit-button") as HTMLElement;
     editBtn.addEventListener("click", () => {
       EditAddModal.open("edit", data, modalId);
-      optionsModal.classList.add("animate-close");
+      optionsModal.classList.add("animate-close"); 
       setTimeout(() => {
         optionsModal.remove();
       }, 100);
