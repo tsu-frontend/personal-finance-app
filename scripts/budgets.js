@@ -198,7 +198,7 @@ class BudgetPage {
       <div id='progress_bar' class="w-[544px] p-1 relative h-8 bg-[#F8F4F0] rounded-sm mb-5">
         <div style="width: ${percent}%;" class="h-6 bg-[${theme}] rounded-sm absolute"></div>
       </div>
-      <div class="flex gap-[210px]">
+      <div id='spent_remain' class="flex gap-[210px]">
         <div class="flex">
           <figure class="w-[5px] h-[43px] mr-4 bg-[${theme}] rounded-lg"></figure>
           <div><span class='text-xs text-[#696868]'>Spent</span><p class="font-semibold pt-1.5 text-sm">$${spent}</p></div>
@@ -209,7 +209,7 @@ class BudgetPage {
         </div>
       </div>
       <section data-name='parent_spendings' class="mt-5 p-5 bg-[#F8F4F0] h-[250px] rounded-[12px] gap-4">
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-4">
           <h6 class="font-semibold">Latest Spending</h6>
           <div data-name='see_all' class="flex gap-3 cursor-pointer">
             <div class="text-[#696868] text-[16px]">See All</div>

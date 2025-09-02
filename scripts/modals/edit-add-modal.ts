@@ -6,6 +6,7 @@ import { ValidateInput3 } from "../utilities/validateInput3.js";
 import { ThemeModal } from "./theme-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
+import { BudgetsFirstInput } from "../utilities/budgetsFirstInput.js";
 
 class EditAddModal {
   static open(
@@ -102,7 +103,7 @@ class EditAddModal {
     } else if (pageType === "budgets") {
       field2Title = "Maximum";
       // natia
-      firstInput = ``;
+      firstInput = BudgetsFirstInput.render(modalName);
     }
     document.body.classList.add("overflow-hidden");
     document.body.insertAdjacentHTML(

@@ -6,6 +6,7 @@ import { ValidateInput3 } from "../utilities/validateInput3.js";
 import { ThemeModal } from "./theme-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
+import { BudgetsFirstInput } from "../utilities/budgetsFirstInput.js";
 class EditAddModal {
     static open(data, modalType, pageType, modalId = null) {
         const modalData = data.find((modal) => modal.id === modalId);
@@ -78,7 +79,7 @@ class EditAddModal {
         else if (pageType === "budgets") {
             field2Title = "Maximum";
             // natia
-            firstInput = ``;
+            firstInput = BudgetsFirstInput.render(modalName);
         }
         document.body.classList.add("overflow-hidden");
         document.body.insertAdjacentHTML("beforeend", `<div id="edit-add-modal" class="animate-fade-in z-3 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
