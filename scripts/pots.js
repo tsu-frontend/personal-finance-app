@@ -21,10 +21,10 @@ class PotsManager {
         this.isLoading = false;
         this.renderPotsData();
         const newPotBtn = document.querySelector("#new-pot-button");
-        newPotBtn === null || newPotBtn === void 0 ? void 0 : newPotBtn.addEventListener("click", () => {
+        newPotBtn.addEventListener("click", () => {
             if (this.isLoading)
                 return;
-            EditAddModal.open("add", this.pots, "pots");
+            EditAddModal.open(this.pots, "add", "pots");
             console.log("clicked");
         });
     }

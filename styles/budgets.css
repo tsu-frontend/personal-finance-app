@@ -261,6 +261,9 @@
   .z-10 {
     z-index: 10;
   }
+  .z-999 {
+    z-index: 999;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -335,9 +338,6 @@
   }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
-  }
-  .mb-2 {
-    margin-bottom: calc(var(--spacing) * 2);
   }
   .mb-3 {
     margin-bottom: calc(var(--spacing) * 3);

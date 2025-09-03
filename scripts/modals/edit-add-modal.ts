@@ -4,6 +4,7 @@ import { ValidateInput1 } from "../utilities/validateInput1.js";
 import { ValidateInput2 } from "../utilities/validateInput2.js";
 import { ValidateInput3 } from "../utilities/validateInput3.js";
 import { ThemeModal } from "./theme-modal.js";
+import { CategoryModal } from "./category-modal.js";
 import { FetchRequest } from "../api/fetchRequest.js";
 import { PotsFirstInput } from "../utilities/potsFirstInput.js";
 import { BudgetsFirstInput } from "../utilities/budgetsFirstInput.js";
@@ -19,6 +20,7 @@ class EditAddModal {
 
     let field2Title,
       firstInput,
+      modalCategory,
       title,
       subTitle,
       modalIdValue,
@@ -48,7 +50,7 @@ class EditAddModal {
             "Create a pot to set savings targets. These can help keep you on track as you save for special purchases.",
           modalIdValue: "new-modal",
           modalName: "",
-          input2Value: "",
+          input2Value: 0,
           modalTheme:
             "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
           modalColorName: "Pick a theme",
@@ -66,6 +68,7 @@ class EditAddModal {
           input2Value: modalData?.maximum,
           modalTheme: modalData?.theme,
           modalColorName: themes[modalData?.theme],
+          modalCategory: modalData?.category,
           colorAnimation: "",
           buttonText: "Save Changes",
         },
@@ -75,7 +78,8 @@ class EditAddModal {
             "Choose a category to set a spending budget. These categories can help you monitor spending.",
           modalIdValue: "new-modal",
           modalName: "",
-          input2Value: "",
+          input2Value: 0,
+          modalCategory: "Pick a category",
           modalTheme:
             "conic-gradient(red, orange, yellow, green, cyan, blue, violet, red)",
           modalColorName: "Pick a theme",
@@ -90,6 +94,7 @@ class EditAddModal {
       subTitle,
       modalIdValue,
       modalName,
+      modalCategory,
       input2Value,
       modalTheme,
       modalColorName,
@@ -103,43 +108,45 @@ class EditAddModal {
     } else if (pageType === "budgets") {
       field2Title = "Maximum";
       // natia
-      firstInput = BudgetsFirstInput.render(modalName);
+      firstInput = BudgetsFirstInput.render(modalCategory);
     }
     document.body.classList.add("overflow-hidden");
     document.body.insertAdjacentHTML(
       "beforeend",
-      `<div id="edit-add-modal" class="animate-fade-in z-3 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
-        <div data-id="${modalIdValue}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
-          <div class="w-full flex justify-between items-center">
-            <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>
-            <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
-          </div>
-          <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${subTitle}</p>
-          <div class="w-full flex flex-col gap-[16px]">
-            ${firstInput}
-            <div class="w-full flex flex-col gap-[4px]">
-              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
-              <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
-                <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
-                <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value.toFixed(
-                  2
-                )}" />
+      `
+        <div id="edit-add-modal" class="animate-fade-in z-3 fixed inset-0 bg-[rgb(0,0,0,0.5)] flex justify-center items-center">
+          <div data-id="${modalIdValue}" class="bg-[#FFF] w-[335px] md:w-[560px] rounded-[12px] flex flex-col gap-[20px] p-[32px]">
+            <div class="w-full flex justify-between items-center">
+              <h1 class="text-[#201F24] text-[20px] md:text-[32px] font-bold leading-[120%]">${title}</h1>
+              <img data-name="close-button" src="../assets/images/icon-close-modal.svg" class="hover:cursor-pointer w-[25.5px] h-[25.5px]" />
+            </div>
+            <p class="w-full text-[#696868] text-[14px] font-normal leading-[150%]">${subTitle}</p>
+            <div class="w-full flex flex-col gap-[16px]">
+              ${firstInput}
+              <div class="w-full flex flex-col gap-[4px]">
+                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">${field2Title}</p>
+                <div id="input-2-div" class="w-full flex items-center gap-[12px] px-[20px] py-[12px] h-[48px] border-1 border-[#98908B] rounded-[8px] relative">
+                  <span class="text-[#98908B] text-[14px] font-normal leading-[150%]">$</span>
+                  <input id="input-2" type="text" placeholder="e.g. 2000" class="hover:cursor-pointer h-[21px] w-full focus:outline-none" value="${input2Value.toFixed(
+                    2
+                  )}" />
+                </div>
+              </div>
+              <div class="w-full flex flex-col gap-[4px]">
+                <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
+                <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
+                  <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
+                  <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
+                  <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
+                </div>
               </div>
             </div>
-            <div class="w-full flex flex-col gap-[4px]">
-              <p class="w-full text-[#696868] text-[12px] font-bold leading-[150%]">Theme</p>
-              <div id="input-3" class="select-none relative hover:cursor-pointer w-full flex items-center gap-[12px] px-[20px] h-[48px] border-1 border-[#98908B] rounded-[8px]">
-                <span class="${colorAnimation} w-[16px] h-[16px] rounded-full" style="background: ${modalTheme}"></span>
-                <p class="text-[#201F24] text-[14px] font-normal">${modalColorName}</p>
-                <img src="../assets/images/icon-caret-down.svg" class="ml-auto" />
-              </div>
-            </div>
+            <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
+              <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
+            </button>
           </div>
-          <button id="submit-button" class="hover:cursor-pointer w-full bg-[#201F24] rounded-[8px] p-[16px]">
-            <p class="font-bold text-[#FFF] text-[14px]">${buttonText}</p>
-          </button>
         </div>
-      </div>`
+      `
     );
     const closeButton = document.querySelector(
       '[data-name="close-button"]'
@@ -166,6 +173,12 @@ class EditAddModal {
       const counter = document.querySelector("#characters-left") as HTMLElement;
       counter.textContent = `${charsLeft} characters left`;
       input1.addEventListener("input", () => ValidateInput1.validate());
+    } else if (pageType === "budgets") {
+      input1.addEventListener("click", () => {
+        CategoryModal.open(modalCategory, (newCategory: string) => {
+          modalCategory = newCategory;
+        });
+      });
     }
     const input2 = document.querySelector("#input-2") as HTMLInputElement;
     input2.addEventListener("input", () => ValidateInput2.validate());

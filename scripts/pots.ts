@@ -34,9 +34,9 @@ class PotsManager {
     const newPotBtn = document.querySelector(
       "#new-pot-button"
     ) as HTMLButtonElement;
-    newPotBtn?.addEventListener("click", () => {
+    newPotBtn.addEventListener("click", () => {
       if (this.isLoading) return;
-      EditAddModal.open("add", this.pots, "pots");
+      EditAddModal.open(this.pots, "add", "pots");
       console.log("clicked");
     });
   }

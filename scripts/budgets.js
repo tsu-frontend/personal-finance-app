@@ -1,6 +1,7 @@
 import { SupaClient } from "./api/supaService.js";
 import { UserBudgets } from "./user.js";
 import { OptionsModal } from "./modals/options-modal.js";
+import { EditAddModal } from "./modals/edit-add-modal.js";
 class BudgetPage {
     constructor() {
         this.getData = async (trsData, budgetsData) => {
@@ -14,6 +15,7 @@ class BudgetPage {
             const spentArray = budgetStats.map((stat) => stat.spent);
             const colorsArray = budgetStats.map((stat) => stat.theme);
             this.openSmallMenu(budgetStats);
+            this.setUpListeners(budgetsData);
             this.addLastSpendings(trsData);
             this.initSeeAllButtons();
             this.chart(spentArray, colorsArray, this.elements.ctx);
@@ -61,10 +63,10 @@ class BudgetPage {
             this.getData(this.budgetsUser.userTrData, this.budgetsUser.userBData);
         });
     }
-    setUpListeners() {
+    setUpListeners(budgetData) {
         this.elements.showAddBudgetModal.addEventListener("click", () => {
-            this.elements.addBudgetModal.classList.replace("hidden", "flex");
-            document.body.style.overflow = "hidden";
+            EditAddModal.open(budgetData, "add", "budgets");
+            console.log("clicked");
         });
     }
     checkClickedEle(event) {
@@ -154,7 +156,7 @@ class BudgetPage {
             </article>
         </div>`;
     }
-    createBudgetBox({ category, spent, maximum, percent, remaining, theme, id }) {
+    createBudgetBox({ category, spent, maximum, percent, remaining, theme, id, }) {
         return `
         <article data-id="${id}" data-name="budget" class="w-[608px] h-[535px] p-8 bg-[white] rounded-[12px]">
             <div id='budget_box_parent' class="flex items-center">
@@ -236,7 +238,8 @@ class BudgetPage {
                 const target = e.target;
                 if (target.closest('[data-name="three_dots"]')) {
                     const btn = target.closest('[data-name="three_dots"]');
-                    const modalId = (_a = btn.closest('[data-name="budget"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
+                    const modalId = (_a = btn
+                        .closest('[data-name="budget"]')) === null || _a === void 0 ? void 0 : _a.getAttribute("data-id");
                     OptionsModal.open(budgetData, modalId, btn, "budgets");
                 }
             });
@@ -275,7 +278,6 @@ class BudgetPage {
         this.elements.ctx = canvas.getContext("2d");
     }
     chart(spentArr, colorsArr, ctx) {
-        // @ts-ignore
         return new Chart(ctx, {
             type: "doughnut",
             data: {
