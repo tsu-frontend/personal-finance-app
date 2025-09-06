@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "afterbegin",
     `
       <div id="nav-wrapper" class="xl:w-[min(20.83%,300px)] transition-all duration-300 ease">
-        <nav class="select-none overflow-hidden z-1 h-[52px] w-[100vw] bg-[#201F24] rounded-tr-[8px] rounded-tl-[8px] pt-[8px] px-[16px] bottom-0 fixed flex flex-col md:h-[74px] md:px-[40px] xl:top-0 xl:left-0 xl:w-[min(20.83%,300px)] xl:h-auto xl:gap-[24px] xl:px-0 xl:pr-[24px] xl:rounded-tl-[0] xl:rounded-tr-[16px] xl:rounded-br-[16px] shrink-0 transition-all duration-300 ease">
+        <nav class="select-none overflow-hidden z-2 h-[52px] w-[100vw] bg-[#201F24] rounded-tr-[8px] rounded-tl-[8px] pt-[8px] px-[16px] bottom-0 fixed flex flex-col md:h-[74px] md:px-[40px] xl:top-0 xl:left-0 xl:w-[min(20.83%,300px)] xl:h-auto xl:gap-[24px] xl:px-0 xl:pr-[24px] xl:rounded-tl-[0] xl:rounded-tr-[16px] xl:rounded-br-[16px] shrink-0 transition-all duration-300 ease">
           <svg id="nav-logo" xmlns="http://www.w3.org/2000/svg" width="122" height="22" viewBox="0 0 122 22" fill="none" class="hidden text-[#FFFFFF] h-[101.76px] ml-[32px] xl:block">
             <path data-id="logo-letter" class="animate-letters transition-all duration-300 ease" d="M8.192 21.44H2.176V10.24H0V5.312H2.304C2.944 2.272 5.92 0 11.2 0H12.48V4.288H10.24C8.576 4.288 7.776 4.448 7.808 5.312H12.48V10.24H8.192V21.44Z" fill="white"></path>
             <path data-id="logo-letter" class="animate-letters" d="M20.1047 3.84H14.0887V0H20.1047V3.84ZM20.1047 21.44H14.0887V5.312H20.1047V21.44Z" fill="white"></path>

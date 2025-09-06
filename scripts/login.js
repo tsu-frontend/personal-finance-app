@@ -88,7 +88,7 @@ class SignUpForm extends SignInForm {
         this.listenersList.push(this.validateName);
     }
     async submitFormData(formData) {
-        console.log(formData);
+        // console.log(formData);
         if (!formData.email.isValid ||
             !formData.password.isValid ||
             !formData.name.isValid) {

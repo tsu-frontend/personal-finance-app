@@ -8,9 +8,11 @@
     <link rel="icon" href="../assets/images/icon-nav-budgets.svg" />
 
     <link rel="stylesheet" href="../styles/budgets.css" />
+    <link rel="stylesheet" href="../styles/all-pages.css" />
     <link rel="stylesheet" href="../styles/animations.css" />
 
     <script type="module" src="../scripts/api/supaService.js"></script>
+    <script type="module" src="../scripts/modals/options-modal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script type="module" src="../scripts/budgets.js" defer></script>
     <script type="module" src="../scripts/nav.js" defer></script>
@@ -28,29 +30,8 @@
         </button>
       </section>
 
-      <section class="flex max-xl:flex-col mt-9 gap-6 h-auto items-start">
-        <aside
-          id="scheme"
-          class="flex flex-col max-xl:flex-row max-xl:w-fit items-center p-8 h-auto pb-0  gap-8 bg-[white] rounded-[12px]"
-        >
-          <!-- cyrcle -->
-          <div id="canvas_parent"
-            class="relative h-[300px] w-[300px] max-xl:h-[240px] max-xl:w-[240px] flex justify-center items-center"
-          >
-            <canvas id="doughnut"></canvas>
-            <div id="canvas_opacity"
-              class="bg-[#ffffff38] w-[230px] h-[230px] absolute top-10 rounded-full flex justify-center items-center flex-col"
-            >
-              <span id="spent_sum" class="font-bold text-[32px]"></span>
-              <span id="total_sum" class="text-[12px] text-[#696868]"></span>
-            </div>
-          </div>
-          <div id="spending_summary">
-            <h3 id="summary_header" class="text-xl font-semibold tracking-[0.01em] mb-6">
-              Spending Summary
-            </h3>
-          </div>
-        </aside>
+      <section id="chart_container" class="flex max-xl:flex-col mt-9 gap-6 h-auto items-start">
+       
         <!-- budgets -->
 
         <aside id="budgets_parent" class="w-[610px] flex flex-col gap-6">

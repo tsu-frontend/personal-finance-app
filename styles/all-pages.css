@@ -13,7 +13,7 @@
     width: 688px;
     height: 344px;
     gap: 50px;
-    padding: 52px 32px 32px 60px;
+    padding: 52px 32px 52px 60px;
   }
   main section.mt-9 {
     align-items: center;
@@ -22,32 +22,91 @@
   #budgets_parent {
     width: 688px;
   }
-  article[data-name="budget"]{
+  article[data-name="budget"] {
     width: 100%;
   }
-  #progress_bar{
+  #progress_bar {
     width: 100%;
   }
-  #cat_title{
+  #cat_title {
     font-size: 14px;
   }
-  div#spending_summary{
-    /* padding-top: 10px; */
-  }
-  #summary_header{
+
+  #summary_header {
     margin-bottom: 15px;
   }
-  #category_box{
+  #category_box {
     width: 296px;
   }
-#summary_line{
-  margin-top: 12px;
+  #summary_line {
+    margin-top: 12px;
+  }
+  #canvas_opacity {
+    width: 184px;
+    height: 184px;
+    top: 38px;
+  }
+  #budget_box_parent {
+    justify-content: space-between;
+  }
 }
-#canvas_opacity{
-  width: 184px;
-  height: 184px;
+
+@media screen and (max-width: 768px) {
+  #canvas_parent {
+    width: 240px;
+    height: 240px;
+  }
+  aside#scheme {
+    flex-direction: column;
+    width: 343px;
+    height: 583px;
+    gap: 42px;
+    padding: 44px 52px 16px 52px;
+  }
+  #budgets_parent {
+    width: 343px;
+  }
+  #category_box {
+    width: 303px;
+  }
+  #summary_line {
+    margin-top: 12px;
+  }
+  #canvas_opacity {
+    top: 33px;
+  }
+#spent_remain{
+  gap: 110px;
 }
-#budget_box_parent{
-  justify-content: space-between;
+    article[data-name="budget"] {
+      height: 486px;
+    padding: 24px 20px;
+  }
+  article[data-name="budget"] section{
+    height: 226px;
+    padding-bottom: 0;
+  }
+  article[data-name="budget"] section figure{
+margin:6px 0  }
+  h5{
+    margin: 0;
+  }
+
+
 }
+
+@media screen and (max-width: 420px) {
+  main{
+    padding: 16px;
+  }
+  aside#scheme {
+    width: 303px;
+    gap: 32px;
+  }
+  #budgets_parent {
+    width: 303px;
+  }
+  #category_box {
+    width: 263px;
+  }
 }
