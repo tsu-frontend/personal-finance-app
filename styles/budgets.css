@@ -357,9 +357,6 @@
   .mb-\[40px\] {
     margin-bottom: 40px;
   }
-  .ml-5 {
-    margin-left: calc(var(--spacing) * 5);
-  }
   .ml-\[20px\] {
     margin-left: 20px;
   }
@@ -474,14 +471,23 @@
   .h-\[120px\] {
     height: 120px;
   }
+  .h-\[200px\] {
+    height: 200px;
+  }
   .h-\[204px\] {
     height: 204px;
   }
   .h-\[230px\] {
     height: 230px;
   }
+  .h-\[235px\] {
+    height: 235px;
+  }
   .h-\[240px\] {
     height: 240px;
+  }
+  .h-\[245px\] {
+    height: 245px;
   }
   .h-\[250px\] {
     height: 250px;
@@ -1293,9 +1299,6 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
-  .filter {
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
   .transition-all {
     transition-property: all;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -2067,46 +2070,6 @@
   syntax: "*";
   inherits: false;
   initial-value: solid;
-}
-@property --tw-blur {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-brightness {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-contrast {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-grayscale {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-hue-rotate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-invert {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-opacity {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-saturate {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-sepia {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-drop-shadow {
-  syntax: "*";
-  inherits: false;
 }
 @property --tw-duration {
   syntax: "*";

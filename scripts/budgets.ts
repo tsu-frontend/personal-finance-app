@@ -230,7 +230,7 @@ class BudgetPage {
                     <div><span class='text-xs text-[#696868]'>Remaining</span><p class="font-semibold pt-1.5 text-sm">$${remaining}</p></div>
                 </div>
             </div>
-            <section data-name='parent_spendings' class="mt-5 p-5 bg-[#F8F4F0] h-[250px] rounded-[12px] gap-4">
+            <section data-name='parent_spendings' class="mt-5 p-5 bg-[#F8F4F0] h-[245px] rounded-[12px] gap-4">
                 <div class="flex justify-between mb-4">
                     <h6 class="font-semibold">Latest Spending</h6>
                     <div data-name='see_all' class="flex gap-3 cursor-pointer">
@@ -263,8 +263,31 @@ class BudgetPage {
   }
 
   addLastSpendings(trsInfo: Transaction[]) {
-    const latest = trsInfo.slice(0, 3);
-    const lastSpendingHTML = latest
+  // 1. Group transactions by category
+  const grouped: Record<string, Transaction[]> = {};
+  for (const tr of trsInfo) {
+    if (!grouped[tr.category]) {
+      grouped[tr.category] = [];
+    }
+    grouped[tr.category].push(tr);
+  }
+
+  // 2. Sort each category by date
+  for (const cat in grouped) {
+    grouped[cat].sort((a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime());
+  }
+
+  // 3. Render last 3 per category
+  document.querySelectorAll('[data-name="parent_spendings"]').forEach((parent) => {
+    const budgetCategory = parent
+      .closest('[data-name="budget"]')
+      ?.querySelector("h5")?.textContent;
+
+    if (!budgetCategory || !grouped[budgetCategory]) return;
+
+    const lastThree = grouped[budgetCategory].slice(0, 3);
+
+    const lastSpendingHTML = lastThree
       .map(
         ({ avatar, amount, name, date }) => `
         <article>
@@ -275,22 +298,18 @@ class BudgetPage {
                 </div>
                 <aside>
                     <div class="font-semibold text-xs">${amount}$</div>
-                    <span class="text-[#696868] text-[12px]">${this.formateDate(
-                      date!
-                    )}</span>
+                    <span class="text-[#696868] text-[12px]">${this.formateDate(date!)}</span>
                 </aside>
             </div>
             <figure class="h-[1px] bg-[#d5cfcf] w-full mt-3 mb-3"></figure>
         </article>
-    `
+        `
       )
       .join("");
-    document
-      .querySelectorAll('[data-name="parent_spendings"]')
-      .forEach((parent) => {
-        parent.innerHTML += lastSpendingHTML;
-      });
-  }
+
+    parent.innerHTML += lastSpendingHTML; 
+  });
+}
 
   openSmallMenu(budgetData: BudgetStat[]) {
     const threeDots = document.querySelectorAll('[data-name="three_dots"]');
