@@ -190,6 +190,7 @@ class EditAddModal {
                             },
                         },
                     },
+                    //aq aris gasasworebeli modal category rom sworad gadaeces
                     budgets: {
                         add: {
                             tableName: "budgets",
