@@ -25,7 +25,7 @@ class BudgetPage {
         this.chartContainer = document.getElementById("chart_container");
         this.summaryParent = ` <aside
                     id="scheme"
-                    class="flex flex-col max-xl:flex-row max-xl:w-fit items-center p-8 h-auto pb-0 gap-8 bg-[white] rounded-[12px]"
+                    class="flex flex-col flex-1 max-xl:flex-row max-xl:w-fit items-center p-8 pb-0 gap-8 bg-[white] rounded-[12px]"
                 >
                     <div
                         id="canvas_parent"

@@ -24,28 +24,28 @@ class CategoryModal {
         </div>
       </div>`);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        const categoryModalWrapper = document.querySelector("#category-modal-wrapper");
         const categoryModal = document.querySelector("#category-modal");
+        categoryModalWrapper.addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+        ClickOutClose.handle(categoryModalWrapper, "animate-theme-close", 300);
         Array.from(categoryModal.children).forEach((category) => {
             if (category.tagName === "DIV") {
                 category.addEventListener("click", () => {
                     const chosenCategory = category.id;
                     //   do validation here
                     setChosenCategory(chosenCategory);
-                    const categoryModalWrapper = document.querySelector("#theme-modal-wrapper");
                     categoryModalWrapper.classList.add("animate-theme-close");
                     setTimeout(() => {
-                        categoryModalWrapper.classList.add("hidden");
-                        categoryModalWrapper.classList.remove("animate-theme-close");
+                        categoryModalWrapper.remove();
                     }, 300);
-                    const input3 = document.querySelector("#input-3");
-                    if (input3) {
-                        const span = input3.querySelector("span");
-                        const p = input3.querySelector("p");
-                        if (span) {
-                            span.classList.remove("animate-color");
-                            span.style.background = chosenCategory;
-                        }
-                        if (p && categories) {
+                    const input1 = document.querySelector("#input-1");
+                    if (input1) {
+                        const span = input1.querySelector("span");
+                        const p = input1.querySelector("p");
+                        if (p) {
+                            console.log(chosenCategory);
                             p.textContent = categories[chosenCategory];
                         }
                     }
@@ -53,11 +53,6 @@ class CategoryModal {
             }
         });
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        const categoryModalWrapper = document.querySelector("#category-modal-wrapper");
-        categoryModalWrapper.addEventListener("click", (e) => {
-            e.stopPropagation();
-        });
-        ClickOutClose.handle(categoryModalWrapper, "animate-theme-close", 300);
     }
 }
 export { CategoryModal };
